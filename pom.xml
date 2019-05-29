@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.jojo</groupId>
+    <artifactId>demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <!-- 子模块 -->
+    <modules>
+        <module>demoUtil</module>
+        <module>demoSSM</module>
+    </modules>
+
+    <!-- 版本变量 -->
+    <properties>
+        <spring.version>4.3.10.RELEASE</spring.version>
+        <aspectj.version>1.9.4</aspectj.version>
+
+        <mysql.connector.version>5.1.44</mysql.connector.version>
+        <mybatis.version>3.5.1</mybatis.version>
+        <mybatis.spring.version>2.0.1</mybatis.spring.version>
+        <mybatis.generator.version>1.3.7</mybatis.generator.version>
+        <mybatis.tk.version>4.1.5</mybatis.tk.version>
+        <mybatis.pagehelper.version>5.1.8</mybatis.pagehelper.version>
+
+        <alibaba.easyExcel.version>1.1.2-beat1</alibaba.easyExcel.version>
+        <alibaba.druid.version>1.1.0</alibaba.druid.version>
+        <alibaba.fastjson.version>1.2.38</alibaba.fastjson.version>
+
+        <spark.version>2.9.0</spark.version>
+        <dubbo.version>2.7.1</dubbo.version>
+        <shiro.version>1.4.1</shiro.version>
+        <lucene.version>7.4.0</lucene.version>
+		<mina.version>3.0.0-M2</mina.version>
+		<httpclient.version>4.5.3</httpclient.version>
+		<commons.io.version>2.5</commons.io.version>
+		<commons.lang3.version>3.6</commons.lang3.version>
+		<commons.collection4.version>4.1</commons.collection4.version>
+		<commons.fileupload.version>1.3.3</commons.fileupload.version>
+		<commons.codec.version>1.11</commons.codec.version>
+		<commons.pool2.version>2.5.0</commons.pool2.version>
+
+        <slf4j.version>1.7.25</slf4j.version>
+        <log4jdbc.version>1.16</log4jdbc.version>
+        <logback.version>1.2.3</logback.version>
+        <logback.spring.version>0.1.5</logback.spring.version>
+
+        <junit.version>4.12</junit.version>
+
+        <guava.version>24.0-jre</guava.version>
+
+        <freemarker.version>2.3.28</freemarker.version>
+
+        <jedis.version>3.0.1</jedis.version>
+
+        <dom4j.version>1.6.1</dom4j.version>
+
+        <sitemesh.version>3.0.1</sitemesh.version>
+
+        <selenium.version>3.13.0</selenium.version>
+
+        <jsoup.version>1.12.1</jsoup.version>
+
+        <javaparser.symbol.solver.version>3.14.3</javaparser.symbol.solver.version>
+
+        <crawler4j.version>4.3</crawler4j.version>
+
+        <jpcap.version>0.1.18-002</jpcap.version>
+    </properties>
+
+
+
+    <dependencies>
+        <!-- Servlet & JSP Start-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2.1-b03</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- Servlet & JSP End-->
+
+
+        <!-- ************************spring  start******************** -->
+        <dependency><!-- mvc框架依赖 spring-context，也依赖spring-web，所以不写了，我是能省就省 -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency><!-- 事务相关 -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency><!-- 少了会报java.lang.NoClassDefFoundError -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency><!-- aop标准协议 -->
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency><!-- aop框架 -->
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+        <!-- *****************************spring end************************ -->
+
+
+        <!-- *****************************mysql connector start************************ -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
+        </dependency>
+        <!-- *****************************mysql connector end************************ -->
+
+
+        <!-- *****************************mybatis start************************ -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+        <dependency><!-- 与spring的中间件 -->
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis.spring.version}</version>
+        </dependency>
+        <dependency><!-- 代码生成器 -->
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>${mybatis.generator.version}</version>
+        </dependency>
+        <dependency><!-- 通用mapper -->
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+            <version>${mybatis.tk.version}</version>
+        </dependency>
+        <dependency><!-- 分页插件 -->
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>${mybatis.pagehelper.version}</version>
+        </dependency>
+        <!-- *****************************mybatis end************************ -->
+
+
+        <!-- *****************************alibaba start************************ -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${alibaba.druid.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${alibaba.fastjson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId><!-- 操作Excel，其实是封装了POI -->
+            <artifactId>easyexcel</artifactId>
+            <version>${alibaba.easyExcel.version}</version>
+        </dependency>
+        <!-- *****************************alibaba end************************ -->
+
+
+        <!-- *****************************apache end************************ -->
+        <dependency><!-- 大数据 -->
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+
+        <dependency><!-- dubbo -->
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>${dubbo.version}</version>
+        </dependency>
+
+        <dependency><!-- 权限控制 -->
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency><!-- 全文检索 -->
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+
+        <dependency><!-- socket传输 -->
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+            <version>${mina.version}</version>
+        </dependency>
+
+        <dependency><!-- Apache Commons -->
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons.collection4.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>fluent-hc</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+        <dependency><!-- base64 -->
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons.codec.version}</version>
+        </dependency>
+        <dependency><!-- 对象池 -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>${commons.pool2.version}</version>
+        </dependency>
+        <!-- *********************Apache end********************* -->
+
+
+        <!-- *********************google start********************* -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <!-- *********************google end********************* -->
+
+
+        <!-- 模板技术 -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.23</version>
+        </dependency>
+
+
+
+        <!-- jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
+
+        <!-- ***********************************打日志***************************************** -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency><!--commons-logging替换成slf4j-->
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency><!--log4j替换成slf4j-->
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency><!-- java.util.logging替换成slf4j -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency><!--logback spring扩展-->
+            <groupId>org.logback-extensions</groupId>
+            <artifactId>logback-ext-spring</artifactId>
+            <version>${logback.spring.version}</version>
+        </dependency>
+        <dependency><!-- 监控SQL -->
+            <groupId>org.bgee.log4jdbc-log4j2</groupId>
+            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+            <version>${log4jdbc.version}</version>
+        </dependency>
+        <!-- ***********************************打日志***************************************** -->
+
+
+        <!-- xml 相关 -->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>${dom4j.version}</version>
+        </dependency>
+
+
+        <!-- 页面相关 -->
+        <dependency>
+            <groupId>org.sitemesh</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>${sitemesh.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <!-- 爬虫 -->
+        <dependency>
+            <groupId>edu.uci.ics</groupId>
+            <artifactId>crawler4j</artifactId>
+            <version>${crawler4j.version}</version>
+        </dependency>
+
+
+        <!-- jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+
+        <!-- selenium 获取js加载后的网页 -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+
+        <!-- 解析.java文件的 -->
+        <dependency>
+            <groupId>com.github.javaparser</groupId>
+            <artifactId>javaparser-symbol-solver-core</artifactId>
+            <version>${javaparser.symbol.solver.version}</version>
+        </dependency>
+
+
+        <!-- jpcap，封装了网卡中对外使用的函数，用于抓包（用之前需要安装winpcap） -->
+<!--        <dependency>-->
+<!--            <groupId>jpcap</groupId>-->
+<!--            <artifactId>jpcap</artifactId>-->
+<!--            <version>${jpcap.version}</version>-->
+<!--        </dependency>-->
+
+
+        <!-- 图像识别 -->
+<!--        <dependency>-->
+<!--            <groupId>net.java.dev.jna</groupId>-->
+<!--            <artifactId>jna</artifactId>-->
+<!--            <version>4.2.1</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>net.sourceforge.tess4j</groupId>-->
+<!--            <artifactId>tess4j</artifactId>-->
+<!--            <version>3.4.6</version>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>com.sun.jna</groupId>-->
+<!--                    <artifactId>jna</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+
+
+        <!-- 兼容JDK 11 -->
+<!--        <dependency>-->
+<!--            <groupId>javax.annotation</groupId>-->
+<!--            <artifactId>jsr250-api</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>javax.xml.ws</groupId>-->
+<!--            <artifactId>jaxws-api</artifactId>-->
+<!--            <version>2.3.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>javax.jws</groupId>-->
+<!--            <artifactId>javax.jws-api</artifactId>-->
+<!--            <version>1.1</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>javax.xml.bind</groupId>-->
+<!--            <artifactId>jaxb-api</artifactId>-->
+<!--            <version>2.3.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.sun.xml.bind</groupId>-->
+<!--            <artifactId>jaxb-impl</artifactId>-->
+<!--            <version>2.3.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.sun.xml.bind</groupId>-->
+<!--            <artifactId>jaxb-core</artifactId>-->
+<!--            <version>2.3.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>javax.activation</groupId>-->
+<!--            <artifactId>activation</artifactId>-->
+<!--            <version>1.1.1</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+    </dependencies>
+</project>

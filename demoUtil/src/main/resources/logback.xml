@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- logback没有文档定义，加这个只是为了不让ecplise报warning -->
+<!DOCTYPE xml>
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<property name="max.retention.days" value="60" />
+	<property name="log.filename" value="demo" />
+	<property name="log.path" value="${catalina.base}" />
+
+
+	<!-- 输出目的地是控制台 -->
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder charset="UTF-8">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %class{16}:%line [traceId:%X{traceId}] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">z
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %class{16}:%line [traceId:%X{traceId}]- %msg%n</pattern>
+		</encoder>
+		<file>${log.path}/logs/${log.filename}.log</file>
+		<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${log.path}/logs/${log.filename}-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
+			<maxHistory>${max.retention.days}</maxHistory>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+			<maxFileSize>50MB</maxFileSize>
+		</rollingPolicy>
+	</appender>
+	
+	
+	<logger name="jdbc" level="INFO" />
+	<logger name="jdbc.sqltiming" level="INFO" />
+	
+	<root level="INFO">
+		<appender-ref ref="stdout" />
+		<appender-ref ref="rollingFile" />
+	</root>
+</configuration>
