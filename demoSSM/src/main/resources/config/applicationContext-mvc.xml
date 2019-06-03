@@ -15,10 +15,12 @@
 
     <!-- 开启注解功能 -->
     <mvc:annotation-driven>
+        <!-- spring对象转json由fastjson来控制 -->
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <constructor-arg value="UTF-8"/>
             </bean>
+
             <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
                 <property name="supportedMediaTypes">
                     <list>
@@ -27,21 +29,21 @@
                         <value>application/xml;charset=UTF-8</value>
                     </list>
                 </property>
-                <property name="features">
+                <property name="fastJsonConfig" ref="fastJsonConfig"/>
+            </bean>
+            <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
+                <property name="serializerFeatures">
                     <list>
-                        <!-- 默认的意思就是不配置这个属性，配置了就不是默认了 -->
-                        <!-- 是否输出值为null的字段 ，默认是false -->
-                        <!-- <value>WriteMapNullValue</value>
-                        <value>WriteNullNumberAsZero</value>
-                        <value>WriteNullListAsEmpty</value>
                         <value>WriteNullStringAsEmpty</value>
-                        <value>WriteNullBooleanAsFalse</value>
-                        <value>WriteDateUseDateFormat</value> -->
+                        <value>WriteNullListAsEmpty</value>
+                        <value>WriteDateUseDateFormat</value><!-- 默认日期格式yyyy-MM-dd HH:mm:ss -->
                     </list>
                 </property>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+
 
     <!-- 保护被引用的资源 -->
     <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>

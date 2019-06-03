@@ -50,20 +50,22 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      */
     public static final String SHU_HUI_PREFIX_PIC = "http://pic";
 
+
     /**
      * 爬一整部漫画
      *
      * @param url
      * @throws Exception
      */
-    public static void downMangaFromShuHui(String url) throws Exception {
-//		List<String> hrefList = getMangaUrlFromShuHui(url);
+    @Deprecated
+    public static void downMangaFromShuHui2018(String url) throws Exception {
+//		List<String> hrefList = getMangaUrlFromShuHui2018(url);
 
         // 20180906，存在一部分漫画，可以直接获取单话地址，不用在转一下
         List<String> hrefList = Lists.newArrayList(url);
 
-        List<String> realMangaUrlList = getRealMangaUrlFromShuHui(hrefList);
-        Map<String, List<String>> allPicUrlMap = getAllPicUrlFromShuHui(realMangaUrlList);
+        List<String> realMangaUrlList = getRealMangaUrlFromShuHui2018(hrefList);
+        Map<String, List<String>> allPicUrlMap = getAllPicUrlFromShuHui2018(realMangaUrlList);
         saveToLocalWithOriginName(allPicUrlMap);
     }
 
@@ -73,13 +75,14 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      * @param no
      * @throws Exception
      */
-    public static void downMangaFromShuHui(int... no) throws Exception {
+    @Deprecated
+    public static void downMangaFromShuHui2018(int... no) throws Exception {
         List<String> urlList = Lists.newArrayList();
         for (int i : no) {
             String url = "http://hanhuazu.cc/cartoon/post?id=" + i;
             urlList.add(url);
         }
-        Map<String, List<String>> allPicUrlMap = getAllPicUrlFromShuHui(urlList);
+        Map<String, List<String>> allPicUrlMap = getAllPicUrlFromShuHui2018(urlList);
         saveToLocalWithOriginName(allPicUrlMap);
     }
 
@@ -89,7 +92,8 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      * @param url
      * @return
      */
-    public static List<String> getMangaUrlFromShuHui(String url) {
+    @Deprecated
+    public static List<String> getMangaUrlFromShuHui2018(String url) {
         WebDriver webDriver = SeleniumUtil.getWebDriver();
         webDriver.get(url);
 
@@ -117,7 +121,8 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      * @param hrefList
      * @return
      */
-    public static List<String> getRealMangaUrlFromShuHui(List<String> hrefList) {
+    @Deprecated
+    public static List<String> getRealMangaUrlFromShuHui2018(List<String> hrefList) {
         WebDriver webDriver = SeleniumUtil.getWebDriver();
         List<String> realMangaUrlList = Lists.newArrayList();
         for (String href : hrefList) {
@@ -151,7 +156,8 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      * @param realMangaUrlList
      * @return
      */
-    public static Map<String, List<String>> getAllPicUrlFromShuHui(List<String> realMangaUrlList) {
+    @Deprecated
+    public static Map<String, List<String>> getAllPicUrlFromShuHui2018(List<String> realMangaUrlList) {
         WebDriver webDriver = SeleniumUtil.getWebDriver();
 
         Map<String, List<String>> allPicUrlMap = Maps.newHashMap();
@@ -184,4 +190,7 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
         webDriver.close();
         return allPicUrlMap;
     }
+
+
+
 }
