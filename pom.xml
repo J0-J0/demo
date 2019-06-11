@@ -18,6 +18,9 @@
 
     <!-- 版本变量 -->
     <properties>
+        <source.jdk.version>1.8</source.jdk.version>
+        <target.jdk.version>1.8</target.jdk.version>
+
         <spring.version>4.3.10.RELEASE</spring.version>
         <aspectj.version>1.9.4</aspectj.version>
 

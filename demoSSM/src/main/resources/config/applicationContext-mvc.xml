@@ -31,19 +31,18 @@
                 </property>
                 <property name="fastJsonConfig" ref="fastJsonConfig"/>
             </bean>
-            <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
-                <property name="serializerFeatures">
-                    <list>
-                        <value>WriteNullStringAsEmpty</value>
-                        <value>WriteNullListAsEmpty</value>
-                        <value>WriteDateUseDateFormat</value><!-- 默认日期格式yyyy-MM-dd HH:mm:ss -->
-                    </list>
-                </property>
-            </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-
+    <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
+        <property name="serializerFeatures">
+            <list>
+                <value>WriteNullStringAsEmpty</value>
+                <value>WriteNullListAsEmpty</value>
+                <value>WriteDateUseDateFormat</value><!-- 默认日期格式yyyy-MM-dd HH:mm:ss -->
+            </list>
+        </property>
+    </bean>
 
     <!-- 保护被引用的资源 -->
     <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>
