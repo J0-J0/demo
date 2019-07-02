@@ -299,11 +299,7 @@ public class FileUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		fileRename(new File("C:\\Users\\Administrator\\Desktop\\bcrj\\general"), "Sip2Impl", "General");
-//		readLines();
-		
-//		String str = getContentFromFile("C:\\Users\\Administrator\\Desktop\\要执行的SQL.txt");
-//		System.out.println(JSON.parseObject(str));
-		
+		fileRename(new File("C:\\迅雷下载"), " 话 ", "_HQ");
+
 	}
 }

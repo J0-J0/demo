@@ -2,21 +2,26 @@ package com.jojo.crawler;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.jojo.util.FileUtil;
 import com.jojo.util.SeleniumUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import static com.jojo.util.http.HttpConstant.TAG_a;
-import static com.jojo.util.http.HttpConstant.TAG_img;
+import static com.jojo.util.http.HttpConstant.*;
 
 /**
  * 鼠绘的模块比较多，可以单拎出来了
@@ -28,27 +33,34 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
     /**
      * 代表一部漫画
      */
+    @Deprecated
     public static final String SHU_HUI_PREFIX_CARTOON = "http://www.ishuhui.com/cartoon/book";
 
     /**
      * 一部漫画中的某一话
      */
+    @Deprecated
     public static final String SHU_HUI_PREFIX_CARTOON_NUM = "http://www.ishuhui.com/cartoon/num";
 
     /**
      * 一部漫画中某一话的真实地址
      */
+    @Deprecated
     public static final String SHU_HUI_PREFIX_CARTOON_NUM_DETAIL = "http://hanhuazu.cc/cartoon/post";
 
     /**
      * 一部漫画中某一话的真实地址
      */
+    @Deprecated
     public static final String SHU_HUI_PREFIX_CARTOON_NUM_DETAIL_2 = "http://www.ishuhui.com/cartoon/post";
 
     /**
      * 图片地址
      */
+    @Deprecated
     public static final String SHU_HUI_PREFIX_PIC = "http://pic";
+
+    private static final String SHU_HUI_IMG_PAGE_NO_ATTR = "alt";
 
 
     /**
@@ -191,6 +203,63 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
         return allPicUrlMap;
     }
 
+    public static void getOneChapterFrom2018UI(String url) throws IOException {
+        WebDriver webDriver = SeleniumUtil.getWebDriver();
+        webDriver.get(url);
 
+        // 获取标题
+        WebElement mangaTitleElement = webDriver.findElement(By.tagName("h1"));
+        String mangaTitle = mangaTitleElement.getText();
+
+        // 获取连页模式的按钮，并点击
+        WebElement continousPageModeElement = webDriver.findElement(By.xpath("//*[@class='tips z-page']"));
+        continousPageModeElement.click();
+
+        // 模拟页面到底，加载全部url
+        ((JavascriptExecutor) webDriver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        try {
+            // 等待所有图片加载完毕，后续考虑优化
+            Thread.sleep(1 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // 获取所有图片
+        List<WebElement> imgElementList = webDriver.findElements(By.tagName("img"));
+        if (CollectionUtils.isEmpty(imgElementList)) {
+            throw new RuntimeException("没有获取到图片");
+        }
+
+        webDriver.close(); // 在这就可以关闭了，下面都用不到
+
+        Map<String, String> imgUrlMap = Maps.newHashMap();
+        for (WebElement webElement : imgElementList) {
+            String imgUrl = webElement.getAttribute(ATTR_src);
+            String imgPageNO = webElement.getAttribute(SHU_HUI_IMG_PAGE_NO_ATTR);
+            if (imgPageNO == null) {
+                continue;
+            }
+            imgUrlMap.put(imgPageNO, imgUrl);
+        }
+        if (imgUrlMap.isEmpty()) {
+            throw new RuntimeException("没有获取到图片");
+        }
+
+        // 创建文件夹下载图片
+        String baseDirectory = "C:\\迅雷下载";
+        String chapterDir = baseDirectory + File.separator + mangaTitle;
+        Set<Map.Entry<String, String>> imgUrlEntrySet = imgUrlMap.entrySet();
+        for (Map.Entry<String, String> imgUrlEntry : imgUrlEntrySet) {
+            String imgUrl = imgUrlEntry.getValue();
+            String fileCanonicalName = imgUrlEntry.getKey();
+            String fileAbsoluteName = chapterDir + File.separator + fileCanonicalName;
+            FileUtil.createNewFileFromInternet(url, fileAbsoluteName);
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+
+
+    }
 
 }

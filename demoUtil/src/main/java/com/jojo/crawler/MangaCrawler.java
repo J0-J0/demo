@@ -1,27 +1,13 @@
 package com.jojo.crawler;
 
-import static com.jojo.util.http.HttpConstant.ATTR_href;
-import static com.jojo.util.http.HttpConstant.ATTR_src;
-import static com.jojo.util.http.HttpConstant.TAG_a;
-import static com.jojo.util.http.HttpConstant.TAG_img;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.common.io.Files;
+import com.jojo.util.FileUtil;
+import com.jojo.util.RegexUtil;
+import com.jojo.util.SeleniumUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -34,14 +20,19 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.common.io.Files;
-import com.jojo.util.FileUtil;
-import com.jojo.util.RegexUtil;
-import com.jojo.util.SeleniumUtil;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.jojo.util.http.HttpConstant.*;
 
 /**
  * 开心就好
@@ -49,6 +40,13 @@ import com.jojo.util.SeleniumUtil;
  * @author jojo
  */
 public class MangaCrawler {
+
+    private static final Function<Element, String> ELEMENT_TO_URL_FUNCTION = new Function<Element, String>() {
+        @Override
+        public String apply(Element input) {
+            return input.attr("src");
+        }
+    };
 
     /**
      * feiwan 网图片地址url正则
@@ -338,11 +336,7 @@ public class MangaCrawler {
         }
 
         // 结果转换，搞不好会报空指针，不想管了
-        List<String> urlList = Lists.transform(elementList, new Function<Element, String>() {
-            public String apply(Element input) {
-                return input.attr("src");
-            }
-        });
+        List<String> urlList = Lists.transform(elementList, ELEMENT_TO_URL_FUNCTION);
 
         // 去重
         logger.error("此时list长度为{}", urlList.size());
@@ -426,7 +420,4 @@ public class MangaCrawler {
         saveToLocal(huaMap);
     }
 
-    public static void main(String[] args) {
-//		getMyHero();
-    }
 }
