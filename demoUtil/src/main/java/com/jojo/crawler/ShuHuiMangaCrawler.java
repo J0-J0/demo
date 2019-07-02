@@ -70,14 +70,14 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      * @throws Exception
      */
     @Deprecated
-    public static void downMangaFromShuHui2018(String url) throws Exception {
+    public static void downMangaFromShuHui2017(String url) throws Exception {
 //		List<String> hrefList = getMangaUrlFromShuHui2018(url);
 
         // 20180906，存在一部分漫画，可以直接获取单话地址，不用在转一下
         List<String> hrefList = Lists.newArrayList(url);
 
-        List<String> realMangaUrlList = getRealMangaUrlFromShuHui2018(hrefList);
-        Map<String, List<String>> allPicUrlMap = getAllPicUrlFromShuHui2018(realMangaUrlList);
+        List<String> realMangaUrlList = getRealMangaUrlFromShuHui2017(hrefList);
+        Map<String, List<String>> allPicUrlMap = getAllPicUrlFromShuHui2017(realMangaUrlList);
         saveToLocalWithOriginName(allPicUrlMap);
     }
 
@@ -88,13 +88,13 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      * @throws Exception
      */
     @Deprecated
-    public static void downMangaFromShuHui2018(int... no) throws Exception {
+    public static void downMangaFromShuHui2017(int... no) throws Exception {
         List<String> urlList = Lists.newArrayList();
         for (int i : no) {
             String url = "http://hanhuazu.cc/cartoon/post?id=" + i;
             urlList.add(url);
         }
-        Map<String, List<String>> allPicUrlMap = getAllPicUrlFromShuHui2018(urlList);
+        Map<String, List<String>> allPicUrlMap = getAllPicUrlFromShuHui2017(urlList);
         saveToLocalWithOriginName(allPicUrlMap);
     }
 
@@ -105,7 +105,7 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      * @return
      */
     @Deprecated
-    public static List<String> getMangaUrlFromShuHui2018(String url) {
+    public static List<String> getMangaUrlFromShuHui2017(String url) {
         WebDriver webDriver = SeleniumUtil.getWebDriver();
         webDriver.get(url);
 
@@ -134,7 +134,7 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      * @return
      */
     @Deprecated
-    public static List<String> getRealMangaUrlFromShuHui2018(List<String> hrefList) {
+    public static List<String> getRealMangaUrlFromShuHui2017(List<String> hrefList) {
         WebDriver webDriver = SeleniumUtil.getWebDriver();
         List<String> realMangaUrlList = Lists.newArrayList();
         for (String href : hrefList) {
@@ -169,7 +169,7 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
      * @return
      */
     @Deprecated
-    public static Map<String, List<String>> getAllPicUrlFromShuHui2018(List<String> realMangaUrlList) {
+    public static Map<String, List<String>> getAllPicUrlFromShuHui2017(List<String> realMangaUrlList) {
         WebDriver webDriver = SeleniumUtil.getWebDriver();
 
         Map<String, List<String>> allPicUrlMap = Maps.newHashMap();
@@ -203,7 +203,16 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
         return allPicUrlMap;
     }
 
-    public static void getOneChapterFrom2018UI(String url) throws IOException {
+    /**
+     * 半自动，任需要主动提供<br/>
+     * http://www.hanhuazu.cc/comics/detail/11495<br/>
+     * 这种格式的url
+     *
+     * @param url
+     * @param baseDirectory
+     * @throws IOException
+     */
+    public static void getOneChapterFrom2018UI(String url, String baseDirectory) throws IOException {
         WebDriver webDriver = SeleniumUtil.getWebDriver();
         webDriver.get(url);
 
@@ -230,8 +239,6 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
             throw new RuntimeException("没有获取到图片");
         }
 
-        webDriver.close(); // 在这就可以关闭了，下面都用不到
-
         Map<String, String> imgUrlMap = Maps.newHashMap();
         for (WebElement webElement : imgElementList) {
             String imgUrl = webElement.getAttribute(ATTR_src);
@@ -245,8 +252,9 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
             throw new RuntimeException("没有获取到图片");
         }
 
+        webDriver.close(); // 在这就可以关闭了，下面都用不到
+
         // 创建文件夹下载图片
-        String baseDirectory = "C:\\迅雷下载";
         String chapterDir = baseDirectory + File.separator + mangaTitle;
         Set<Map.Entry<String, String>> imgUrlEntrySet = imgUrlMap.entrySet();
         for (Map.Entry<String, String> imgUrlEntry : imgUrlEntrySet) {
@@ -259,7 +267,7 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
 
     public static void main(String[] args) throws IOException {
 
-
+        getOneChapterFrom2018UI("http://www.hanhuazu.cc/comics/detail/11421", "C:\\迅雷下载");
     }
 
 }
