@@ -4,7 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import com.google.common.collect.Lists;
-import com.jojo.pojo.LoggerDTO;
+import com.jojo.pojo.LoggerVO;
 import com.jojo.pojo.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -28,19 +28,19 @@ public class DynamicLoggerLevelController {
         Response response = new Response();
 
         List<Logger> loggerList = loggerContext.getLoggerList();
-        List<LoggerDTO> loggerDTOList = Lists.newArrayList();
+        List<LoggerVO> loggerVOList = Lists.newArrayList();
         for (Logger logger : loggerList) {
             Level level = logger.getLevel();
             if (level == null) {
                 continue;
             }
-            LoggerDTO loggerDTO = new LoggerDTO();
-            loggerDTO.setName(logger.getName());
-            loggerDTO.setLevel(logger.getLevel().levelStr);
-            loggerDTOList.add(loggerDTO);
+            LoggerVO loggerVO = new LoggerVO();
+            loggerVO.setName(logger.getName());
+            loggerVO.setLevel(logger.getLevel().levelStr);
+            loggerVOList.add(loggerVO);
         }
 
-        response.setData(loggerDTOList);
+        response.setData(loggerVOList);
         return response;
     }
 

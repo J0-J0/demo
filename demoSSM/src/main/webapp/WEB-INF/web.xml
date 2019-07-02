@@ -9,7 +9,7 @@
     </welcome-file-list>
 
 
-    <!-- 读取logback配置文件，不知道为什么不起效 -->
+    <!-- 读取logback配置文件，要放在靠前的未知，不然不起效，不知道为什么 -->
     <listener>
         <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
     </listener>

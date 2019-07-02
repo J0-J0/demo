@@ -1,6 +1,6 @@
 package com.jojo.pojo;
 
-public class LoggerDTO {
+public class LoggerVO {
     private String name;
     private String level;
 
