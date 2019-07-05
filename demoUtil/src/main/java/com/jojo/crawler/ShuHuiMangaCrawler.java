@@ -261,13 +261,13 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
             String imgUrl = imgUrlEntry.getValue();
             String fileCanonicalName = imgUrlEntry.getKey();
             String fileAbsoluteName = chapterDir + File.separator + fileCanonicalName;
-            FileUtil.createNewFileFromInternet(url, fileAbsoluteName);
+            FileUtil.createNewFileFromInternet(imgUrl, fileAbsoluteName);
         }
     }
 
     public static void main(String[] args) throws IOException {
 
-        getOneChapterFrom2018UI("http://www.hanhuazu.cc/comics/detail/11421", "C:\\迅雷下载");
+        getOneChapterFrom2018UI("http://www.hanhuazu.cc/comics/detail/11499", "C:\\迅雷下载");
     }
 
 }

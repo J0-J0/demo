@@ -218,7 +218,6 @@ public class FileUtil {
 
 			// 保存数据
 			byte[] arr = IOUtils.toByteArray(new URL(url));
-			Thread.sleep(2 * 1000);
 			Files.write(arr, file);
 			logger.error(fileName + "数据填充完毕");
 		} catch (Exception e) {
