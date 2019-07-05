@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 注解扫描器 -->
+    <context:component-scan base-package="com.jojo"/>
+
+    <!-- 开启注解功能 -->
+    <mvc:annotation-driven>
+        <!-- spring对象转json由fastjson来控制 -->
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json</value>
+                        <value>application/xml;charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="fastJsonConfig" ref="fastJsonConfig"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="fastJsonConfig" class="com.alibaba.fastjson.support.config.FastJsonConfig">
+        <property name="serializerFeatures">
+            <list>
+                <value>WriteNullStringAsEmpty</value>
+                <value>WriteNullListAsEmpty</value>
+                <value>WriteDateUseDateFormat</value><!-- 默认日期格式yyyy-MM-dd HH:mm:ss -->
+            </list>
+        </property>
+    </bean>
+
+    <!-- 保护被引用的资源 -->
+    <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>
+
+    <!-- 视图解析器 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/view/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+
+</beans>

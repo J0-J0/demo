@@ -12,8 +12,11 @@
 
     <!-- 子模块 -->
     <modules>
+        <module>demoSpringMvc</module>
+        <module>demoSpringBoot</module>
+        <module>demoTask</module>
+        <module>demoPersistent</module>
         <module>demoUtil</module>
-        <module>demoSSM</module>
     </modules>
 
     <!-- 版本变量 -->
@@ -52,6 +55,8 @@
         <log4jdbc.version>1.16</log4jdbc.version>
         <logback.version>1.2.3</logback.version>
         <logback.spring.version>0.1.5</logback.spring.version>
+
+        <quartz.version>2.3.1</quartz.version>
 
         <junit.version>4.12</junit.version>
 
@@ -114,6 +119,11 @@
         <dependency><!-- 少了会报java.lang.NoClassDefFoundError -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency><!-- aop标准协议 -->
@@ -333,6 +343,13 @@
             <version>${log4jdbc.version}</version>
         </dependency>
         <!-- ***********************************打日志***************************************** -->
+
+        <!-- quartz定时器 -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+        </dependency>
 
 
         <!-- xml 相关 -->

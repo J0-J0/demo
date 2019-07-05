@@ -227,7 +227,7 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
         // 模拟页面到底，加载全部url
         ((JavascriptExecutor) webDriver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
         try {
-            // 等待所有图片加载完毕，后续考虑优化
+            // 等待js加载html，后续考虑优化
             Thread.sleep(1 * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();

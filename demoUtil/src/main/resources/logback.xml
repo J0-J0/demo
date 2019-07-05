@@ -16,12 +16,11 @@
 		</encoder>
 	</appender>
 
-	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">z
+	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder>
 			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %class{16}:%line [traceId:%X{traceId}]- %msg%n</pattern>
 		</encoder>
 		<file>${log.path}/logs/${log.filename}.log</file>
-		<cleanHistoryOnStart>true</cleanHistoryOnStart>
 		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
 			<fileNamePattern>${log.path}/logs/${log.filename}-%d{yyyy-MM-dd}-%i.log.zip</fileNamePattern>
 			<maxHistory>${max.retention.days}</maxHistory>
