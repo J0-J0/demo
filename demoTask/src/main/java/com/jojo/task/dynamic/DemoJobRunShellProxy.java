@@ -19,9 +19,9 @@ public class DemoJobRunShellProxy extends JobRunShell {
     private Long scheduleTaskId;
 
     public DemoJobRunShellProxy(Scheduler scheduler, TriggerFiredBundle bndleParam) {
+//        this.bndle = bndleParam;
+//        scheduleTaskId = bndle.getJobDetail().getJobDataMap().getLong("ScheduleTaskId");
         super(scheduler, bndleParam);
-        this.bndle = bndleParam;
-        scheduleTaskId = bndle.getJobDetail().getJobDataMap().getLong("ScheduleTaskId");
     }
 
     /**

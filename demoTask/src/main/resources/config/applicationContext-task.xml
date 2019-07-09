@@ -4,41 +4,20 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 
+<!--    <bean id="springJobFactory" class="com.jojo.task.dynamic.DemoJobFactoryProxy"/>-->
+<!--    <bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+<!--        <property name="jobFactory" ref="springJobFactory"/>-->
+<!--        <property name="schedulerFactoryClass" value="com.jojo.task.dynamic.DemoSchedulerFactoryProxy"/>-->
+<!--        <property name="startupDelay" value="30"/>-->
+<!--        <property name="overwriteExistingJobs" value="true"/>-->
+<!--    </bean>-->
+
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
-    <!--    <bean id="springJobFactory" class="com.jojo.task.dynamic.DemoJobFactoryProxy"/>-->
-    <!--    <bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
-    <!--        <property name="jobFactory" ref="springJobFactory"/>-->
-    <!--        <property name="schedulerFactoryClass" value="com.jojo.task.dynamic.DemoSchedulerFactoryProxy"/>-->
-    <!--        <property name="startupDelay" value="30"/>-->
-    <!--        <property name="overwriteExistingJobs" value="true"/>-->
-    <!--        <property name="configLocation" value="classpath:quartz/quartz.properties"/>-->
-    <!--    </bean>-->
-
-    <!-- 自定义的task -->
-    <bean id="testTask" class="com.jojo.task.TestTask"></bean>
-
-    <!--
-    task详细信息
-     -->
-    <bean id="testTaskDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="testTask"></property>
-        <property name="targetMethod" value="execute"></property>
+    <bean id="startQuertz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="startupDelay" value="30"/>
+        <property name="overwriteExistingJobs" value="true"/>
     </bean>
 
-    <!-- task触发器 -->
-    <bean id="testTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail" ref="testTaskDetail"/>
-        <property name="cronExpression" value="0/1 * * * * ? "></property>
-    </bean>
-
-    <!-- task执行 -->
-    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="triggers">
-            <list>
-                <ref bean="testTaskTrigger"/>
-            </list>
-        </property>
-    </bean>
 </beans>
 
 

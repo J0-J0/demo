@@ -2,13 +2,17 @@ package com.jojo.task;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestTask implements Job {
 
+    private static final Logger logger = LoggerFactory.getLogger(TestTask.class);
+
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        System.out.println("===测试quartz开始执行===");
-        System.out.println("===测试quartz执行结束===");
+        logger.error("===测试quartz开始执行===");
+        logger.error("===测试quartz执行结束===");
     }
 
     public static void main(String[] args) throws SchedulerException, InterruptedException {
@@ -17,9 +21,8 @@ public class TestTask implements Job {
         String jobTriggerName = jobName + "Trigger";
         String jobGroupName = "testGroup";
 
-        JobDetail job = JobBuilder.newJob(TestTask.class)
-                .withIdentity(jobName, jobGroupName)
-                .build();
+        JobKey jobKey = JobKey.jobKey(jobName, jobGroupName);
+        JobDetail job = JobBuilder.newJob(TestTask.class).withIdentity(jobKey).build();
 
         // Trigger the job to run now, and then repeat every 40 seconds
         Trigger trigger = TriggerBuilder.newTrigger()
@@ -33,11 +36,15 @@ public class TestTask implements Job {
         // Tell quartz to schedule the job using our trigger
         scheduler.scheduleJob(job, trigger);
 
+        System.out.println(job.getKey() + " will run  at: " + trigger.getNextFireTime());
 
-        scheduler.start();
+//        scheduler.start();
 
-        Thread.sleep(10 * 1000);
+        System.out.println(scheduler.checkExists(jobKey));
+        System.out.println(scheduler.getTriggersOfJob(jobKey));
 
-        scheduler.shutdown();
+//        Thread.sleep(10 * 1000);
+//
+//        scheduler.shutdown();
     }
 }
