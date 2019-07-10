@@ -14,12 +14,11 @@
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- 配置数据源 -->
-    <context:property-placeholder location="classpath*:profile/demo.properties"/>
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.user}"/>
-        <property name="password" value="${jdbc.password}"/>
+        <property name="url" value="http://127.0.0.1:3306/demo?useUnicode=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="0"/>
         <property name="minIdle" value="20"/>
@@ -77,12 +76,11 @@
     <tx:annotation-driven/>
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <!--            <tx:method name="*" propagation="REQUIRES_NEW"/>-->
             <tx:method name="*" propagation="REQUIRED"/>
         </tx:attributes>
     </tx:advice>
     <!-- 将通知切到何处 -->
     <aop:config>
-        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.jojo.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.jojo.persistent.service.*.*(..))"/>
     </aop:config>
 </beans>

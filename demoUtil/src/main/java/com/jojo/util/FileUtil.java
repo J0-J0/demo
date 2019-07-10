@@ -298,7 +298,7 @@ public class FileUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		fileRename(new File("C:\\迅雷下载"), " 话 ", "_HQ");
+		fileRename(new File("D:\\看的\\漫画\\一拳超人"), "", "第");
 
 	}
 }

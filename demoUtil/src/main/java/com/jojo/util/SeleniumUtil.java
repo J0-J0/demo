@@ -50,5 +50,8 @@ public class SeleniumUtil {
 
 
     public static void main(String[] args) {
+        WebDriver webDriver = getWebDriver();
+        webDriver.get("https://www.ishuhui.com/comics/anime/53");
+        System.out.println(webDriver.getPageSource());
     }
 }
