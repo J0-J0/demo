@@ -1,16 +1,16 @@
-package com.jojo.util.trace;
+package com.jojo.web.filter;
 
-import java.io.IOException;
+import com.jojo.util.trace.TraceUtil;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.web.filter.OncePerRequestFilter;
+import java.io.IOException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @WebFilter(filterName = "TraceFilter", urlPatterns = "/*")

@@ -59,7 +59,7 @@ public class ObjectMemorySizeUtil {
         int result = 0;
         for (int i = 0; i < length; i++) {
             Object obj = Array.get(object, i);
-            result += getObjectMemorySize(obj);
+            result += getObjectMemorySize(obj); // 从头开始递归
         }
 
         return result;
@@ -68,12 +68,12 @@ public class ObjectMemorySizeUtil {
     /**
      * 是否原生类型
      *
-     * @param objectClass
-     * @return
+     * @param objectClass Class类型
+     * @return true / false
      */
     private static boolean isPrimitive(Class<?> objectClass) {
         String classSimpleName = objectClass.getSimpleName();
-        String[] wrapperClassArr = {"Boolean", "Byte", "Character", "Short", "Integer", "Long", "Float", "Double"};
+        String[] wrapperClassArr = new String[]{"Boolean", "Byte", "Character", "Short", "Integer", "Long", "Float", "Double"};
         return objectClass.isPrimitive() || StringUtils.equalsAny(classSimpleName, wrapperClassArr);
     }
 

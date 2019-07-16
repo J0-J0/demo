@@ -50,7 +50,7 @@
 		</javaTypeResolver>
 
 		<!-- model -->
-		<javaModelGenerator targetPackage="com.jojo.ssm.model" targetProject="src/main/java">
+		<javaModelGenerator targetPackage="com.jojo.persistent.model" targetProject="src/main/java">
 		</javaModelGenerator>
 
 		<!-- mapper.xml -->
@@ -58,7 +58,7 @@
 		</sqlMapGenerator>
 
 		<!-- mapper接口 -->
-		<javaClientGenerator targetPackage="com.jojo.ssm.mapper" type="XMLMAPPER" targetProject="src/main/java">
+		<javaClientGenerator targetPackage="com.jojo.persistent.mapper" type="XMLMAPPER" targetProject="src/main/java">
 		</javaClientGenerator>
 
 		<!-- 
@@ -66,6 +66,6 @@
 			但又很奇怪，因为连接明明指定了数据库。
 		 -->
 		<!-- <table tableName="person" domainObjectName="Person"></table> -->
-		<table tableName="book" domainObjectName="Book"></table>
+		<table tableName="sc" domainObjectName="SC"></table>
 	</context>
 </generatorConfiguration>

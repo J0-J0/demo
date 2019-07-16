@@ -27,18 +27,6 @@
 
         <pluginManagement>
             <plugins>
-                <!-- 不加这个就给我报错，但ecplise里我明明又设置过编译等级，怪事 -->
-                <!-- Dynamic Web Module 3.0 requires Java 1.6 or newer. demo line 1 Maven Java EE Configuration Problem -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.7.0</version>
-                    <configuration>
-                        <source>${source.jdk.version}</source>
-                        <target>${target.jdk.version}</target>
-                    </configuration>
-                </plugin>
-
                 <!-- Tomcat插件 -->
                 <plugin>
                     <groupId>org.apache.tomcat.maven</groupId>

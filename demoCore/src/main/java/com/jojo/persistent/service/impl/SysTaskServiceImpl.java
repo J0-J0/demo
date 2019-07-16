@@ -1,13 +1,14 @@
-package com.jojo.persistent.service;
+package com.jojo.persistent.service.impl;
 
 import com.google.common.collect.Lists;
 import com.jojo.persistent.model.SysTask;
+import com.jojo.persistent.service.SysTaskService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SysTaskImpl implements SysTaskService {
+public class SysTaskServiceImpl implements SysTaskService {
 
     public List<SysTask> selectAll() {
         SysTask sysTask = new SysTask();
