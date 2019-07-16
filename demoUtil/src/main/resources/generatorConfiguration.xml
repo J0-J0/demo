@@ -28,7 +28,7 @@
 		<!-- 自动生成静态常量 -->
 		<plugin type="com.jojo.util.generator.plugin.AddStaticPropPlugin" />
 		<!-- 自动生成增删查改代码 -->
-		<plugin type="com.jojo.util.generator.plugin.AddCRUDCodePlugin" />
+		<!--<plugin type="com.jojo.util.generator.plugin.AddCRUDCodePlugin" />-->
 
 
 		<!-- 抑制注释 -->
@@ -40,7 +40,7 @@
 		<!-- 数据库地址 -->
 		<!-- 参数看情况加，可以去掉 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://127.0.0.1:3306/test?userSSL=false"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/demo?userSSL=false"
 			userId="root" password="123456">
 		</jdbcConnection>
 
@@ -65,7 +65,6 @@
 			使用%会为所有表生成代码，这个所有的意思是，连接内所有数据库的表，慎用。
 			但又很奇怪，因为连接明明指定了数据库。
 		 -->
-		<!-- <table tableName="person" domainObjectName="Person"></table> -->
 		<table tableName="sc" domainObjectName="SC"></table>
 	</context>
 </generatorConfiguration>

@@ -10,11 +10,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MybatisGenerator {
+public class DemoMybatisGenerator {
 	public static void main(String[] args) throws Exception {
 		List<String> warnings = new ArrayList<String>();
 		boolean overwrite = true;
-		File configFile = ResourceUtils.getFile("classpath*:generatorConfiguration.xml");
+		File configFile = ResourceUtils.getFile("classpath:generatorConfiguration.xml");
 		ConfigurationParser cp = new ConfigurationParser(warnings);
 		Configuration config = cp.parseConfiguration(configFile);
 		DefaultShellCallback callback = new DefaultShellCallback(overwrite);
