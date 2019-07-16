@@ -50,15 +50,15 @@
 		</javaTypeResolver>
 
 		<!-- model -->
-		<javaModelGenerator targetPackage="com.jojo.persistent.model" targetProject="src/main/java">
+		<javaModelGenerator targetPackage="com.jojo.persistent.model" targetProject="demoCore/src/main/java">
 		</javaModelGenerator>
 
 		<!-- mapper.xml -->
-		<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+		<sqlMapGenerator targetPackage="mapper" targetProject="demoCore/src/main/resources">
 		</sqlMapGenerator>
 
 		<!-- mapper接口 -->
-		<javaClientGenerator targetPackage="com.jojo.persistent.mapper" type="XMLMAPPER" targetProject="src/main/java">
+		<javaClientGenerator targetPackage="com.jojo.persistent.mapper" type="XMLMAPPER" targetProject="demoCore/src/main/java">
 		</javaClientGenerator>
 
 		<!-- 

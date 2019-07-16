@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd 
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!-- 配置数据源 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
-        <property name="url" value="http://127.0.0.1:3306/demo?useUnicode=true"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/demo?useSSL=false"/>
         <property name="username" value="root"/>
         <property name="password" value="123456"/>
         <!-- 配置初始化大小、最小、最大 -->
@@ -49,14 +46,14 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <!-- 自动扫描mapper.xml文件 -->
-        <property name="mapperLocations" value="classpath*:mapper/*.xml"></property>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
     </bean>
 
 
     <!-- 自动扫描Mapper类 -->
     <!-- mybatis通用Mapper配置 -->
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.jojo.ssm.mapper"/>
+        <property name="basePackage" value="com.jojo.persistent.mapper"/>
         <property name="properties">
             <value>
                 mappers=tk.mybatis.mapper.common.Mapper
