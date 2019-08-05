@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-2.0.xsd">
+
+
+    <!--    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
+    <!--        <constructor-arg name="mongoDbFactory" ref="mongoFactory"/>-->
+    <!--    </bean>-->
+
+    <mongo:db-factory id="mongoFactory" client-uri="mongodb://root:root@127.0.0.1:27017/test"/>
+    <mongo:mapping-converter id="mongoConverter" db-factory-ref="mongoFactory"/>
+    <mongo:template id="mongoTemplate" db-factory-ref="mongoFactory" converter-ref="mongoConverter"/>
+    <mongo:gridFsTemplate id="gridFsTemplate" bucket="allot_image" db-factory-ref="mongoFactory"
+                          converter-ref="mongoConverter"/>
+
+</beans>

@@ -6,8 +6,10 @@
 
     <!-- 业务配置文件 -->
     <import resource="applicationContext-bean.xml"/>
-    <import resource="../../../../../demoPersistent/src/main/resources/applicationContext-persistence.xml"/>
     <import resource="applicationContext-mvc.xml"/>
+
+    <!-- MongoDB -->
+    <import resource="applicationContext-mongo.xml"/>
 
 </beans>
 

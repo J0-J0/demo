@@ -269,30 +269,30 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
     }
 
     public static void main(String[] args) throws Exception {
-//        String url = "http://www.hanhuazu.cc/comics/detail/11499";
-//        String baseDir = "C:\\迅雷下载";
-//        getOneChapterFrom2018UI(url, baseDir);
-
-
-        String filePath = "C:\\Users\\72669\\Desktop\\新建文本文档 (2).txt";
-        String fileContent = FileUtil.getContentFromFile(filePath);
-
-        Document document = Jsoup.parse(fileContent);
-        Elements elementList = document.getElementsByTag("a");
-        if (CollectionUtils.isEmpty(elementList)) {
-            return;
-        }
-
-        Set<String> urlSet = Sets.newHashSet();
-        for (Element element : elementList) {
-            String url = "http://www.hanhuazu.cc" + element.attr("href");
-            urlSet.add(url);
-        }
-
+        String url = "http://www.hanhuazu.cc/comics/detail/11527";
         String baseDir = "C:\\迅雷下载";
-        for (String url : urlSet) {
-            getOneChapterFrom2018UI(url, baseDir);
-        }
+        getOneChapterFrom2018UI(url, baseDir);
+
+
+//        String filePath = "C:\\Users\\72669\\Desktop\\新建文本文档 (2).txt";
+//        String fileContent = FileUtil.getContentFromFile(filePath);
+//
+//        Document document = Jsoup.parse(fileContent);
+//        Elements elementList = document.getElementsByTag("a");
+//        if (CollectionUtils.isEmpty(elementList)) {
+//            return;
+//        }
+//
+//        Set<String> urlSet = Sets.newHashSet();
+//        for (Element element : elementList) {
+//            String url = "http://www.hanhuazu.cc" + element.attr("href");
+//            urlSet.add(url);
+//        }
+//
+//        String baseDir = "C:\\迅雷下载";
+//        for (String url : urlSet) {
+//            getOneChapterFrom2018UI(url, baseDir);
+//        }
     }
 
 }

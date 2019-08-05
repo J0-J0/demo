@@ -1,9 +1,6 @@
 package com.jojo.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -19,64 +16,71 @@ import com.alibaba.excel.event.AnalysisEventListener;
 
 public class ExcelUtil {
 
-	private static final String DEFAULT_DIRECTORY = "D:\\Workspace\\test\\poi\\";
+    private static final String DEFAULT_DIRECTORY = "D:\\Workspace\\test\\poi\\";
 
-	public static XSSFWorkbook createByList(List<List<String>> dataList) throws Exception {
-		if (CollectionUtils.isEmpty(dataList)) {
-			return null;
-		}
-		// 工作薄
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		// 第二步创建sheet
-		XSSFSheet sheet = workbook.createSheet();
+    public static XSSFWorkbook createByList(List<List<String>> dataList) throws Exception {
+        if (CollectionUtils.isEmpty(dataList)) {
+            return null;
+        }
+        // 工作薄
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        // 第二步创建sheet
+        XSSFSheet sheet = workbook.createSheet();
 
-		int rowIndex = 0;
-		for (List<String> rowData : dataList) {
-			XSSFRow row = sheet.createRow((rowIndex++));
-			int cellIndex = 0;
-			for (String value : rowData) {
-				XSSFCell cell = row.createCell((cellIndex++), CellType.STRING);
-				cell.setCellValue(value);
-			}
-		}
-		File file = FileUtil.createFileNamedByDateTime(DEFAULT_DIRECTORY, "xlsx");
-		workbook.write(new FileOutputStream(file));
+        int rowIndex = 0;
+        for (List<String> rowData : dataList) {
+            XSSFRow row = sheet.createRow((rowIndex++));
+            int cellIndex = 0;
+            for (String value : rowData) {
+                XSSFCell cell = row.createCell((cellIndex++), CellType.STRING);
+                cell.setCellValue(value);
+            }
+        }
+        File file = FileUtil.createFileNamedByDateTime(DEFAULT_DIRECTORY, "xlsx");
+        workbook.write(new FileOutputStream(file));
 
-		return workbook;
-	}
+        return workbook;
+    }
 
-	public static void main(String[] args) throws Exception {
-		InputStream inputStream = new FileInputStream("D:\\Workspace\\jiatu\\新建 XLSX 工作表.xlsx");
-		ExcelReader excelReader = new ExcelReader(inputStream, null, new AnalysisEventListener<List<String>>() {
+    public static void main(String[] args) throws Exception {
+        String filePath = "C:\\Users\\72669\\Desktop\\wms_accept_order_item.xlsx";
+        readByEasyExcel(filePath);
+    }
 
-			@Override
-			public void invoke(List<String> object, AnalysisContext context) {
-				String libcode = object.get(0);
-				String readertypecode = object.get(1);
-				String cirtype = object.get(2);
-				String total = object.get(3);
-				String readertypename = object.get(4);
-				String cirtypename = object.get(5);
-				StringBuffer buffer = new StringBuffer();
-				buffer.append("list.add").append("(new ReaderLoanRuleDTO(");
-				buffer.append("\"").append(libcode).append("\", ");
-				buffer.append("\"").append(readertypecode).append("\", ");
-				buffer.append("\"").append(cirtype).append("\", ");
-				buffer.append("").append(total).append(", ");
-				buffer.append("\"").append(readertypename).append("\", ");
-				buffer.append("\"").append(cirtypename).append("\"");
-				buffer.append("));");
-				System.out.println(buffer.toString());
-			}
+    private static void readByEasyExcel(String filePath) throws FileNotFoundException {
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(filePath));
+        ExcelReader excelReader = new ExcelReader(inputStream, null,
+                new AnalysisEventListener<List<String>>() {
 
-			@Override
-			public void doAfterAllAnalysed(AnalysisContext context) {
-				// TODO Auto-generated method stub
+                    @Override
+                    public void invoke(List<String> object, AnalysisContext context) {
+                        int rowNO = context.getCurrentRowNum();
+                        if (rowNO == 0) { // 跳过列名
+                            return;
+                        }
+                        String barcode = object.get(6);
+                        String title = object.get(7);
+                        String boxNo = object.get(9);
 
-			}
-		});
+                        StringBuffer buffer = new StringBuffer();
+                        buffer.append("insert into allot_quick_pool (id, title, barcode, box_no, cirtype) values(")
+                                .append("'").append(UUIDUtil.getRandomUUID()).append("', ")
+                                .append("'").append(title).append("', ")
+                                .append("'").append(barcode).append("', ")
+                                .append("'").append(boxNo).append("', ")
+                                .append("'").append("001").append("'")
+                                .append(");");
+                        System.out.println(buffer.toString());
+                    }
 
-		excelReader.read();
-	}
+                    @Override
+                    public void doAfterAllAnalysed(AnalysisContext context) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
+
+        excelReader.read();
+    }
 
 }

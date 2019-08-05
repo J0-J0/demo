@@ -1,19 +1,14 @@
 package com.jojo.util;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegexUtil {
 	
@@ -90,59 +85,6 @@ public class RegexUtil {
 		}
 		System.out.println("总计：" + resultList.size() + "个");
 		return resultList;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * 
-	 * @param clazz
-	 */
-	public static void showGettersAndSetters(Class<?> clazz, String name) {
-		Field[] fields = clazz.getDeclaredFields();
-
-		List<Field> list = Arrays.asList(fields);
-		Collections.sort(list, new Comparator<Field>() {
-			@Override
-			public int compare(Field o1, Field o2) {
-				return o1.getName().compareTo(o2.getName());
-			}
-		});
-
-		for (Field field : list) {
-			StringBuffer sb = new StringBuffer();
-			sb.append(name + ".set");
-			sb.append(field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1));
-			sb.append("(").append(" ").append(")");
-			System.out.println(sb.toString());
-		}
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		for (Field field : list) {
-			StringBuffer sb = new StringBuffer();
-			sb.append(name + ".get");
-			sb.append(field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1));
-			sb.append("(").append(" ").append(")");
-			System.out.println(sb.toString());
-		}
 	}
 	
 }
