@@ -16,7 +16,7 @@ public class RegexUtil {
 	
 	
 	/**
-	 * 取url最后一部分，但不包括参数，通常用来获取文件名
+	 * 取url中的文件名
 	 * 
 	 * @param url
 	 * @return

@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -419,5 +421,60 @@ public class MangaCrawler {
         driver.close();
         saveToLocal(huaMap);
     }
+
+    public static void manhuadbDownSingleChapter(String baseUrl, String baseDir, int pages) {
+        ExecutorService executorService = Executors.newFixedThreadPool(20);
+        for (int i = 1; i < pages; i++) {
+            String url = "";
+            if (i == 1) {
+                url = baseUrl + ".html";
+            } else {
+                url = baseUrl + "_p" + i + ".html";
+            }
+            String finalUrl = url;
+            int finalI = i;
+            executorService.execute(() -> {
+                try {
+                    manhuadbDownSingleImg(finalUrl, finalI, baseDir);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        executorService.shutdown();
+    }
+
+    private static void manhuadbDownSingleImg(String url, int seq, String baseDir) throws IOException {
+        logger.error("开始处理{}", url);
+        Document document = Jsoup.parse(new URL(url), 60 * 1000);
+        Elements elementList = document.getElementsByClass("img-fluid");
+
+        String canonicalImgUrl = null;
+        for (Element element : elementList) {
+            canonicalImgUrl = element.attr("src");
+            if (StringUtils.contains(canonicalImgUrl, "ccbaike")) {
+                break;
+            }
+        }
+        if (StringUtils.isBlank(canonicalImgUrl)) {
+            logger.error("未获取到图片相对路径");
+            return;
+        }
+        String imgUrl = "https://www.manhuadb.com" + canonicalImgUrl;
+        String fileName = baseDir + seq + "." + RegexUtil.getSuffixFromUrl(imgUrl);
+        FileUtil.createNewFileFromInternet(imgUrl, fileName);
+    }
+
+    public static void main(String[] args) throws Exception {
+        String baseUrl = "https://www.manhuadb.com/manhua/648/672_7249";
+        String baseDir = "C:\\WorkSpace\\test\\15\\";
+        int pages = 221;
+        manhuadbDownSingleChapter(baseUrl, baseDir, pages);
+
+//        String url = "https://www.manhuadb.com/manhua/648/672_7254_p115.html";
+//        int seq = 115;
+//        manhuadbDownSingleImg(url, seq, baseDir);
+    }
+
 
 }

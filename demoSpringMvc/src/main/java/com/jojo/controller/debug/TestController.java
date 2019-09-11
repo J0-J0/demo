@@ -65,6 +65,9 @@ public class TestController {
         IOUtils.copy(inputStream, outputStream);
         outputStream.flush();
 
-        IOUtils.closeQuietly(inputStream, outputStream);
+        try {
+        }finally {
+            IOUtils.closeQuietly(inputStream, outputStream);
+        }
     }
 }

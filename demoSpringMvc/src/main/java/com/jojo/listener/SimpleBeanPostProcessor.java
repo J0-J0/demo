@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleBeanPostProcessor implements BeanPostProcessor {
+
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         return bean;

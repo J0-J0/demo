@@ -258,6 +258,7 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
         webDriver.close(); // 在这就可以关闭了，下面都用不到
 
         // 创建文件夹下载图片
+        mangaTitle = mangaTitle.replaceAll("海賊王", "海賊王 第");
         String chapterDir = baseDirectory + File.separator + mangaTitle;
         Set<Map.Entry<String, String>> imgUrlEntrySet = imgUrlMap.entrySet();
         for (Map.Entry<String, String> imgUrlEntry : imgUrlEntrySet) {
@@ -269,7 +270,7 @@ public class ShuHuiMangaCrawler extends MangaCrawler {
     }
 
     public static void main(String[] args) throws Exception {
-        String url = "http://www.hanhuazu.cc/comics/detail/11527";
+        String url = "http://www.hanhuazu.cc/comics/detail/11735";
         String baseDir = "C:\\迅雷下载";
         getOneChapterFrom2018UI(url, baseDir);
 

@@ -15,8 +15,10 @@
         <module>demoSpringMvc</module>
         <module>demoSpringBoot</module>
         <module>demoTask</module>
-        <module>demoCore</module>
+        <module>demoPersistent</module>
         <module>demoUtil</module>
+        <module>demoService</module>
+        <module>demoServiceImpl</module>
     </modules>
 
     <!-- 版本变量 -->
@@ -106,7 +108,6 @@
             <version>1.2</version>
         </dependency>
         <!-- Servlet & JSP End-->
-
 
         <!-- ************************spring  start******************** -->
         <dependency><!-- mvc框架依赖 spring-context，也依赖spring-web，所以不写了，我是能省就省 -->

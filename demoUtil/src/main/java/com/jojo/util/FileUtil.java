@@ -269,6 +269,15 @@ public class FileUtil {
         return fileName;
     }
 
+    public static String filterInvalidCharacter2(String fileName) {
+        String[] invalidCharacterArr = {};
+        for (int i = 0; i < invalidCharacterArr.length; i++) {
+            fileName = fileName.replaceAll(invalidCharacterArr[i], " ");
+        }
+        return fileName;
+    }
+
+
     /**
      * 读取
      *
@@ -287,24 +296,24 @@ public class FileUtil {
     }
 
     /**
-     * @param path
+     * @param filepath
      * @return
-     * @throws IOException
      */
-    public static void readLines() throws IOException {
-        String path = "C:\\Users\\Administrator\\Desktop\\要执行的SQL.txt";
-        File file = new File(path);
-        List<String> lineList = Files.readLines(file, Charsets.UTF_8);
-        for (String line : lineList) {
-            String upperCamelStr = StringUtils.capitalize(line);
-            String str = "bookdbBookOrder.set" + upperCamelStr + "(bookorder.getString(\"" + line + "\"));";
-            System.out.println(str);
+    public static String getSuffixName(String filepath) {
+        if (StringUtils.isBlank(filepath)) {
+            return null;
         }
+        return filepath.substring(filepath.lastIndexOf(".") + 1);
     }
 
+    /**
+     * @param baseDir
+     * @param targetFilePath
+     * @throws IOException
+     */
     public static final void assembleAllTextToOneFile(String baseDir, String targetFilePath) throws IOException {
         File baseDirFile = new File(baseDir);
-        if (!baseDirFile.isDirectory()){
+        if (!baseDirFile.isDirectory()) {
             return;
         }
 
