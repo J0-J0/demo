@@ -1,70 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <!-- 
 	配置生成器，这些标签有严格的顺序要求 
 	(property*,plugin*,commentGenerator?, (connectionFactory|jdbcConnection),javaTypeResolver?,javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+)".
 -->
 <generatorConfiguration>
-	<context id="demo" defaultModelType="flat" targetRuntime="MyBatis3Simple">
+    <context id="demo" defaultModelType="flat" targetRuntime="MyBatis3Simple">
 
-		<!-- 处理关键字，坦白讲这个我用不着，反正肯定不会用关键字的 -->
-		<property name="autoDelimitKeywords" value="false" />
-		<!-- 数据库里的起始符 -->
-		<property name="beginningDelimiter" value="`" />
-		<property name="endingDelimiter" value="`" />
-
-
-		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-			<property name="mappers" value="tk.mybatis.mapper.common.Mapper" />
-			<!-- caseSensitive默认false，当数据库表名区分大小写时，可以将该属性设置为true -->
-			<property name="caseSensitive" value="false" />
-		</plugin>
-		<!-- 生成一个toString方法 -->
-		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
-		<!-- 生成equals与hashcode -->
-		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
-		<!-- 自动实现序列化接口 -->
-		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
-		<!-- 自动生成静态常量 -->
-		<plugin type="com.jojo.util.generator.plugin.AddStaticPropPlugin" />
-		<!-- 自动生成增删查改代码 -->
-		<!--<plugin type="com.jojo.util.generator.plugin.AddCRUDCodePlugin" />-->
+        <!-- 处理关键字，坦白讲这个我用不着，反正肯定不会用关键字的 -->
+        <property name="autoDelimitKeywords" value="false"/>
+        <!-- 数据库里的起始符 -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
 
 
-		<!-- 抑制注释 -->
-		<commentGenerator>
-			<property name="suppressAllComments" value="true" />
-			<property name="suppressDate" value="true" />
-		</commentGenerator>
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <!-- caseSensitive默认false，当数据库表名区分大小写时，可以将该属性设置为true -->
+            <property name="caseSensitive" value="false"/>
+        </plugin>
+        <!-- 生成一个toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <!-- 生成equals与hashcode -->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <!-- 自动实现序列化接口 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <!-- 自动生成静态常量 -->
+        <plugin type="com.jojo.util.generator.plugin.AddStaticPropPlugin"/>
+        <!-- 自动生成增删查改代码 -->
+        <plugin type="com.jojo.util.generator.plugin.AddCRUDCodePlugin"/>
 
-		<!-- 数据库地址 -->
-		<!-- 参数看情况加，可以去掉 -->
-		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://127.0.0.1:3306/demo?userSSL=false"
-			userId="root" password="123456">
-		</jdbcConnection>
 
-		<!-- 强制BigDecimal -->
-		<javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
-			<property name="forceBigDecimals" value="false" />
-		</javaTypeResolver>
+        <!-- 抑制注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
 
-		<!-- model -->
-		<javaModelGenerator targetPackage="com.jojo.persistent.model" targetProject="demoCore/src/main/java">
-		</javaModelGenerator>
+        <!-- 数据库地址 -->
+        <!-- 参数看情况加，可以去掉 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/demo?userSSL=false"
+                        userId="root" password="123456">
+        </jdbcConnection>
 
-		<!-- mapper.xml -->
-		<sqlMapGenerator targetPackage="mapper" targetProject="demoCore/src/main/resources">
-		</sqlMapGenerator>
+        <!-- 强制BigDecimal -->
+        <javaTypeResolver type="org.mybatis.generator.internal.types.JavaTypeResolverDefaultImpl">
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
 
-		<!-- mapper接口 -->
-		<javaClientGenerator targetPackage="com.jojo.persistent.mapper" type="XMLMAPPER" targetProject="demoCore/src/main/java">
-		</javaClientGenerator>
+        <!-- model -->
+        <javaModelGenerator targetPackage="com.jojo.persistent.model" targetProject="demoPersistent/src/main/java">
+        </javaModelGenerator>
 
-		<!-- 
-			使用%会为所有表生成代码，这个所有的意思是，连接内所有数据库的表，慎用。
-			但又很奇怪，因为连接明明指定了数据库。
-		 -->
-		<table tableName="sc" domainObjectName="SC"></table>
-	</context>
+        <!-- mapper.xml -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="demoPersistent/src/main/resources">
+        </sqlMapGenerator>
+
+        <!-- mapper接口 -->
+        <javaClientGenerator targetPackage="com.jojo.persistent.mapper" type="XMLMAPPER"
+                             targetProject="demoPersistent/src/main/java">
+        </javaClientGenerator>
+
+        <!--
+            使用%会为所有表生成代码，这个所有的意思是，连接内所有数据库的表，慎用。
+            但又很奇怪，因为连接明明指定了数据库。
+         -->
+        <table tableName="employee" domainObjectName="Employee"></table>
+        <table tableName="person" domainObjectName="Person"></table>
+        <table tableName="weather" domainObjectName="Weather"></table>
+        <table tableName="scores" domainObjectName="Scores"></table>
+    </context>
 </generatorConfiguration>

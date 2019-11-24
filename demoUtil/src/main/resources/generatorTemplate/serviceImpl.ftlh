@@ -8,6 +8,6 @@ import ${basePackagName}service.${classSimpleName}Service;
 
 @Service
 @Transactional
-public class ${classSimpleName}ServiceImpl extends BaseServiceImpl<${classSimpleName}> implements ${classSimpleName}Service {
+public class ${classSimpleName}ServiceImpl extends AbstractService<${classSimpleName}> {
 
 }

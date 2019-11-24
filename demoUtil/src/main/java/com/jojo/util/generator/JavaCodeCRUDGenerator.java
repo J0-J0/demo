@@ -39,7 +39,7 @@ public class JavaCodeCRUDGenerator {
 	/**
 	 * 默认的模板文件目录
 	 */
-	public static final String TEMPLATE_FILE_DIRECTORY = "src/main/resources/generatorTemplate";
+	public static final String TEMPLATE_FILE_DIRECTORY = "demoUtil/src/main/resources/generatorTemplate";
 
 	/**
 	 * 默认的controller模板文件名

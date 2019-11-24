@@ -1,23 +1,37 @@
 
 package com.jojo.zzz;
 
-import com.jojo.util.FileUtil;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.text.ParseException;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Work {
-    public static void main(String[] args) throws Throwable {
-        String filepath = "C:\\Users\\72669\\Desktop\\新建文本文档.txt";
-        String contentFromFile = FileUtil.getContentFromFile(filepath);
+    private static final Logger logger = LoggerFactory.getLogger(Work.class);
 
-        Document document = Jsoup.parse(contentFromFile);
-        Elements elementList = document.getElementsByTag("h2");
-//        System.out.println(elementList);
+    public static void main(String[] args) throws ParseException {
+        int num = 43261596;
+        System.out.println(toResverseBinaryIntValue(num));
+    }
 
-        Element postmessage_105213671Element = document.getElementById("postmessage_105213671");
-        System.out.println(postmessage_105213671Element);
+    public static int toResverseBinaryIntValue(int n) {
+        System.out.println(Integer.toBinaryString(n));
+        StringBuilder resverseBinaryString = new StringBuilder();
+        int differ = n / 2;
+        resverseBinaryString.append(n % 2);
+        while (differ != 0) {
+            resverseBinaryString.append(differ % 2);
+            differ /= 2;
+        }
+        System.out.println(resverseBinaryString);
+        int resverseValue = 0;
+        int length = resverseBinaryString.length();
+        for (int i = length - 1, j = 0; i > -1; i--, j++) {
+            char ch = resverseBinaryString.charAt(i);
+            resverseValue += Math.pow(2, j);
+        }
+        // 这里反转
+        return resverseValue;
     }
 }

@@ -14,11 +14,10 @@
     <modules>
         <module>demoSpringMvc</module>
         <module>demoSpringBoot</module>
-        <module>demoTask</module>
+        <module>demoTaskServiceProvider</module>
         <module>demoPersistent</module>
         <module>demoUtil</module>
         <module>demoService</module>
-        <module>demoServiceImpl</module>
     </modules>
 
     <!-- 版本变量 -->
@@ -47,14 +46,14 @@
         <dubbo.version>2.7.1</dubbo.version>
         <shiro.version>1.4.1</shiro.version>
         <lucene.version>7.4.0</lucene.version>
-		<mina.version>3.0.0-M2</mina.version>
-		<httpclient.version>4.5.3</httpclient.version>
-		<commons.io.version>2.5</commons.io.version>
-		<commons.lang3.version>3.6</commons.lang3.version>
-		<commons.collection4.version>4.1</commons.collection4.version>
-		<commons.fileupload.version>1.3.3</commons.fileupload.version>
-		<commons.codec.version>1.11</commons.codec.version>
-		<commons.pool2.version>2.5.0</commons.pool2.version>
+        <mina.version>3.0.0-M2</mina.version>
+        <httpclient.version>4.5.3</httpclient.version>
+        <commons.io.version>2.5</commons.io.version>
+        <commons.lang3.version>3.6</commons.lang3.version>
+        <commons.collection4.version>4.1</commons.collection4.version>
+        <commons.fileupload.version>1.3.3</commons.fileupload.version>
+        <commons.codec.version>1.11</commons.codec.version>
+        <commons.pool2.version>2.5.0</commons.pool2.version>
 
         <slf4j.version>1.7.25</slf4j.version>
         <log4jdbc.version>1.16</log4jdbc.version>
@@ -85,7 +84,6 @@
 
         <jpcap.version>0.1.18-002</jpcap.version>
     </properties>
-
 
 
     <dependencies>
@@ -195,9 +193,6 @@
         </dependency>
 
 
-
-
-
         <!-- *****************************alibaba start************************ -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -214,6 +209,14 @@
             <artifactId>easyexcel</artifactId>
             <version>${alibaba.easyExcel.version}</version>
         </dependency>
+
+        <!-- aliyun-java-sdk-kms -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-kms</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
         <!-- *****************************alibaba end************************ -->
 
 
@@ -316,7 +319,6 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.23</version>
         </dependency>
-
 
 
         <!-- jedis -->
@@ -430,75 +432,75 @@
 
 
         <!-- jpcap，封装了网卡中对外使用的函数，用于抓包（用之前需要安装winpcap） -->
-<!--        <dependency>-->
-<!--            <groupId>jpcap</groupId>-->
-<!--            <artifactId>jpcap</artifactId>-->
-<!--            <version>${jpcap.version}</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>jpcap</groupId>-->
+        <!--            <artifactId>jpcap</artifactId>-->
+        <!--            <version>${jpcap.version}</version>-->
+        <!--        </dependency>-->
 
 
         <!-- 图像识别 -->
-<!--        <dependency>-->
-<!--            <groupId>net.java.dev.jna</groupId>-->
-<!--            <artifactId>jna</artifactId>-->
-<!--            <version>4.2.1</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>net.sourceforge.tess4j</groupId>-->
-<!--            <artifactId>tess4j</artifactId>-->
-<!--            <version>3.4.6</version>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>com.sun.jna</groupId>-->
-<!--                    <artifactId>jna</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>net.java.dev.jna</groupId>-->
+        <!--            <artifactId>jna</artifactId>-->
+        <!--            <version>4.2.1</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>net.sourceforge.tess4j</groupId>-->
+        <!--            <artifactId>tess4j</artifactId>-->
+        <!--            <version>3.4.6</version>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <groupId>com.sun.jna</groupId>-->
+        <!--                    <artifactId>jna</artifactId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
 
 
         <!-- 兼容JDK 11 -->
-<!--        <dependency>-->
-<!--            <groupId>javax.annotation</groupId>-->
-<!--            <artifactId>jsr250-api</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>javax.xml.ws</groupId>-->
-<!--            <artifactId>jaxws-api</artifactId>-->
-<!--            <version>2.3.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>javax.jws</groupId>-->
-<!--            <artifactId>javax.jws-api</artifactId>-->
-<!--            <version>1.1</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>javax.xml.bind</groupId>-->
-<!--            <artifactId>jaxb-api</artifactId>-->
-<!--            <version>2.3.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.sun.xml.bind</groupId>-->
-<!--            <artifactId>jaxb-impl</artifactId>-->
-<!--            <version>2.3.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.sun.xml.bind</groupId>-->
-<!--            <artifactId>jaxb-core</artifactId>-->
-<!--            <version>2.3.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>javax.activation</groupId>-->
-<!--            <artifactId>activation</artifactId>-->
-<!--            <version>1.1.1</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.annotation</groupId>-->
+        <!--            <artifactId>jsr250-api</artifactId>-->
+        <!--            <version>1.0</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.xml.ws</groupId>-->
+        <!--            <artifactId>jaxws-api</artifactId>-->
+        <!--            <version>2.3.0</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.jws</groupId>-->
+        <!--            <artifactId>javax.jws-api</artifactId>-->
+        <!--            <version>1.1</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.xml.bind</groupId>-->
+        <!--            <artifactId>jaxb-api</artifactId>-->
+        <!--            <version>2.3.0</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.sun.xml.bind</groupId>-->
+        <!--            <artifactId>jaxb-impl</artifactId>-->
+        <!--            <version>2.3.0</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.sun.xml.bind</groupId>-->
+        <!--            <artifactId>jaxb-core</artifactId>-->
+        <!--            <version>2.3.0</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.activation</groupId>-->
+        <!--            <artifactId>activation</artifactId>-->
+        <!--            <version>1.1.1</version>-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
     </dependencies>
 
     <!-- 项目构建 -->

@@ -2,7 +2,7 @@ package com.jojo.task.dynamic.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.jojo.persistent.model.SysTask;
-import com.jojo.persistent.service.SysTaskService;
+import com.jojo.service.SysTaskService;
 import com.jojo.pojo.Response;
 import org.apache.commons.collections.CollectionUtils;
 import org.quartz.*;

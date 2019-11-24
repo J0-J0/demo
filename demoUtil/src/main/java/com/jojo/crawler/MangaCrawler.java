@@ -193,6 +193,7 @@ public class MangaCrawler {
      *
      * @param mangaUrlList
      * @return
+     * @throws Exception
      */
     public static Map<String, List<String>> getAllPicUrlFromFeiWan(List<String> mangaUrlList) throws Exception {
         Map<String, List<String>> picUrlMap = Maps.newHashMap();
@@ -465,16 +466,48 @@ public class MangaCrawler {
         FileUtil.createNewFileFromInternet(imgUrl, fileName);
     }
 
-    public static void main(String[] args) throws Exception {
-        String baseUrl = "https://www.manhuadb.com/manhua/648/672_7249";
-        String baseDir = "C:\\WorkSpace\\test\\15\\";
-        int pages = 221;
-        manhuadbDownSingleChapter(baseUrl, baseDir, pages);
+    /**
+     *
+     * @param baseDirectory
+     * @param url
+     * @throws IOException
+     */
+    public static void downMangaFromOnePiece(String baseDirectory, String url) throws IOException {
+        Document document = Jsoup.connect(url).execute().parse();
 
-//        String url = "https://www.manhuadb.com/manhua/648/672_7254_p115.html";
-//        int seq = 115;
-//        manhuadbDownSingleImg(url, seq, baseDir);
+        String mangaTitle = document.title().replaceFirst("海贼", "海賊");
+
+        Elements imgElementList = document.getElementsByTag("img");
+        if (CollectionUtils.isEmpty(imgElementList)) {
+            return;
+        }
+        int imgPageNO = 0;
+        Map<String, String> imgUrlMap = Maps.newHashMap();
+        for (Element imgElement : imgElementList) {
+            String imgUrl = imgElement.attr("src");
+            if (imgUrl.contains("logo")) {// 不要logo图片
+                continue;
+            }
+            imgUrlMap.put((++imgPageNO) + "", imgUrl);
+        }
+
+        // 创建文件夹下载图片
+        String chapterDir = baseDirectory + File.separator + mangaTitle;
+        Set<Entry<String, String>> imgUrlEntrySet = imgUrlMap.entrySet();
+        for (Entry<String, String> imgUrlEntry : imgUrlEntrySet) {
+            String imgUrl = imgUrlEntry.getValue();
+            String fileCanonicalName = imgUrlEntry.getKey();
+            String fileSuffix = RegexUtil.getSuffixFromUrl(imgUrl);
+            String fileAbsoluteName = chapterDir + File.separator + fileCanonicalName + "." + fileSuffix;
+            FileUtil.createNewFileFromInternet(imgUrl, fileAbsoluteName);
+        }
     }
 
+    public static void main(String[] args) throws Exception {
+        String baseDirectory = "C:\\迅雷下载";
+        String url = "https://one-piece.cn/post/10963/";
+        downMangaFromOnePiece(baseDirectory, url);
+
+    }
 
 }

@@ -66,17 +66,24 @@ public class ExcelUtil {
                         if (rowNO == 0) { // 跳过列名
                             return;
                         }
-                        String barcode = object.get(6);
-                        String title = "";
-                        String boxNo = object.get(13);
 
                         StringBuffer buffer = new StringBuffer();
-                        buffer.append("insert into allot_quick_pool (id, title, barcode, box_no, cirtype) values(")
-                                .append("'").append(UUIDUtil.getRandomUUID()).append("', ")
-                                .append("'").append(title).append("', ")
-                                .append("'").append(barcode).append("', ")
-                                .append("'").append(boxNo).append("', ")
-                                .append("'").append("001").append("'")
+                        buffer.append("insert into BOOKORDER (ORDERID, PACKAGEID, APPARTMENT, AMOUNT, DELIVERTYPE, DELIVERY_NAME, DELIVER_ADDRESS, READER_MOBILE, READER_NAME, LIBCODE, OSTATUS, CREATED, GET_DATE, UCARDNO, USERID) values (")
+                                .append("'").append(object.get(22)).append("', ")
+                                .append("'").append(object.get(0)).append("', ")
+                                .append("'").append(object.get(1)).append("', ")
+                                .append("").append(1).append(", ")
+                                .append("").append(1).append(", ")
+                                .append("'").append(object.get(2)).append("', ")
+                                .append("'").append(object.get(2)).append("', ")
+                                .append("'").append(object.get(23)).append("', ")
+                                .append("'").append(object.get(24)).append("', ")
+                                .append("'").append("ST").append("', ")
+                                .append("").append("3").append(", ")
+                                .append("").append("sysdate").append(", ")
+                                .append("").append("sysdate").append(", ")
+                                .append("'").append(object.get(3)).append("', ")
+                                .append("'").append(object.get(10)).append("'")
                                 .append(");");
                         System.out.println(buffer.toString());
                     }
@@ -100,7 +107,9 @@ public class ExcelUtil {
 
         Workbook workbook = getWorkBook(filepath);
 
-        String targetFileName = DEFAULT_DIRECTORY + "Excel-"
+        String[] filepathArr = filepath.split("\\.");
+
+        String targetFileName = filepathArr[0] + "-"
                 + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".sql";
         File targetFile = new File(targetFileName);
         targetFile.createNewFile();
@@ -113,6 +122,10 @@ public class ExcelUtil {
             Cell barcodeCell = row.getCell(6);
             barcodeCell.setCellType(CellType.STRING);
             String barcode = barcodeCell.getStringCellValue();
+
+            Cell cirTypeCell = row.getCell(8);
+            cirTypeCell.setCellType(CellType.STRING);
+            String cirType = cirTypeCell.getStringCellValue();
 
             Cell boxNOCell = row.getCell(13);
             boxNOCell.setCellType(CellType.STRING);
@@ -131,7 +144,6 @@ public class ExcelUtil {
 
 
     /**
-     *
      * @param filepath
      * @return
      * @throws IOException
@@ -149,9 +161,8 @@ public class ExcelUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String filePath = "C:\\Users\\72669\\Desktop\\wms_holding(4).xlsx";
-//        readByEasyExcel(filePath);
-        readByPoI(filePath);
+        String filePath = "C:\\Users\\72669\\Desktop\\Sql_Result.xls";
+        readByEasyExcel(filePath);
     }
 
 }

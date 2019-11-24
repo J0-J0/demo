@@ -1,4 +1,4 @@
-package com.jojo.persistent.service;
+package com.jojo.service;
 
 import com.jojo.persistent.model.SysTask;
 

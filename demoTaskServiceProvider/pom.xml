@@ -11,7 +11,7 @@
 
     <packaging>war</packaging>
 
-    <artifactId>demoTask</artifactId>
+    <artifactId>demoTaskServiceProvider</artifactId>
 
     <dependencies>
         <dependency>
@@ -35,8 +35,7 @@
 
     <!-- 项目构建 -->
     <build>
-        <finalName>demoSSM</finalName>
-
+        <finalName>demoTaskServiceProvider</finalName>
         <pluginManagement>
             <plugins>
                 <!-- Tomcat插件 -->
