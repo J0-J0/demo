@@ -1,6 +1,4 @@
-package ${basePackagName}service;
-
-import ${className};
+package com.jojo.service;
 
 public interface ${classSimpleName}Service {
 

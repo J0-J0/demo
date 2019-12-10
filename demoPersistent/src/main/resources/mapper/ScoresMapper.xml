@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jojo.persistent.mapper.ScoresMapper">
+  <resultMap id="BaseResultMap" type="com.jojo.persistent.model.Scores">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="score" jdbcType="DECIMAL" property="score" />
+  </resultMap>
+</mapper>

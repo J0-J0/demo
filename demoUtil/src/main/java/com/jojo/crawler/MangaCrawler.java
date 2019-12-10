@@ -505,7 +505,7 @@ public class MangaCrawler {
 
     public static void main(String[] args) throws Exception {
         String baseDirectory = "C:\\迅雷下载";
-        String url = "https://one-piece.cn/post/10963/";
+        String url = "https://one-piece.cn/post/10964/";
         downMangaFromOnePiece(baseDirectory, url);
 
     }

@@ -3,12 +3,12 @@ package com.jojo.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ${className};
-import com.jojo.service.${classSimpleName}Service;
+import com.jojo.persistent.model.Scores;
+import com.jojo.service.ScoresService;
 import com.jojo.service.base.AbstractService;
 
 @Service
 @Transactional
-public class ${classSimpleName}ServiceImpl extends AbstractService<${classSimpleName}> implements ${classSimpleName}Service {
+public class ScoresServiceImpl extends AbstractService<Scores> implements ScoresService {
 
 }

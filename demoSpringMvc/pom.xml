@@ -21,9 +21,10 @@
 
         <dependency>
             <groupId>com.jojo</groupId>
-            <artifactId>demoPersistent</artifactId>
+            <artifactId>demoService</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
 
 

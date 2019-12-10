@@ -11,5 +11,12 @@
 
     <artifactId>demoSpringBoot</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.jojo</groupId>
+            <artifactId>demoService</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

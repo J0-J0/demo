@@ -1,18 +1,29 @@
 
 package com.jojo.zzz;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Work {
     private static final Logger logger = LoggerFactory.getLogger(Work.class);
 
     public static void main(String[] args) throws ParseException {
-        int num = 43261596;
-        System.out.println(toResverseBinaryIntValue(num));
+
+        Date beginDate = DateUtils.addDays(new Date(), -1);
+        beginDate = DateUtils.truncate(beginDate, Calendar.DAY_OF_MONTH);
+        Date endDate = org.apache.commons.lang3.time.DateUtils.addDays(new Date(), 1);
+        endDate = org.apache.commons.lang3.time.DateUtils.truncate(endDate, Calendar.DAY_OF_MONTH);
+
+
+        System.out.println(DateFormatUtils.format(beginDate, "yyyy-MM-dd HH:mm:ss"));
+        System.out.println(DateFormatUtils.format(endDate, "yyyy-MM-dd HH:mm:ss"));
     }
 
     public static int toResverseBinaryIntValue(int n) {

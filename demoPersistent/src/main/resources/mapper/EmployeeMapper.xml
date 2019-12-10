@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jojo.persistent.mapper.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.jojo.persistent.model.Employee">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="Salary" jdbcType="DECIMAL" property="salary" />
+    <result column="ManagerId" jdbcType="INTEGER" property="managerid" />
+  </resultMap>
+</mapper>
