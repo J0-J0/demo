@@ -139,6 +139,7 @@ public class ExcelUtil {
                     .append(");");
             lines.add(buffer);
         }
+
         charSink.writeLines(lines);
     }
 

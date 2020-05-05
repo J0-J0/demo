@@ -1,10 +1,11 @@
 package com.jojo.controller.debug;
 
+import com.jojo.persistent.model.SysTask;
 import com.jojo.pojo.Response;
+import com.jojo.service.SysTaskService;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsCriteria;
@@ -20,16 +21,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
 
     @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Autowired
     private GridFsTemplate gridFsTemplate;
+
+    private SysTaskService sysTaskService;
 
     @RequestMapping("/mongo")
     public Response testMongo() throws FileNotFoundException {
@@ -66,8 +67,16 @@ public class TestController {
         outputStream.flush();
 
         try {
-        }finally {
+        } finally {
             IOUtils.closeQuietly(inputStream, outputStream);
         }
+    }
+
+    @RequestMapping("/dubbo")
+    public Response dubboRun() {
+        Response response = new Response();
+        List<SysTask> sysTaskList = sysTaskService.selectAll();
+        response.setData(sysTaskList);
+        return response;
     }
 }

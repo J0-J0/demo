@@ -55,4 +55,11 @@ public class Response {
         this.message += message;
         return this;
     }
+
+    public static Response succeed(String message) {
+        Response response = new Response();
+        response.code = SUCCESS;
+        response.message = message;
+        return response;
+    }
 }

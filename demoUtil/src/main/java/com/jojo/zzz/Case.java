@@ -19,7 +19,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -208,6 +213,51 @@ public class Case {
             transactionManager.commit(status);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void jdbcBatchInsert() {
+        String driverName = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://112.80.18.150:3316/bookmessage_test111";
+        String dbUser = "root";
+        String dbPassword = "jiatu001";
+        try {
+            Class.forName(driverName);
+            Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection.setAutoCommit(false); //设置手动提交
+            String sql = "insert into tb_user (name) values(?)";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            for (int i = 0; i < 10000; i++) {
+                ps.setString(1, "");
+                ps.addBatch();//添加到批次
+            }
+            ps.executeBatch();//提交批处理
+            connection.commit();//执行
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 假定两类字段差不多，需要get来set去
+     *
+     * @param targetClass
+     * @param sourceClassName
+     */
+    public static final void showCopyPropertiesStatement(Class<?> targetClass, String sourceClassName) {
+        Field[] fields = targetClass.getDeclaredFields();
+        String className = StringUtils.uncapitalize(targetClass.getSimpleName());
+
+        for (Field field : fields) {
+            String camelFiledName = StringUtils.capitalize(field.getName());
+            StringBuffer sb = new StringBuffer();
+            sb.append(className).append(".set");
+            sb.append(camelFiledName);
+            sb.append("(");
+//			sb.append(sourceClassName).append(".get").append(camelFiledName).append("()");
+            sb.append(");");
+            System.out.println(sb.toString());
         }
     }
 

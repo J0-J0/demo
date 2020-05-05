@@ -15,7 +15,7 @@ public class SysTaskServiceImpl implements SysTaskService {
         sysTask.setId((long) 123456);
         sysTask.setClassName("com.jojo.task.TestTask");
         sysTask.setName("testTask");
-        sysTask.setCron("0/1 * * * * ? ");
+        sysTask.setCron("0 0 0/1 * * ?");
         sysTask.setStatus(1);
 
         return Lists.newArrayList(sysTask);

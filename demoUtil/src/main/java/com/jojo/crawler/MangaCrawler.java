@@ -20,6 +20,7 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -505,7 +506,7 @@ public class MangaCrawler {
 
     public static void main(String[] args) throws Exception {
         String baseDirectory = "C:\\迅雷下载";
-        String url = "https://one-piece.cn/post/10964/";
+        String url = "https://one-piece.cn/post/10976/";
         downMangaFromOnePiece(baseDirectory, url);
 
     }

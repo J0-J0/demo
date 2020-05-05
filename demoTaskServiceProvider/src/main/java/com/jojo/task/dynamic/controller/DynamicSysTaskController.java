@@ -2,8 +2,8 @@ package com.jojo.task.dynamic.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.jojo.persistent.model.SysTask;
-import com.jojo.service.SysTaskService;
 import com.jojo.pojo.Response;
+import com.jojo.service.SysTaskService;
 import org.apache.commons.collections.CollectionUtils;
 import org.quartz.*;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class DynamicSysTaskController {
     }
 
     @RequestMapping("/saveOrUpdate")
-    public Response saveOrUpdate(@RequestBody SysTask sysTask) throws SchedulerException {
+    public Response saveOrUpdate(@RequestBody SysTask sysTask) {
         Response response = new Response();
 
         registerTask(sysTask);
@@ -59,6 +59,7 @@ public class DynamicSysTaskController {
         String jobName = JOB_NAME_PREFIX + sysTask.getId();
         JobKey jobKey = JobKey.jobKey(jobName, GROUP_NAME);
 
+        @SuppressWarnings("unchecked")
         List<Trigger> triggerList = (List<Trigger>) scheduler.getTriggersOfJob(jobKey);
         if (CollectionUtils.isEmpty(triggerList)) {
             response.setFailMessage("不存在trigger");
@@ -75,7 +76,7 @@ public class DynamicSysTaskController {
     }
 
     @PostConstruct
-    private void initAllSysTask() throws ClassNotFoundException, SchedulerException {
+    private void initAllSysTask() {
         List<SysTask> sysTaskList = sysTaskService.selectAll();
         if (CollectionUtils.isEmpty(sysTaskList)) {
             logger.error("没有需要初始化的task");
@@ -101,6 +102,7 @@ public class DynamicSysTaskController {
                 return;
             }
 
+            @SuppressWarnings("unchecked")
             Class<Job> classOfJob = (Class<Job>) ClassUtils.forName(className, null);
 
             // 定义job

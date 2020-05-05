@@ -329,12 +329,7 @@ public class FileUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String baseDir1 = "C:\\WorkSpace\\mine\\软著代码\\客户版";
-        String targetFile1 = "C:\\WorkSpace\\mine\\软著代码\\荣耀锡商-客户端源码.txt";
-        String baseDir2 = "C:\\WorkSpace\\mine\\软著代码\\商家版";
-        String targetFile2 = "C:\\WorkSpace\\mine\\软著代码\\荣耀锡商-商家端源码.txt";
-
-        assembleAllTextToOneFile(baseDir1, targetFile1);
-        assembleAllTextToOneFile(baseDir2, targetFile2);
+        String fileDir = "C:\\Users\\72669\\Desktop\\bcrj";
+        fileRename(new File(fileDir), "Yunlib", "Bcrj");
     }
 }
