@@ -60,7 +60,7 @@
         <logback.version>1.2.3</logback.version>
         <logback.spring.version>0.1.5</logback.spring.version>
 
-        <quartz.version>2.3.1</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
 
         <junit.version>4.12</junit.version>
 
