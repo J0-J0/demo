@@ -25,8 +25,9 @@
         <source.jdk.version>1.8</source.jdk.version>
         <target.jdk.version>1.8</target.jdk.version>
 
-        <spring.version>4.3.10.RELEASE</spring.version>
+        <spring.version>5.2.5.RELEASE</spring.version>
         <aspectj.version>1.9.4</aspectj.version>
+        <springboot.starter.version>2.2.6.RELEASE</springboot.starter.version>
 
         <mysql.connector.version>5.1.44</mysql.connector.version>
         <mybatis.version>3.5.1</mybatis.version>
@@ -85,6 +86,15 @@
         <jpcap.version>0.1.18-002</jpcap.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${springboot.starter.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Servlet & JSP Start-->

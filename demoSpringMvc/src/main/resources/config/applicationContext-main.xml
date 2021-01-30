@@ -10,6 +10,7 @@
     <!-- 业务配置文件 -->
     <import resource="applicationContext-bean.xml"/>
     <import resource="applicationContext-mvc.xml"/>
+    <import resource="applicationContext-dubbo-consumer.xml"/>
 
 
 

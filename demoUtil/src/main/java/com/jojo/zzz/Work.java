@@ -1,29 +1,31 @@
 
 package com.jojo.zzz;
 
-import com.google.common.collect.Lists;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.omg.Messaging.SyncScopeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
-import java.util.Collections;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Work {
     private static final Logger logger = LoggerFactory.getLogger(Work.class);
 
     public static void main(String[] args) throws ParseException {
-        List<String> list = Lists.newArrayList("2020-01-03", "2019-01-01", "2018-01-01");
-        Collections.sort(list);
-        System.out.println(list);
-        System.out.println("=======================");
-        System.out.println("2018-01-01".compareTo("2019-01-01"));
-        List<String> pageData = Lists.newArrayList();
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            IOUtils.copy(inputStream, outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static int toResverseBinaryIntValue(int n) {

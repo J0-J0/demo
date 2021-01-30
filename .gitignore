@@ -31,3 +31,6 @@ target/
 
 # idea project files  
 .idea
+*.iml
+/.vscode/launch.json
+/.vscode/settings.json

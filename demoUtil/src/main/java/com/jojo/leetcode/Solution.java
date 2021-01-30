@@ -1,6 +1,11 @@
 package com.jojo.leetcode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 class Solution {
 
@@ -60,7 +65,7 @@ class Solution {
             }
 
             String sameNameTransactionCity = sameNameTransaction.split(",")[3];
-            if (sameNameTransactionCity.equals(transactionCity)){
+            if (sameNameTransactionCity.equals(transactionCity)) {
                 continue;
             }
 
@@ -76,14 +81,90 @@ class Solution {
         return invalidTransactionList;
     }
 
+    public boolean canPartition(int[] nums) {
+        int sumArr = 0, length = nums.length;
+        if (length == 1) {
+            return false;
+        }
+        for (int i = 0; i < length; i++) {
+            sumArr += nums[i];
+        }
+
+        if (sumArr % 2 != 0) {
+            return false;
+        }
+
+        int expectedVal = sumArr / 2;
+        Arrays.sort(nums);
+        for (int i = 0; i < length; i++) {
+            int sumA = 0;
+            for (int j = i; j < length; j++) {
+                sumA += nums[j];
+                if (sumA == expectedVal) {
+                    return true;
+                }
+                if (sumA > expectedVal) {
+                    break;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public int knapsackProblem() {
+        int v = 4;// 最大容积
+        int[] weight = {1, 4, 3, 1};
+        int[] value = {2000, 3000, 2000, 1500};
+
+        int[][] maxVal = new int[weight.length + 1][v + 1];
+
+        // 赋值
+        for (int i = 0; i < maxVal.length; i++) {
+            for (int j = 0; j < maxVal[i].length; j++) {
+                maxVal[i][j] = 0;
+            }
+        }
+
+        // 找出最大值
+        for (int i = 1; i < maxVal.length; i++) {
+            for (int j = 1; j < maxVal[i].length; j++) {
+                int currentGoodsWeight = weight[i - 1];
+                int currentGoodsValue = value[i - 1];
+                int lastMaxVal = maxVal[i - 1][j];
+
+                maxVal[i][j] = lastMaxVal;// 先等于上一次最大值
+
+                if (currentGoodsWeight > j) {
+                    continue;
+                }
+
+                if (currentGoodsWeight == j && currentGoodsValue >= lastMaxVal) {
+                    maxVal[i][j] = currentGoodsValue;
+                    continue;
+                }
+
+                if (currentGoodsValue + maxVal[i - 1][j - currentGoodsWeight] >= lastMaxVal) {
+                    maxVal[i][j] = currentGoodsValue + maxVal[i - 1][j - currentGoodsWeight];
+                }
+            }
+        }
+
+        for (int i = 0; i < maxVal.length; i++) {
+            for (int j = 0; j < maxVal[i].length; j++) {
+                System.out.printf("%6d", maxVal[i][j]);
+            }
+            System.out.println();
+        }
+
+        return maxVal[weight.length][v];
+    }
+
     public static void main(String[] args) {
-        Solution solution = new Solution();
+//        Solution solution = new Solution();
+//        System.out.println(solution.knapsackProblem());
 
-        String[] transactionArr = {"bob,689,1910,barcelona","alex,696,122,bangkok","bob,832,1726,barcelona","bob,820,596,bangkok","chalicefy,217,669,barcelona","bob,175,221,amsterdam"};
-        List<String> str = solution.invalidTransactions(transactionArr);
-
-        System.out.println(Arrays.toString(transactionArr));
-        System.out.println(str);
+        System.out.println("20200101".substring(2));
     }
 
 }
