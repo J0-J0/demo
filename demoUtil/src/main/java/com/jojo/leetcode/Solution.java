@@ -160,6 +160,26 @@ class Solution {
         return maxVal[weight.length][v];
     }
 
+    public static int toResverseBinaryIntValue(int n) {
+        System.out.println(Integer.toBinaryString(n));
+        StringBuilder resverseBinaryString = new StringBuilder();
+        int differ = n / 2;
+        resverseBinaryString.append(n % 2);
+        while (differ != 0) {
+            resverseBinaryString.append(differ % 2);
+            differ /= 2;
+        }
+        System.out.println(resverseBinaryString);
+        int resverseValue = 0;
+        int length = resverseBinaryString.length();
+        for (int i = length - 1, j = 0; i > -1; i--, j++) {
+            char ch = resverseBinaryString.charAt(i);
+            resverseValue += Math.pow(2, j);
+        }
+        // 这里反转
+        return resverseValue;
+    }
+
     public static void main(String[] args) {
 //        Solution solution = new Solution();
 //        System.out.println(solution.knapsackProblem());

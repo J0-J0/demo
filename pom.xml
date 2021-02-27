@@ -47,7 +47,7 @@
         <dubbo.version>2.7.1</dubbo.version>
         <shiro.version>1.4.1</shiro.version>
         <lucene.version>7.4.0</lucene.version>
-        <mina.version>3.0.0-M2</mina.version>
+        <mina.version>2.1.4</mina.version>
         <httpclient.version>4.5.3</httpclient.version>
         <commons.io.version>2.5</commons.io.version>
         <commons.lang3.version>3.6</commons.lang3.version>
@@ -76,6 +76,7 @@
         <sitemesh.version>3.0.1</sitemesh.version>
 
         <selenium.version>3.13.0</selenium.version>
+        <itext.version>5.5.13.2</itext.version>
 
         <jsoup.version>1.12.1</jsoup.version>
 
@@ -439,6 +440,23 @@
             <artifactId>javaparser-symbol-solver-core</artifactId>
             <version>${javaparser.symbol.solver.version}</version>
         </dependency>
+
+
+        <!-- 处理pdf -->
+        <!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.59.Final</version>
+        </dependency>
+
 
 
         <!-- jpcap，封装了网卡中对外使用的函数，用于抓包（用之前需要安装winpcap） -->
