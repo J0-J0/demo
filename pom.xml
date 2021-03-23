@@ -18,6 +18,7 @@
         <module>demoPersistent</module>
         <module>demoUtil</module>
         <module>demoService</module>
+        <module>demoSocket</module>
     </modules>
 
     <!-- 版本变量 -->
