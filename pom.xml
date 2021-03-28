@@ -86,6 +86,8 @@
         <crawler4j.version>4.3</crawler4j.version>
 
         <jpcap.version>0.1.18-002</jpcap.version>
+
+        <lombok.version>1.18.18</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -457,6 +459,15 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.59.Final</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
 
 
 

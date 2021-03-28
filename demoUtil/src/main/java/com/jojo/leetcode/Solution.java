@@ -1,5 +1,8 @@
 package com.jojo.leetcode;
 
+import org.apache.regexp.RE;
+
+import javax.swing.plaf.synth.SynthSpinnerUI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -180,11 +183,41 @@ class Solution {
         return resverseValue;
     }
 
-    public static void main(String[] args) {
-//        Solution solution = new Solution();
-//        System.out.println(solution.knapsackProblem());
+    /**
+     * 反转字符串
+     *
+     * @param str
+     * @return
+     */
+    public String reverseStr(String str) {
+        // 递归实现
+//        if (str == null || str.length() == 0) {
+//            return "";
+//        }
+//        int startIndex = str.length() - 1;
+//        return str.substring(startIndex) + reverseStr(str.substring(0, startIndex));
 
-        System.out.println("20200101".substring(2));
+
+        // 数组反转
+//        if (str == null || str.length() == 0) {
+//            return "";
+//        }
+//        char[] chars = str.toCharArray();
+//        int length = chars.length;
+//        String resultStr = "";
+//        for (int i = length - 1; i >= 0; i--) {
+//            resultStr += chars[i];
+//        }
+//        return resultStr;
+
+        return new StringBuilder(str).reverse().toString();
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        System.out.println(solution.reverseStr("123"));
+
     }
 
 }
