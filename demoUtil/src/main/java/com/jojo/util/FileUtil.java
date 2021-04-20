@@ -329,7 +329,15 @@ public class FileUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String fileDir = "C:\\Users\\72669\\Desktop\\bcrj";
-        fileRename(new File(fileDir), "Yunlib", "Bcrj");
+        String targetDir = "C:\\Users\\72669\\Downloads\\恶魔阿萨谢尔再召唤你\\1";
+        String srcDir = "C:\\Users\\72669\\Downloads\\恶魔阿萨谢尔再召唤你";
+        File srcFile = new File(srcDir);
+        File[] files = srcFile.listFiles();
+        for (File file : files) {
+            File[] imgFile = file.listFiles();
+            if (ArrayUtils.isNotEmpty(imgFile)) {
+                imgFile[0].renameTo(new File(targetDir + File.separator+imgFile[0].getName()));
+            }
+        }
     }
 }
