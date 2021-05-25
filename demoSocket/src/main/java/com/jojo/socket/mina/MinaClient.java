@@ -3,6 +3,7 @@ package com.jojo.socket.mina;
 import com.google.common.base.Charsets;
 import com.jojo.socket.request.BaseRequest;
 import com.jojo.socket.response.BaseResponse;
+import com.sleepycat.je.rep.vlsn.VLSNIndex;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -22,8 +23,11 @@ public class MinaClient {
 
     private static final Logger logger = LoggerFactory.getLogger(MinaClient.class);
 
-    private String host;
-    private int port;
+    private final static long CMD_WAIT_MAX_TIMEMILLIS = 15 * 1000;
+
+
+    private String host = "aleph-01.clcn.net.cn";
+    private int port = 5331;
 
     private IoSession ioSession;
 
@@ -79,17 +83,17 @@ public class MinaClient {
             sendLock.lock();
             receivedResponse = null;// 清空接收器
 
-            IoSession session = getSession();
-            session.write(request.pack());
+            synchronized (waitLock) {
+                IoSession session = getSession();
+                session.write(request.pack());
 
-            waitLock.wait(15 * 1000);
+                waitLock.wait(CMD_WAIT_MAX_TIMEMILLIS);
 
-            if (receivedResponse == null) {
-                return BaseResponse.fail("请求失败，未收到返回值");
+                if (receivedResponse == null) {
+                    return BaseResponse.fail("请求失败，未收到返回值");
+                }
+                return receivedResponse;
             }
-
-            return receivedResponse;
-
         } catch (Exception e) {
             logger.error("发送消息异常", e);
             return BaseResponse.fail("请求异常，未收到返回值" + e.getMessage());
@@ -99,7 +103,9 @@ public class MinaClient {
     }
 
     protected BaseResponse unpack(Object message) {
-        return null;
+        BaseResponse response = new BaseResponse();
+        response.setMessage(String.valueOf(message));
+        return response;
     }
 
 
@@ -121,16 +127,28 @@ public class MinaClient {
 
         @Override
         public void messageReceived(IoSession session, Object message) throws Exception {
-            logger.info("收到消息===" + message);
+            synchronized (waitLock){
+                logger.info("收到消息===" + message);
 
-            receivedResponse = unpack(message);
+                receivedResponse = unpack(message);
 
-            waitLock.notifyAll();
+                waitLock.notifyAll();
+            }
+
         }
 
         @Override
         public void messageSent(IoSession session, Object message) throws Exception {
             logger.info("发送消息===" + message);
         }
+    }
+
+    public static void main(String[] args) {
+        MinaClient minaClient = new MinaClient();
+
+        BaseRequest request = new BaseRequest();
+        request.setMessage("1720210223    231011|AOST001SSLSW|AB001T200270647|AC");
+
+        minaClient.writeAndWaitResponse(request);
     }
 }

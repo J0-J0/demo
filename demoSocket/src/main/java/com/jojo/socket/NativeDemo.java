@@ -15,9 +15,9 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Test {
+public class NativeDemo {
 
-    private static final Logger logger = LoggerFactory.getLogger(Test.class);
+    private static final Logger logger = LoggerFactory.getLogger(NativeDemo.class);
 
     private static final int BUFFER_LENGTH = 10 * 1024;
 
