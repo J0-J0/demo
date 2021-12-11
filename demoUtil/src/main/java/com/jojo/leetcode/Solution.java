@@ -1,14 +1,6 @@
 package com.jojo.leetcode;
 
-import org.apache.regexp.RE;
-
-import javax.swing.plaf.synth.SynthSpinnerUI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 class Solution {
 
@@ -213,11 +205,40 @@ class Solution {
         return new StringBuilder(str).reverse().toString();
     }
 
+    /**
+     * 203
+     *
+     * @param head
+     * @param val
+     * @return
+     */
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) {
+            return head;
+        }
+        head.next = removeElements(head.next, val);
+        return head.val == val ? head.next : head;
+    }
+
     public static void main(String[] args) {
+        ListNode head = new ListNode(1);
+        ListNode node2 = new ListNode(1);
+        ListNode node3 = new ListNode(1);
+        ListNode node4 = new ListNode(1);
+        ListNode node5 = new ListNode(1);
+        head.next = node2;
+        node2.next = node3;
+        node3.next = node4;
+        node4.next = node5;
+
+
         Solution solution = new Solution();
+        head = solution.removeElements(head, 1);
 
-        System.out.println(solution.reverseStr("123"));
-
+        if (head == null) {
+            return;
+        }
+        head.print();
     }
 
 }
