@@ -220,25 +220,144 @@ class Solution {
         return head.val == val ? head.next : head;
     }
 
+    /**
+     * 434
+     *
+     * @param s
+     * @return
+     */
+    public int countSegments(String s) {
+        if (s == null || "".equals(s)) {
+            return 0;
+        }
+
+        char[] chars = s.toCharArray();
+        int segmentsCount = 0;
+        boolean firstChar = false;
+        boolean hasChar = false;
+        for (char aChar : chars) {
+            if (aChar != 32) {
+                firstChar = true;
+                hasChar = true;
+            }
+
+            if (firstChar && aChar == 32) {
+                segmentsCount += 1;
+                firstChar = false;
+            }
+        }
+
+        if (segmentsCount == 0 && hasChar) {
+            ++segmentsCount;
+        } else if (segmentsCount != 0 && chars[chars.length - 1] != 32) {
+            ++segmentsCount;
+        }
+
+        return segmentsCount;
+    }
+
+    /**
+     * 234
+     *
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+
+        StringBuffer sb = new StringBuffer();
+        while (head != null) {
+            sb.append(head.val);
+            head = head.next;
+        }
+
+        StringBuffer newSb = new StringBuffer();
+        for (int i = sb.length() - 1; i >= 0; i--) {
+            newSb.append(sb.charAt(i));
+        }
+
+        return sb.toString().equals(newSb.toString());
+    }
+
+    /**
+     * 605
+     *
+     * @param flowerbed
+     * @param n
+     * @return
+     */
+    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+        if (flowerbed == null || flowerbed.length == 0) {
+            return false;
+        }
+
+        if (flowerbed.length <= 3) {
+
+        }
+
+        int availableCount = 0;
+        for (int i = 0; i < flowerbed.length - 2; ) {
+            if (i == 0 && flowerbed[i] == 0 && flowerbed[i + 1] == 0) {
+                availableCount++;
+                i += 2;
+                continue;
+            }
+
+            if (flowerbed[i] == 0
+                    && flowerbed[i + 1] == 0
+                    && flowerbed[i + 2] == 0) {
+                i = i + 3;
+                availableCount++;
+                continue;
+            }
+        }
+
+        if (availableCount >= n) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 268
+     *
+     * @param nums
+     * @return
+     */
+    public int missingNumber(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int result = 0;
+        for (int i = 1; i < nums.length + 1; i++) {
+            result += i;
+        }
+
+        for (int num : nums) {
+            result -= num;
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
-        ListNode head = new ListNode(1);
-        ListNode node2 = new ListNode(1);
-        ListNode node3 = new ListNode(1);
-        ListNode node4 = new ListNode(1);
-        ListNode node5 = new ListNode(1);
-        head.next = node2;
-        node2.next = node3;
-        node3.next = node4;
-        node4.next = node5;
+//        ListNode head = new ListNode(1);
+//        ListNode node2 = new ListNode(1);
+//        ListNode node3 = new ListNode(1);
+//        ListNode node4 = new ListNode(1);
+//        ListNode node5 = new ListNode(1);
+//        head.next = node2;
+//        node2.next = node3;
+//        node3.next = node4;
+//        node4.next = node5;
 
 
         Solution solution = new Solution();
-        head = solution.removeElements(head, 1);
 
-        if (head == null) {
-            return;
-        }
-        head.print();
+        System.out.println(solution.missingNumber(new int[]{1, 0, 2}));
+
     }
 
 }
