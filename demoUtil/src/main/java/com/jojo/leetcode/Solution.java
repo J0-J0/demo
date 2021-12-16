@@ -13,7 +13,7 @@ class Solution {
      * @param n
      * @return
      */
-    private String convertToTitle(int n) {
+    private String l168ConvertToTitle(int n) {
         String temp = "";
         while (n > 0) {
             char s = (char) ((n - 1) % 26 + 'A');
@@ -29,7 +29,7 @@ class Solution {
      * @param transactions
      * @return
      */
-    public List<String> invalidTransactions(String[] transactions) {
+    public List<String> l1169InvalidTransactions(String[] transactions) {
         List<String> invalidTransactionList = new ArrayList<>();
 
         if (transactions == null || transactions.length == 0) {
@@ -212,11 +212,11 @@ class Solution {
      * @param val
      * @return
      */
-    public ListNode removeElements(ListNode head, int val) {
+    public ListNode l203RemoveElements(ListNode head, int val) {
         if (head == null) {
             return head;
         }
-        head.next = removeElements(head.next, val);
+        head.next = l203RemoveElements(head.next, val);
         return head.val == val ? head.next : head;
     }
 
@@ -226,7 +226,7 @@ class Solution {
      * @param s
      * @return
      */
-    public int countSegments(String s) {
+    public int l434CountSegments(String s) {
         if (s == null || "".equals(s)) {
             return 0;
         }
@@ -262,7 +262,7 @@ class Solution {
      * @param head
      * @return
      */
-    public boolean isPalindrome(ListNode head) {
+    public boolean l234IsPalindrome(ListNode head) {
         if (head == null || head.next == null) {
             return true;
         }
@@ -288,37 +288,9 @@ class Solution {
      * @param n
      * @return
      */
-    public boolean canPlaceFlowers(int[] flowerbed, int n) {
-        if (flowerbed == null || flowerbed.length == 0) {
-            return false;
-        }
-
-        if (flowerbed.length <= 3) {
-
-        }
-
-        int availableCount = 0;
-        for (int i = 0; i < flowerbed.length - 2; ) {
-            if (i == 0 && flowerbed[i] == 0 && flowerbed[i + 1] == 0) {
-                availableCount++;
-                i += 2;
-                continue;
-            }
-
-            if (flowerbed[i] == 0
-                    && flowerbed[i + 1] == 0
-                    && flowerbed[i + 2] == 0) {
-                i = i + 3;
-                availableCount++;
-                continue;
-            }
-        }
-
-        if (availableCount >= n) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean l605CanPlaceFlowers(int[] flowerbed, int n) {
+        // TODO
+        return false;
     }
 
     /**
@@ -327,7 +299,7 @@ class Solution {
      * @param nums
      * @return
      */
-    public int missingNumber(int[] nums) {
+    public int l268MissingNumber(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
         }
@@ -338,6 +310,67 @@ class Solution {
 
         for (int num : nums) {
             result -= num;
+        }
+        return result;
+    }
+
+    public List<String> l228SummaryRanges(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return new ArrayList();
+        }
+
+        List<String> resultList = new ArrayList();
+
+        if (nums.length == 1) {
+            resultList.add(nums[0] + "");
+            return resultList;
+        }
+
+        int prev = nums[0], prevPos = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] == nums[i - 1] + 1) {
+                continue;
+            }
+
+            if (prevPos == i - 1) {
+                resultList.add(prev + "");
+            } else {
+                resultList.add(prev + "->" + nums[i - 1]);
+            }
+            prev = nums[i];
+            prevPos = i;
+        }
+
+        if (prevPos == nums.length - 1) {
+            resultList.add(nums[prevPos] + "");
+        } else {
+            resultList.add(nums[prevPos] + "->" + nums[nums.length - 1]);
+        }
+        return resultList;
+    }
+
+    public int l495FindPoisonedDuration(int[] timeSeries, int duration) {
+        if (duration == 0 || timeSeries == null || timeSeries.length == 0) {
+            return 0;
+        }
+
+        if (timeSeries.length == 1) {
+            return duration;
+        }
+
+        int result = 0, length = timeSeries.length;
+        for (int i = 0; i < length; i++) {
+            if (i == length - 1) {
+                result += duration;
+                break;
+            }
+
+            int interval = timeSeries[i] + duration;
+            if (interval < timeSeries[i + 1]) {
+                result += duration;
+            } else if (interval >= timeSeries[i + 1]) {
+                result += timeSeries[i + 1] - timeSeries[i];
+            }
         }
         return result;
     }
@@ -356,7 +389,10 @@ class Solution {
 
         Solution solution = new Solution();
 
-        System.out.println(solution.missingNumber(new int[]{1, 0, 2}));
+
+        int timeSeries[] = new int[]{1, 4, 5};
+        int duration = 2;
+        System.out.println(solution.l495FindPoisonedDuration(timeSeries, duration));
 
     }
 
