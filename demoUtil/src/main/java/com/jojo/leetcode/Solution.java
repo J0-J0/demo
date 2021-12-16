@@ -1,6 +1,11 @@
 package com.jojo.leetcode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 class Solution {
 
@@ -375,6 +380,33 @@ class Solution {
         return result;
     }
 
+    public int l278FirstBadVersion(int n) {
+        if (n == 1) {
+            if (isBadVersion(n)) {
+                return n;
+            } else {
+                return 0;
+            }
+        }
+
+        int left = 1, right = n;
+        int firstBadVersion = (left + right) / 2;
+        while (left < right) {
+            if (isBadVersion(firstBadVersion)) {
+                right = firstBadVersion;
+            } else {
+                left = firstBadVersion;
+            }
+            firstBadVersion = (left + right) / 2;
+        }
+
+        return firstBadVersion;
+    }
+
+    private boolean isBadVersion(int version) {
+        return version >= 4;
+    }
+
     public static void main(String[] args) {
 //        ListNode head = new ListNode(1);
 //        ListNode node2 = new ListNode(1);
@@ -389,10 +421,8 @@ class Solution {
 
         Solution solution = new Solution();
 
-
-        int timeSeries[] = new int[]{1, 4, 5};
-        int duration = 2;
-        System.out.println(solution.l495FindPoisonedDuration(timeSeries, duration));
+        int n = 5;
+        System.out.println(solution.l278FirstBadVersion(n));
 
     }
 
