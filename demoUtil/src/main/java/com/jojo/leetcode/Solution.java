@@ -3,9 +3,11 @@ package com.jojo.leetcode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 class Solution {
 
@@ -18,7 +20,7 @@ class Solution {
      * @param n
      * @return
      */
-    private String l168ConvertToTitle(int n) {
+    public String l168ConvertToTitle(int n) {
         String temp = "";
         while (n > 0) {
             char s = (char) ((n - 1) % 26 + 'A');
@@ -382,29 +384,85 @@ class Solution {
 
     public int l278FirstBadVersion(int n) {
         if (n == 1) {
-            if (isBadVersion(n)) {
-                return n;
-            } else {
-                return 0;
-            }
+            return isBadVersion(n) ? n : 0;
         }
 
         int left = 1, right = n;
-        int firstBadVersion = (left + right) / 2;
+
+        int firstBadVersion = left + (right - left) / 2;
         while (left < right) {
+            if (left + 1 == right) {
+                firstBadVersion = isBadVersion(left) ? left : right;
+                break;
+            }
             if (isBadVersion(firstBadVersion)) {
                 right = firstBadVersion;
             } else {
                 left = firstBadVersion;
             }
-            firstBadVersion = (left + right) / 2;
+            firstBadVersion = left + (right - left) / 2;
         }
 
         return firstBadVersion;
     }
 
     private boolean isBadVersion(int version) {
-        return version >= 4;
+        return version >= 1702766719;
+    }
+
+
+    public int l414ThirdMax(int[] nums) {
+        if (nums == null) {
+            return 0;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < nums.length; i++) {
+            set.add(nums[i]);
+        }
+
+        int count = 0;
+        nums = new int[set.size()];
+        for (Integer i : set) {
+            nums[count++] = i;
+        }
+
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        if (nums.length == 2) {
+            return nums[0] > nums[1] ? nums[0] : nums[1];
+        }
+
+        Arrays.sort(nums);
+
+        return nums[nums.length - 3];
+
+//
+//        int firstMax = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//            firstMax = firstMax > nums[i] ? firstMax : nums[i];
+//        }
+//
+//        int secondMax = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//            int temp = secondMax;
+//            secondMax = secondMax > nums[i] ? secondMax : nums[i];
+//            if (secondMax >= firstMax) {
+//                secondMax = temp;
+//            }
+//        }
+//
+//        int thirdMax = nums[0];
+//        for (int i = 1; i < nums.length; i++) {
+//            int temp = thirdMax;
+//            thirdMax = thirdMax > nums[i] ? thirdMax : nums[i];
+//            if (thirdMax >= secondMax) {
+//                thirdMax = temp;
+//            }
+//        }
+//
+//        return thirdMax;
     }
 
     public static void main(String[] args) {
@@ -421,9 +479,8 @@ class Solution {
 
         Solution solution = new Solution();
 
-        int n = 5;
-        System.out.println(solution.l278FirstBadVersion(n));
-
+        int[] nums = new int[]{2, 2, 2};
+        System.out.println(solution.l414ThirdMax(nums));
     }
 
 }
