@@ -162,24 +162,29 @@ class Solution {
         return maxVal[weight.length][v];
     }
 
-    public static int toResverseBinaryIntValue(int n) {
-        System.out.println(Integer.toBinaryString(n));
-        StringBuilder resverseBinaryString = new StringBuilder();
-        int differ = n / 2;
-        resverseBinaryString.append(n % 2);
-        while (differ != 0) {
-            resverseBinaryString.append(differ % 2);
-            differ /= 2;
+    public int l190ReverseBits(int n) {
+//        return Integer.reverse(n);
+
+//        int result = 0;
+//        System.out.println("n="+Integer.toBinaryString(n));
+//        for (int i = 0; i < 32 && n!=0; i++) {
+//            int temp = n & 1;
+//            System.out.println("temp="+Integer.toBinaryString(temp));
+//            result |= (temp << (31 - i));
+//            System.out.println("result="+Integer.toBinaryString(result));
+//            n >>>= 1;
+//        }
+//
+//        return result;
+
+        int rev = 0;
+        System.out.println("n=" + Integer.toBinaryString(n));
+        for (int i = 0; i < 32 && n != 0; ++i) {
+            rev |= (n & 1) << (31 - i);
+            n >>>= 1;
         }
-        System.out.println(resverseBinaryString);
-        int resverseValue = 0;
-        int length = resverseBinaryString.length();
-        for (int i = length - 1, j = 0; i > -1; i--, j++) {
-            char ch = resverseBinaryString.charAt(i);
-            resverseValue += Math.pow(2, j);
-        }
-        // 这里反转
-        return resverseValue;
+        System.out.println("n=" + Integer.toBinaryString(rev));
+        return rev;
     }
 
     /**
@@ -465,22 +470,154 @@ class Solution {
 //        return thirdMax;
     }
 
+
+    public int l1518NumWaterBottles(int numBottles, int numExchange) {
+        if (numBottles == 0 || numExchange == 0) {
+            return numBottles;
+        }
+
+        if (numBottles < numExchange) {
+            return numBottles;
+        }
+
+        int nextRound = numBottles / numExchange;// 本轮结束后可以兑换多少瓶
+        int numWaterBottles = numBottles + nextRound;// 共可以喝多少瓶
+        int nextRoundIdle = numBottles % numExchange;
+
+        while (nextRound != 0) {
+            int total = nextRound + nextRoundIdle;
+            nextRound = total / numExchange;
+            nextRoundIdle = total % numExchange;
+
+            numWaterBottles += nextRound;
+        }
+
+        return numWaterBottles;
+    }
+
+
+    public int l997FindJudge(int n, int[][] trust) {
+        if (n == 0 || trust == null) {
+            return -1;
+        }
+        if (n == 1) {
+            return 1;
+        }
+
+        Map<Integer, int[]> trustCountMap = new HashMap<>();
+        // int[0]，表示被信任次数，int[1]，信任人的次数
+        for (int[] trustPair : trust) {
+            if (trustCountMap.get(trustPair[0]) == null) {
+                trustCountMap.put(trustPair[0], new int[]{0, 1});
+            } else {
+                trustCountMap.get(trustPair[0])[1] += 1;
+            }
+            if (trustCountMap.get(trustPair[1]) == null) {
+                trustCountMap.put(trustPair[1], new int[]{1, 0});
+            } else {
+                trustCountMap.get(trustPair[1])[0] += 1;
+            }
+        }
+
+        Set<Map.Entry<Integer, int[]>> entrySet = trustCountMap.entrySet();
+        for (Map.Entry<Integer, int[]> entry : entrySet) {
+            if (entry.getValue()[0] + 1 == n && entry.getValue()[1] == 0) {
+                return entry.getKey();
+            }
+        }
+
+        return -1;
+    }
+
+    private List<Integer> treeNodeValList = new ArrayList<>();
+
+    /**
+     * 中序遍历
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> l94InorderTraversal(TreeNode root) {
+        if (root == null) {
+            return treeNodeValList;
+        }
+
+        l94InorderTraversal(root.left);
+        treeNodeValList.add(root.val);
+        l94InorderTraversal(root.right);
+
+        return treeNodeValList;
+    }
+
+    /**
+     * 后序遍历
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> l145PostorderTraversal(TreeNode root) {
+        if (root == null) {
+            return treeNodeValList;
+        }
+
+        l145PostorderTraversal(root.left);
+        l145PostorderTraversal(root.right);
+        treeNodeValList.add(root.val);
+
+        return treeNodeValList;
+    }
+
+    /**
+     * 前序遍历
+     *
+     * @param root
+     * @return
+     */
+    public List<Integer> l144PreorderTraversal(TreeNode root) {
+        if (root == null) {
+            return treeNodeValList;
+        }
+
+        treeNodeValList.add(root.val);
+
+        l144PreorderTraversal(root.left);
+        l144PreorderTraversal(root.right);
+
+        return treeNodeValList;
+    }
+
     public static void main(String[] args) {
-//        ListNode head = new ListNode(1);
-//        ListNode node2 = new ListNode(1);
-//        ListNode node3 = new ListNode(1);
-//        ListNode node4 = new ListNode(1);
-//        ListNode node5 = new ListNode(1);
-//        head.next = node2;
-//        node2.next = node3;
-//        node3.next = node4;
-//        node4.next = node5;
-
-
+        ListNode head = buildListNode();
+        TreeNode root = buildTreeNode();
         Solution solution = new Solution();
 
-        int[] nums = new int[]{2, 2, 2};
-        System.out.println(solution.l414ThirdMax(nums));
+        System.out.println(solution.l145PostorderTraversal(root));
+
+    }
+
+    private static ListNode buildListNode() {
+        ListNode head = new ListNode(1);
+        ListNode node2 = new ListNode(1);
+        ListNode node3 = new ListNode(1);
+        ListNode node4 = new ListNode(1);
+        ListNode node5 = new ListNode(1);
+        head.next = node2;
+        node2.next = node3;
+        node3.next = node4;
+        node4.next = node5;
+
+        return head;
+    }
+
+    private static TreeNode buildTreeNode() {
+        TreeNode head = new TreeNode(1);
+        head.left = new TreeNode(2);
+        head.right = new TreeNode(3);
+        head.left.left = new TreeNode(4);
+        head.left.right = new TreeNode(5);
+        head.right.left = new TreeNode(6);
+        head.right.right = new TreeNode(7);
+        return head;
     }
 
 }
