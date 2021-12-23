@@ -586,12 +586,84 @@ class Solution {
         return treeNodeValList;
     }
 
+    public boolean l112HasPathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+
+        if (root.left == null && root.right == null) {
+            return root.val == targetSum ? true : false;
+        }
+
+        boolean result = false;
+        result |= l112HasPathSum(root.left, targetSum - root.val);
+        result |= l112HasPathSum(root.right, targetSum - root.val);
+
+        return result;
+    }
+
+    private List<List<Integer>> pathListList = new ArrayList<>();
+
+    public List<List<Integer>> l113PathSum(TreeNode root, int targetSum) {
+        List<Integer> onePathList = new ArrayList<>();
+
+        return availablePathList(root, targetSum, onePathList);
+    }
+
+    private List<List<Integer>> availablePathList(TreeNode root, int targetSum, List<Integer> treeNodeValList) {
+        List<Integer> resultList = new ArrayList<>();
+        resultList.addAll(treeNodeValList);
+
+        if (root == null) {
+            return pathListList;
+        }
+
+        resultList.add(root.val);
+        if (root.left == null && root.right == null) {
+            if (root.val == targetSum) {
+                pathListList.add(resultList);
+                return pathListList;
+            }
+        }
+
+        availablePathList(root.left, targetSum - root.val, resultList);
+        availablePathList(root.right, targetSum - root.val, resultList);
+
+        return pathListList;
+    }
+
+    public int pathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return 0;
+        }
+
+        int result = findAvailablePath(root, targetSum);
+
+        int leftResult = pathSum(root.left, targetSum);
+        int rightResult = pathSum(root.right, targetSum);
+
+        return result + leftResult + rightResult;
+    }
+
+    private int findAvailablePath(TreeNode root, int targetSum) {
+        if (root == null) {
+            return 0;
+        }
+
+        int result = (root.val == targetSum) ? 1 : 0;
+
+        int leftResult = findAvailablePath(root.left, targetSum - root.val);
+        int rightResult = findAvailablePath(root.right, targetSum - root.val);
+
+        return result + leftResult + rightResult;
+    }
+
     public static void main(String[] args) {
         ListNode head = buildListNode();
         TreeNode root = buildTreeNode();
         Solution solution = new Solution();
 
-        System.out.println(solution.l145PostorderTraversal(root));
+        System.out.println(solution.pathSum(root, 8));
 
     }
 
@@ -610,13 +682,27 @@ class Solution {
     }
 
     private static TreeNode buildTreeNode() {
-        TreeNode head = new TreeNode(1);
-        head.left = new TreeNode(2);
-        head.right = new TreeNode(3);
-        head.left.left = new TreeNode(4);
-        head.left.right = new TreeNode(5);
-        head.right.left = new TreeNode(6);
-        head.right.right = new TreeNode(7);
+//        TreeNode head = new TreeNode(1);
+//        head.left = new TreeNode(2);
+//        head.right = new TreeNode(3);
+//        head.left.left = new TreeNode(4);
+//        head.left.right = new TreeNode(5);
+//        head.right.left = new TreeNode(6);
+//        head.right.right = new TreeNode(7);
+
+        TreeNode head = new TreeNode(10);
+
+        head.left = new TreeNode(5);
+        head.right = new TreeNode(-3);
+
+        head.left.left = new TreeNode(3);
+        head.left.right = new TreeNode(2);
+        head.right.right = new TreeNode(11);
+
+        head.left.left.left = new TreeNode(3);
+        head.left.left.right = new TreeNode(-2);
+        head.left.right.right = new TreeNode(1);
+
         return head;
     }
 

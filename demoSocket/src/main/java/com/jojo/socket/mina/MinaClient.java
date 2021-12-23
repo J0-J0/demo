@@ -3,7 +3,6 @@ package com.jojo.socket.mina;
 import com.google.common.base.Charsets;
 import com.jojo.socket.request.BaseRequest;
 import com.jojo.socket.response.BaseResponse;
-import com.sleepycat.je.rep.vlsn.VLSNIndex;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandlerAdapter;

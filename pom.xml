@@ -320,45 +320,6 @@
                 <version>2.9.0</version>
             </dependency>
 
-
-            <!-- ***********************************打日志***************************************** -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency><!--commons-logging替换成slf4j-->
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency><!--log4j替换成slf4j-->
-                <groupId>org.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency><!-- java.util.logging替换成slf4j -->
-                <groupId>org.slf4j</groupId>
-                <artifactId>jul-to-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-            <dependency><!--logback spring扩展-->
-                <groupId>org.logback-extensions</groupId>
-                <artifactId>logback-ext-spring</artifactId>
-                <version>${logback.spring.version}</version>
-            </dependency>
-            <dependency><!-- 监控SQL -->
-                <groupId>org.bgee.log4jdbc-log4j2</groupId>
-                <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
-                <version>${log4jdbc.version}</version>
-            </dependency>
-            <!-- ***********************************打日志***************************************** -->
-
             <!-- quartz定时器 -->
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>
@@ -519,6 +480,46 @@
             <!--        </dependency>-->
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <!-- ***********************************打日志***************************************** -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency><!--commons-logging替换成slf4j-->
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency><!--log4j替换成slf4j-->
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency><!-- java.util.logging替换成slf4j -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency><!--logback spring扩展-->
+            <groupId>org.logback-extensions</groupId>
+            <artifactId>logback-ext-spring</artifactId>
+            <version>${logback.spring.version}</version>
+        </dependency>
+        <dependency><!-- 监控SQL -->
+            <groupId>org.bgee.log4jdbc-log4j2</groupId>
+            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+            <version>${log4jdbc.version}</version>
+        </dependency>
+        <!-- ***********************************打日志***************************************** -->
+    </dependencies>
 
 
     <!-- 项目构建 -->
