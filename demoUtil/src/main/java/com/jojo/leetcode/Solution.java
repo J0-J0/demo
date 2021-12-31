@@ -83,34 +83,39 @@ class Solution {
         return invalidTransactionList;
     }
 
-    public boolean canPartition(int[] nums) {
-        int sumArr = 0, length = nums.length;
-        if (length == 1) {
+    public boolean l416canPartition(int[] nums) {
+        int n = nums.length;
+        if (n < 2) {
             return false;
         }
-        for (int i = 0; i < length; i++) {
-            sumArr += nums[i];
+        int sum = 0, maxNum = 0;
+        for (int num : nums) {
+            sum += num;
+            maxNum = Math.max(maxNum, num);
         }
-
-        if (sumArr % 2 != 0) {
+        if (sum % 2 != 0) {
             return false;
         }
-
-        int expectedVal = sumArr / 2;
-        Arrays.sort(nums);
-        for (int i = 0; i < length; i++) {
-            int sumA = 0;
-            for (int j = i; j < length; j++) {
-                sumA += nums[j];
-                if (sumA == expectedVal) {
-                    return true;
-                }
-                if (sumA > expectedVal) {
-                    break;
+        int target = sum / 2;
+        if (maxNum > target) {
+            return false;
+        }
+        boolean[][] dp = new boolean[n][target + 1];
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = true;
+        }
+        dp[0][nums[0]] = true;
+        for (int i = 1; i < n; i++) {
+            int num = nums[i];
+            for (int j = 1; j <= target; j++) {
+                if (j >= num) {
+                    dp[i][j] = dp[i - 1][j] | dp[i - 1][j - num];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
                 }
             }
         }
-        return false;
+        return dp[n - 1][target];
     }
 
 
@@ -389,7 +394,7 @@ class Solution {
 
     public int l278FirstBadVersion(int n) {
         if (n == 1) {
-            return isBadVersion(n) ? n : 0;
+            return l278isBadVersion(n) ? n : 0;
         }
 
         int left = 1, right = n;
@@ -397,10 +402,10 @@ class Solution {
         int firstBadVersion = left + (right - left) / 2;
         while (left < right) {
             if (left + 1 == right) {
-                firstBadVersion = isBadVersion(left) ? left : right;
+                firstBadVersion = l278isBadVersion(left) ? left : right;
                 break;
             }
-            if (isBadVersion(firstBadVersion)) {
+            if (l278isBadVersion(firstBadVersion)) {
                 right = firstBadVersion;
             } else {
                 left = firstBadVersion;
@@ -411,7 +416,7 @@ class Solution {
         return firstBadVersion;
     }
 
-    private boolean isBadVersion(int version) {
+    private boolean l278isBadVersion(int version) {
         return version >= 1702766719;
     }
 
@@ -607,10 +612,10 @@ class Solution {
     public List<List<Integer>> l113PathSum(TreeNode root, int targetSum) {
         List<Integer> onePathList = new ArrayList<>();
 
-        return availablePathList(root, targetSum, onePathList);
+        return l113findAvailablePath(root, targetSum, onePathList);
     }
 
-    private List<List<Integer>> availablePathList(TreeNode root, int targetSum, List<Integer> treeNodeValList) {
+    private List<List<Integer>> l113findAvailablePath(TreeNode root, int targetSum, List<Integer> treeNodeValList) {
         List<Integer> resultList = new ArrayList<>();
         resultList.addAll(treeNodeValList);
 
@@ -626,36 +631,307 @@ class Solution {
             }
         }
 
-        availablePathList(root.left, targetSum - root.val, resultList);
-        availablePathList(root.right, targetSum - root.val, resultList);
+        l113findAvailablePath(root.left, targetSum - root.val, resultList);
+        l113findAvailablePath(root.right, targetSum - root.val, resultList);
 
         return pathListList;
     }
 
-    public int pathSum(TreeNode root, int targetSum) {
+    public int l437PathSum(TreeNode root, int targetSum) {
         if (root == null) {
             return 0;
         }
 
-        int result = findAvailablePath(root, targetSum);
+        int result = l437FindAvailablePath(root, targetSum);
 
-        int leftResult = pathSum(root.left, targetSum);
-        int rightResult = pathSum(root.right, targetSum);
+        int leftResult = l437PathSum(root.left, targetSum);
+        int rightResult = l437PathSum(root.right, targetSum);
 
         return result + leftResult + rightResult;
     }
 
-    private int findAvailablePath(TreeNode root, int targetSum) {
+    private int l437FindAvailablePath(TreeNode root, int targetSum) {
         if (root == null) {
             return 0;
         }
 
         int result = (root.val == targetSum) ? 1 : 0;
 
-        int leftResult = findAvailablePath(root.left, targetSum - root.val);
-        int rightResult = findAvailablePath(root.right, targetSum - root.val);
+        int leftResult = l437FindAvailablePath(root.left, targetSum - root.val);
+        int rightResult = l437FindAvailablePath(root.right, targetSum - root.val);
 
         return result + leftResult + rightResult;
+    }
+
+    public TreeNode l897IncreasingBST(TreeNode root) {
+        if (root == null) {
+            return root;
+        }
+
+        List<TreeNode> nodeList = l897InorderTraversal(root);
+
+        TreeNode temp = nodeList.get(0);
+        root = temp;
+        for (int i = 1; i < nodeList.size(); i++) {
+            temp.right = nodeList.get(i);
+            temp.left = null;
+            temp = nodeList.get(i);
+        }
+        temp.left = null;
+        temp.right = null;
+        return root;
+    }
+
+    List<TreeNode> nodeList = new ArrayList<>();
+
+    private List<TreeNode> l897InorderTraversal(TreeNode root) {
+        if (root == null) {
+            return nodeList;
+        }
+
+        l897InorderTraversal(root.left);
+        nodeList.add(root);
+        l897InorderTraversal(root.right);
+
+        return nodeList;
+    }
+
+    public int l1302DeepestLeavesSum(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int height = l1302FindDeepestNode(root, 1);
+        return nodeValMap.get(height);
+    }
+
+    private Map<Integer, Integer> nodeValMap = new HashMap<>();
+
+    private int l1302FindDeepestNode(TreeNode root, int height) {
+        if (root == null) {
+            return height;
+        }
+
+        if (root.left == null && root.right == null) {
+            if (nodeValMap.get(height) == null) {
+                nodeValMap.put(height, root.val);
+            } else {
+                nodeValMap.put(height, nodeValMap.get(height) + root.val);
+            }
+            return height;
+        }
+
+        int leftHeight = l1302FindDeepestNode(root.left, height + 1);
+        int rightHeight = l1302FindDeepestNode(root.right, height + 1);
+
+        return leftHeight > rightHeight ? leftHeight : rightHeight;
+    }
+
+    /**
+     * 530
+     * 先取出全部节点值，然后排序，最后拿两个最小的值相减
+     *
+     * @param root
+     * @return
+     */
+    public int l530getMinimumDifference(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        l530DFS(root);// 取出全部节点值
+
+        if (l530NodeValList.size() == 1) {
+            return l530NodeValList.get(0);
+        }
+
+        int minDiff = Math.abs(l530NodeValList.get(0) - l530NodeValList.get(1));
+        for (int i = 1; i < l530NodeValList.size() - 1; i++) {
+            int diff = Math.abs(l530NodeValList.get(i) - l530NodeValList.get(i + 1));
+            if (minDiff > diff) {
+                minDiff = diff;
+            }
+        }
+
+        return minDiff;
+    }
+
+    private List<Integer> l530NodeValList = new ArrayList<>();
+
+    private void l530DFS(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        l530DFS(root.left);
+        l530NodeValList.add(root.val);
+        l530DFS(root.right);
+    }
+
+    public String[] l1078findOcurrences(String text, String first, String second) {
+        if (text == null || "".equals(text)) {
+            return new String[]{};
+        }
+
+        String[] arr = text.split(" ");
+        if (arr.length < 3) {
+            return new String[]{};
+        }
+
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < arr.length - 2; i++) {
+            if (arr[i].equals(first) && arr[i + 1].equals(second)) {
+                list.add(arr[i + 2]);
+            }
+        }
+
+        String[] result = list.toArray(new String[]{});
+        return result;
+    }
+
+    public String l541reverseStr(String s, int k) {
+        if (s == null || "".equals(s) || k == 0) {
+            return s;
+        }
+
+        StringBuffer result = new StringBuffer();
+
+        char[] arr = s.toCharArray();
+        int condition = 2 * k;
+        int divide = s.length() / condition, remainder = s.length() % condition;
+        if (divide > 0) {// 起码要覆盖一些2k
+            for (int i = 0; i < s.length() - remainder; i += condition) {
+                for (int j = (i + k - 1); j >= i; j--) {// 倒序
+                    result.append(arr[j]);
+                }
+                for (int j = i + k; j < i + condition; j++) {
+                    result.append(arr[j]);
+                }
+            }
+        }
+
+        if (remainder > 0 && remainder <= k) {
+            for (int i = s.length() - 1; i >= s.length() - remainder; i--) {
+                result.append(arr[i]);
+            }
+        } else if (remainder > 0 && remainder > k) {
+            for (int i = s.length() - (remainder - k) - 1; i >= s.length() - remainder; i--) {
+                result.append(arr[i]);
+            }
+            for (int i = s.length() - (remainder - k); i < s.length(); i++) {
+                result.append(arr[i]);
+            }
+        }
+        return result.toString();
+    }
+
+    public String l5longestPalindrome(String s) {
+        int len = s.length();
+        if (len < 2) {
+            return s;
+        }
+
+        int maxLen = 1;
+        int begin = 0;
+        // dp[i][j] 表示 s[i..j] 是否是回文串
+        boolean[][] dp = new boolean[len][len];
+        // 初始化：所有长度为 1 的子串都是回文串
+        for (int i = 0; i < len; i++) {
+            dp[i][i] = true;
+        }
+
+        char[] charArray = s.toCharArray();
+        // 递推开始
+        for (int L = 2; L <= len; L++) {
+            for (int i = 0; i < len; i++) {
+                // 由 L 和 i 可以确定右边界，即 j - i + 1 = L 得
+                int j = L + i - 1;
+                // 如果右边界越界，就可以退出当前循环
+                if (j >= len) {
+                    break;
+                }
+
+                if (charArray[i] != charArray[j]) {
+                    dp[i][j] = false;
+                } else {
+                    if (j - i < 3) {
+                        dp[i][j] = true;
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1];// 已经推导过了
+                    }
+                }
+
+                // 只要 dp[i][L] == true 成立，就表示子串 s[i..L] 是回文，此时记录回文长度和起始位置
+                if (dp[i][j] && j - i + 1 > maxLen) {
+                    maxLen = j - i + 1;
+                    begin = i;
+                }
+            }
+        }
+        return s.substring(begin, begin + maxLen);
+    }
+
+    public boolean l392isSubsequence(String s, String t) {
+        if (s.length() == 0 && t.length() == 0) {
+            return true;
+        }
+
+        if (s.length() > t.length() || (s.length() == 0 && t.length() != 0)) {
+            return false;
+        }
+
+        char[] sArr = s.toCharArray(), tArr = t.toCharArray();
+        int j = 0;
+        for (int i = 0; i < t.length(); i++) {
+            if (j == s.length()) {
+                break;
+            }
+            if (sArr[j] == tArr[i]) {
+                j++;
+                continue;
+            }
+        }
+
+        return j == s.length();
+    }
+
+    public List<String> generateParenthesis(int n) {
+        List<String> resultList = new ArrayList<>();
+
+        if (n == 1) {
+            String curParentheses = getParentheses(n);
+            resultList.add(curParentheses);
+            return resultList;
+        }
+
+        Set<String> set = new HashSet<>();
+        for (int i = 1; i < n; i++) {
+            int j = n - i;
+            List<String> sonList = generateParenthesis(j);
+            String iNumParentheses = getParentheses(i);
+            for (String str : sonList) {
+                set.add(str + iNumParentheses);
+                String left = "", right = "";
+                for (int k = 0; k < i; k++) {
+                    left += "(";
+                    right += ")";
+                }
+                set.add(left + str + right);
+            }
+        }
+        resultList.addAll(set);
+        return resultList;
+    }
+
+    private static String getParentheses(int n) {
+        String parentheses = "";
+        for (int i = 0; i < n; i++) {
+            if (i == 0) {
+                parentheses = "()";
+            } else {
+                parentheses = "(" + parentheses + ")";
+            }
+        }
+        return parentheses;
     }
 
     public static void main(String[] args) {
@@ -663,9 +939,21 @@ class Solution {
         TreeNode root = buildTreeNode();
         Solution solution = new Solution();
 
-        System.out.println(solution.pathSum(root, 8));
+//        int n = 4;
+//        System.out.println(solution.generateParenthesis(n));
+//
+//        String[] arr = new String[]{"(((())))", "((()()))", "((())())", "((()))()", "(()(()))", "(()()())", "(()())()", "(())(())", "(())()()", "()((()))", "()(()())", "()(())()", "()()(())", "()()()()"};
+//        String[] myArr = new String[]{"()()()()", "(()())()", "(()(()))", "()()(())", "(())()()", "(((())))", "(())(())", "()((()))", "()(())()", "(()()())", "((()()))", "((()))()", "((())())"};
+//        Set<String> set = new HashSet<>(Arrays.asList(myArr));
+//        for (String s : arr) {
+//            if (!set.contains(s)) {
+//                System.out.println(s);
+//            }
+//        }
+        System.out.println(solution.l392isSubsequence("abc", "ahbgdc"));
 
     }
+
 
     private static ListNode buildListNode() {
         ListNode head = new ListNode(1);
