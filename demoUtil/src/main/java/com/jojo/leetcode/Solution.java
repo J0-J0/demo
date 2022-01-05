@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,59 +27,6 @@ class Solution {
             n = (n - 1) / 26;
         }
         return temp;
-    }
-
-    /**
-     * 1169
-     *
-     * @param transactions
-     * @return
-     */
-    public List<String> l1169InvalidTransactions(String[] transactions) {
-        List<String> invalidTransactionList = new ArrayList<>();
-
-        if (transactions == null || transactions.length == 0) {
-            return invalidTransactionList;
-        }
-
-        List<String> transactionList = new ArrayList<>(Arrays.asList(transactions));
-        Map<String, String> map = new HashMap<>();
-        for (Iterator<String> iterator = transactionList.iterator(); iterator.hasNext(); ) {
-            String transaction = iterator.next();
-            String[] arr = transaction.split(",");
-            int amount = Integer.parseInt(arr[2]);
-            String transactionName = arr[0];
-            String transactionCity = arr[3];
-            int time = Integer.parseInt(arr[1]);
-
-            // 去除大于1000的
-            if (amount > 1000) {
-                invalidTransactionList.add(transaction);
-                iterator.remove();
-                continue;
-            }
-
-            String sameNameTransaction = map.get(transactionName);
-            if (sameNameTransaction == null) {
-                map.put(transactionName, transaction);
-                continue;
-            }
-
-            String sameNameTransactionCity = sameNameTransaction.split(",")[3];
-            if (sameNameTransactionCity.equals(transactionCity)) {
-                continue;
-            }
-
-            // 去除同名交易不同城市，且间隔小于60分钟的交易
-            int sameCityTransactionTime = Integer.parseInt(sameNameTransaction.split(",")[1]);
-            int differ = sameCityTransactionTime - time;
-            if (differ <= 60 && differ >= -60) {
-                invalidTransactionList.add(sameNameTransaction);
-                invalidTransactionList.add(transaction);
-            }
-        }
-
-        return invalidTransactionList;
     }
 
     public boolean l416canPartition(int[] nums) {
@@ -894,6 +840,168 @@ class Solution {
         return j == s.length();
     }
 
+    public List<String> l401readBinaryWatch(int turnedOn) {
+        List<String> list = new ArrayList<>();
+        if (turnedOn == 0) {
+            list.add("0:00");
+            return list;
+        }
+
+        if (turnedOn > 8) {
+            return list;
+        }
+
+        for (int hour = 0; hour < 12; hour++) {
+            for (int minute = 0; minute < 60; minute++) {
+                int hourCount = l401getHourCount(hour);
+                int minuteCount = l401getMinuteCount(minute);
+
+                if ((hourCount + minuteCount) == turnedOn) {
+                    if (minute < 10) {
+                        list.add(hour + ":0" + minute);
+                    } else {
+                        list.add(hour + ":" + minute);
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+    private int[] l401hourArr = new int[]{8, 4, 2, 1};
+    private int[] l401minuteArr = new int[]{32, 16, 8, 4, 2, 1};
+
+    private int l401getHourCount(int hour) {
+        int hourCount = 0;
+        for (int i = 0; i < l401hourArr.length; i++) {
+            int diff = hour - l401hourArr[i];
+            if (diff >= 0) {
+                hourCount++;
+                hour = diff;
+            }
+        }
+        return hourCount;
+    }
+
+    private int l401getMinuteCount(int minute) {
+        int minuteCount = 0;
+        for (int i = 0; i < l401minuteArr.length; i++) {
+            int diff = minute - l401minuteArr[i];
+            if (diff >= 0) {
+                minuteCount++;
+                minute = diff;
+            }
+        }
+        return minuteCount;
+    }
+
+    public int[] l501findMode(TreeNode root) {
+        l501dfs(root);
+
+        int[] result = new int[]{};
+        if (l501valFrequenceMap.isEmpty()) {
+            return result;
+        }
+
+        int maxFrequency = 0;
+        List<Integer> resultList = new ArrayList<>();
+
+        for (Map.Entry<Integer, Integer> entry : l501valFrequenceMap.entrySet()) {
+            if (entry.getValue() > maxFrequency) {
+                resultList.clear();
+                resultList.add(entry.getKey());
+                maxFrequency = entry.getValue();
+            } else if (entry.getValue() == maxFrequency) {
+                resultList.add(entry.getKey());
+            }
+        }
+        result = new int[resultList.size()];
+        for (int i = 0; i < resultList.size(); i++) {
+            result[i] = resultList.get(i);
+        }
+        return result;
+    }
+
+    private Map<Integer, Integer> l501valFrequenceMap = new HashMap<>();
+
+    private void l501dfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        Integer frequence = l501valFrequenceMap.get(root.val);
+        if (frequence == null) {
+            l501valFrequenceMap.put(root.val, 1);
+        } else {
+            l501valFrequenceMap.put(root.val, ++frequence);
+        }
+        l501dfs(root.left);
+        l501dfs(root.right);
+    }
+
+
+    public List<String> l1169invalidTransactions(String[] transactions) {
+        List<String> resultList = new ArrayList<>();
+        if (transactions == null || transactions.length == 0) {
+            return resultList;
+        }
+
+        int id = -1;
+        Map<String, List<L1169Transcation>> nameTranMap = new HashMap<>();
+        boolean[] isReturn = new boolean[transactions.length];
+        for (String transactionStr : transactions) {
+            ++id;
+            String[] tranArr = transactionStr.split(",");
+            String name = tranArr[0], time = tranArr[1], money = tranArr[2], city = tranArr[3];
+
+            if (Integer.parseInt(money) > 1000) {
+                isReturn[id] = true;
+                resultList.add(transactionStr);
+            }
+
+            L1169Transcation transcation = new L1169Transcation(id, name, time, money, city);
+            List<L1169Transcation> transcationList = nameTranMap.computeIfAbsent(name, key -> new ArrayList<>());
+            for (L1169Transcation temp : transcationList) {
+                if (!temp.city.equals(transcation.city) && Math.abs(temp.time-transcation.time) <= 60) {
+                    if (!isReturn[id]) {// 是否已标记返回
+                        isReturn[id] = true;
+                        resultList.add(transcation.toString());
+                    }
+                    if (!isReturn[temp.id]) {
+                        isReturn[temp.id] = true;
+                        resultList.add(temp.toString());
+                    }
+                }
+            }
+            transcationList.add(transcation);
+        }
+
+        return resultList;
+    }
+
+    class L1169Transcation {
+        int id;
+        String name;
+        int time;
+        String money;
+        String city;
+
+        public L1169Transcation(int id, String name, String time, String money, String city) {
+            this.id = id;
+            this.name = name;
+            this.time = Integer.parseInt(time);
+            this.money = money;
+            this.city = city;
+        }
+
+        @Override
+        public String toString() {
+            return name + "," + time + "," + money + "," + city;
+        }
+    }
+
+
     public List<String> generateParenthesis(int n) {
         List<String> resultList = new ArrayList<>();
 
@@ -934,6 +1042,7 @@ class Solution {
         return parentheses;
     }
 
+
     public static void main(String[] args) {
         ListNode head = buildListNode();
         TreeNode root = buildTreeNode();
@@ -950,7 +1059,9 @@ class Solution {
 //                System.out.println(s);
 //            }
 //        }
-        System.out.println(solution.l392isSubsequence("abc", "ahbgdc"));
+
+        String[] strArr = new String[]{"alice,20,800,mtv","alice,50,100,mtv","alice,51,100,frankfurt"};
+        System.out.println(solution.l1169invalidTransactions(strArr));
 
     }
 
