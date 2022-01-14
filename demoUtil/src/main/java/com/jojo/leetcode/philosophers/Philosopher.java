@@ -3,6 +3,13 @@ package com.jojo.leetcode.philosophers;
 
 public class Philosopher {
 
+    public Philosopher(String name, Fork leftFork, Fork rightFork, int target) {
+        this.name = name;
+        this.leftFork = leftFork;
+        this.rightFork = rightFork;
+        this.target = target;
+    }
+
     String name;
 
     private Fork leftFork;
@@ -11,35 +18,40 @@ public class Philosopher {
     private int target;
     private int eatCount;
 
-    public void tryEat(){
+    public void tryEat() {
         while (eatCount < target) {
-            if (!getLeftFork()) {
-                continue;
-            }
+            boolean leftFork = getLeftFork();
+            boolean rightFork = getRightFork();
 
-            if (!getRightFork()) {
-                continue;
+            if (leftFork && rightFork) {
+                eat();
             }
-
-            eat();
 
             putLeftFork();
 
             putRightFork();
         }
+        System.out.println(name + "完成任务");
     }
 
-    private boolean getLeftFork(){
+    private boolean getLeftFork() {
         return leftFork.takeUp(name);
     }
-    private boolean getRightFork(){
+
+    private boolean getRightFork() {
         return rightFork.takeUp(name);
     }
 
-    private void eat(){
+    private void eat() {
         eatCount++;
+        System.out.println(name + "吃到" + eatCount + "次面条");
     }
 
-    private void putLeftFork(){}
-    private void putRightFork(){}
+    private void putLeftFork() {
+        leftFork.putDown();
+    }
+
+    private void putRightFork() {
+        rightFork.putDown();
+    }
 }
