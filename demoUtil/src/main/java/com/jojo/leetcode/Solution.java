@@ -963,7 +963,7 @@ class Solution {
             L1169Transcation transcation = new L1169Transcation(id, name, time, money, city);
             List<L1169Transcation> transcationList = nameTranMap.computeIfAbsent(name, key -> new ArrayList<>());
             for (L1169Transcation temp : transcationList) {
-                if (!temp.city.equals(transcation.city) && Math.abs(temp.time-transcation.time) <= 60) {
+                if (!temp.city.equals(transcation.city) && Math.abs(temp.time - transcation.time) <= 60) {
                     if (!isReturn[id]) {// 是否已标记返回
                         isReturn[id] = true;
                         resultList.add(transcation.toString());
@@ -976,7 +976,6 @@ class Solution {
             }
             transcationList.add(transcation);
         }
-
         return resultList;
     }
 
@@ -1001,6 +1000,174 @@ class Solution {
         }
     }
 
+    public boolean l680validPalindrome(String s) {
+        char[] arr = s.toCharArray();
+        if (l680isPalindrome(arr, s.length())) {
+            return true;
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            if (l680isPalindrome(arr, i)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean l680isPalindrome(char[] arr, int flag) {
+        for (int i = 0, j = arr.length - 1; i < arr.length / 2; i++, j--) {
+            if (i == flag) {
+                i++;
+            } else if (j == flag) {
+                j--;
+            }
+            if (arr[i] != arr[j]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public int l441arrangeCoins(int n) {
+        int result = 0;
+        while (n > 0) {
+            result++;
+            n -= result;
+        }
+
+        if (n == 0) {
+            return result;
+        } else {
+            return result - 1;
+        }
+    }
+
+    public String l720longestWord(String[] words) {
+        Set<String> wordSet = new HashSet<>();
+        for (String word : words) {
+            wordSet.add(word);
+        }
+
+        String result = "";
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].length() > result.length() || words[i].length() == result.length() && words[i].compareTo(result) < 0) {
+                boolean overFlag = true;
+                for (int j = 1; j < words[i].length(); j++) {
+                    if (!wordSet.contains(words[i].substring(0, j))) {
+                        overFlag = false;
+                    }
+                }
+                if (overFlag) {
+                    result = words[i];
+                }
+            }
+        }
+        return result;
+    }
+
+    public String l482licenseKeyFormatting(String s, int k) {
+        StringBuffer result = new StringBuffer();
+        String separator = "-";
+
+        // 去除原本字符串中的"-"，并做简单判断
+        s = s.replaceAll(separator, "");
+        if (k > s.length()) {
+            return s;
+        }
+
+        int length = s.length(), start = 0;
+        int mod = length % k;
+        if (mod != 0) {
+            result.append(separator).append(s, 0, mod);
+            start = mod;
+        }
+
+        for (; start < length; start += k) {
+            result.append(separator).append(s, start, start + k);
+        }
+
+        return result.toString().replaceFirst(separator, "").toUpperCase();
+    }
+
+    public String[] l506findRelativeRanks(int[] score) {
+        String gold = "Gold Medal", silver = "Silver Medal", bronze = "Bronze Medal";
+        if (score.length == 1) {
+            return new String[]{gold};
+        }
+
+        Map<Integer, Integer> valPositionMap = new HashMap<>();
+        Integer[] scoreCopy = new Integer[score.length];
+        for (int i = 0; i < score.length; i++) {
+            valPositionMap.put(score[i], i);
+            scoreCopy[i] = score[i];
+        }
+
+        Arrays.sort(scoreCopy, (o1, o2) -> o1 < o2 ? 1 : -1);
+
+        String[] result = new String[score.length];
+        for (int i = 0; i < scoreCopy.length; i++) {
+            if (i == 0) {
+                result[valPositionMap.get(scoreCopy[i])] = gold;
+            } else if (i == 1) {
+                result[valPositionMap.get(scoreCopy[i])] = silver;
+            } else if (i == 2) {
+                result[valPositionMap.get(scoreCopy[i])] = bronze;
+            } else {
+                result[valPositionMap.get(scoreCopy[i])] = i + 1 + "";
+            }
+        }
+        return result;
+    }
+
+    public int l543diameterOfBinaryTree(TreeNode root) {
+        l543dfs(root);
+
+        return maxDiameter;
+    }
+
+    private int maxDiameter = 0;
+
+    private int l543dfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = l543dfs(root.left);
+        int right = l543dfs(root.right);
+        int maxLength = left > right ? left + 1 : right + 1;
+
+        int rootDiameter = left + right;
+        if (rootDiameter > maxDiameter) {
+            maxDiameter = rootDiameter;
+        }
+        return maxLength;
+    }
+
+    public int l747dominantIndex(int[] nums) {
+        if (nums.length == 1) {
+            return 0;
+        }
+
+        int maxNumPosition = 0;
+        int maxNum = 0, secondNum = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > maxNum) {
+                secondNum = maxNum;
+                maxNum = nums[i];
+                maxNumPosition = i;
+            } else if (nums[i] > secondNum) {
+                secondNum = nums[i];
+            }
+        }
+
+        if (maxNum >= (secondNum * 2)) {
+            return maxNumPosition;
+        } else {
+            return -1;
+        }
+    }
 
     public List<String> generateParenthesis(int n) {
         List<String> resultList = new ArrayList<>();
@@ -1048,6 +1215,10 @@ class Solution {
         TreeNode root = buildTreeNode();
         Solution solution = new Solution();
 
+        int[] nums = {1, 2, 3, 4};
+        System.out.println(solution.l747dominantIndex(nums));
+
+
 //        int n = 4;
 //        System.out.println(solution.generateParenthesis(n));
 //
@@ -1059,10 +1230,6 @@ class Solution {
 //                System.out.println(s);
 //            }
 //        }
-
-        String[] strArr = new String[]{"alice,20,800,mtv","alice,50,100,mtv","alice,51,100,frankfurt"};
-        System.out.println(solution.l1169invalidTransactions(strArr));
-
     }
 
 
@@ -1089,18 +1256,29 @@ class Solution {
 //        head.right.left = new TreeNode(6);
 //        head.right.right = new TreeNode(7);
 
-        TreeNode head = new TreeNode(10);
+//        TreeNode head = new TreeNode(10);
+//
+//        head.left = new TreeNode(5);
+//        head.right = new TreeNode(-3);
+//
+//        head.left.left = new TreeNode(3);
+//        head.left.right = new TreeNode(2);
+//        head.right.right = new TreeNode(11);
+//
+//        head.left.left.left = new TreeNode(3);
+//        head.left.left.right = new TreeNode(-2);
+//        head.left.right.right = new TreeNode(1);
 
-        head.left = new TreeNode(5);
-        head.right = new TreeNode(-3);
+        TreeNode head = new TreeNode(1);
+        head.right = new TreeNode(3);
+        head.left = new TreeNode(2);
 
-        head.left.left = new TreeNode(3);
-        head.left.right = new TreeNode(2);
-        head.right.right = new TreeNode(11);
-
-        head.left.left.left = new TreeNode(3);
-        head.left.left.right = new TreeNode(-2);
-        head.left.right.right = new TreeNode(1);
+        head.left.left = new TreeNode(4);
+        head.left.left.left = new TreeNode(6);
+        head.left.left.left.left = new TreeNode(8);
+        head.left.right = new TreeNode(5);
+        head.left.right.right = new TreeNode(7);
+        head.left.right.right.right = new TreeNode(9);
 
         return head;
     }
