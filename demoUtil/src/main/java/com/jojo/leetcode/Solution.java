@@ -1169,6 +1169,249 @@ class Solution {
         }
     }
 
+    public boolean l551checkRecord(String s) {
+        if (s.length() == 1) {
+            return true;
+        }
+
+        char absent = 'A', late = 'L';
+        int countA = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char key = s.charAt(i);
+
+            if (key == absent) {
+                countA++;
+                if (countA >= 2) {
+                    return false;
+                }
+            }
+
+            if ((s.length() - 3 >= i) && (key == late && s.charAt(i + 1) == late && s.charAt(i + 2) == late)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public int l559maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        List<TreeNode> treeNodeList = root.children;
+        if (treeNodeList == null || treeNodeList.size() == 0) {
+            return 1;
+        }
+
+        int maxDepth = 0;
+        for (int i = 0; i < treeNodeList.size(); i++) {
+            int currDepth = l559maxDepth(treeNodeList.get(i)) + 1;
+            if (currDepth > maxDepth) {
+                maxDepth = currDepth;
+            }
+        }
+        return maxDepth;
+    }
+
+    public String l504convertToBase7(int num) {
+        StringBuffer result = new StringBuffer();
+
+        while (num / 7 != 0) {
+            result.append(Math.abs(num % 7));
+            num /= 7;
+        }
+
+        result.append(Math.abs(num % 7));
+
+        return num < 0 ? "-" + result.reverse() : result.reverse().toString();
+    }
+
+    public int l11maxArea(int[] height) {
+        int maxArea = 0;
+        for (int i = 0, j = height.length - 1; i < j; ) {
+            int area = Math.min(height[i], height[j]) * (j - i);
+            maxArea = Math.max(area, maxArea);
+            if (height[i] <= height[j]) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+        return maxArea;
+    }
+
+    /**
+     * 字符          数值
+     * I             1
+     * V             5
+     * X             10
+     * L             50
+     * C             100
+     * D             500
+     * M             1000
+     * <p>
+     * 例如， 罗马数字 2 写做II，即为两个并列的 1。12 写做XII，即为X+II。 27 写做XXVII, 即为XX+V+II。
+     * <p>
+     * 通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做IIII，而是IV。
+     * 数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。
+     * 同样地，数字 9 表示为IX。这个特殊的规则只适用于以下六种情况：
+     * <p>
+     * I可以放在V(5) 和X(10) 的左边，来表示 4 和 9。
+     * X可以放在L(50) 和C(100) 的左边，来表示 40 和90。
+     * C可以放在D(500) 和M(1000) 的左边，来表示400 和900。
+     *
+     * @param num
+     * @return
+     */
+    public String l12intToRoman(int num) {
+        StringBuffer result = new StringBuffer();
+        // 千
+        int thousandsDivider = num / 1000;
+        num %= 1000;
+        for (int i = 0; i < thousandsDivider; i++) {
+            result.append("M");
+        }
+        if (num == 0) {
+            return result.toString();
+        }
+
+        // 百
+        int hundredsDivider = num / 100;
+        num %= 100;
+        if (hundredsDivider < 4) {
+            for (int i = 0; i < hundredsDivider; i++) {
+                result.append("C");
+            }
+        } else if (hundredsDivider == 4) {
+            result.append("CD");
+        } else if (hundredsDivider < 9) {
+            result.append("D");
+            for (int i = 5; i < hundredsDivider; i++) {
+                result.append("C");
+            }
+        } else if (hundredsDivider == 9) {
+            result.append("CM");
+        }
+        if (num == 0) {
+            return result.toString();
+        }
+
+        // 十
+        int tensDivider = num / 10;
+        num %= 10;
+        if (tensDivider < 4) {
+            for (int i = 0; i < tensDivider; i++) {
+                result.append("X");
+            }
+        } else if (tensDivider == 4) {
+            result.append("XL");
+        } else if (tensDivider < 9) {
+            result.append("L");
+            for (int i = 5; i < tensDivider; i++) {
+                result.append("X");
+            }
+        } else if (tensDivider == 9) {
+            result.append("XC");
+        }
+        if (num == 0) {
+            return result.toString();
+        }
+
+        // 个
+        if (num < 4) {
+            for (int i = 0; i < num; i++) {
+                result.append("I");
+            }
+        } else if (num == 4) {
+            result.append("IV");
+        } else if (num < 9) {
+            result.append("V");
+            for (int i = 5; i < num; i++) {
+                result.append("I");
+            }
+        } else if (num == 9) {
+            result.append("IX");
+        }
+
+        return result.toString();
+    }
+
+    /**
+     * 不要动不动就想着动态规划，排序+双指针
+     *
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> l15threeSum(int[] nums) {
+        int length = nums.length;
+        if (nums == null || length < 3) {
+            return new ArrayList<>();
+        }
+
+        Arrays.sort(nums);
+
+        List<List<Integer>> resultList = new ArrayList<>();
+        for (int first = 0; first < length - 2; first++) {
+            if (first > 0 && nums[first] == nums[first - 1]) {
+                continue;
+            }
+
+            int third = length - 1;
+
+            for (int second = first + 1; second < length - 1; second++) {
+                if (second > first + 1 && nums[second] == nums[second - 1]) {
+                    continue;
+                }
+                // 到处都是细节，唉
+                while (second < third && nums[third] + nums[second] + nums[first] > 0) third--;
+
+                if (second == third) {
+                    break;
+                }
+
+                if (nums[first] + nums[second] + nums[third] == 0) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[first]);
+                    list.add(nums[second]);
+                    list.add(nums[third]);
+                    resultList.add(list);
+                }
+            }
+        }
+
+        return resultList;
+    }
+
+    public List<String> l17letterCombinations(String digits) {
+        if (digits == null || digits.length() == 0) {
+            return new ArrayList<>();
+        }
+
+        String[] arr = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+        List<String> resultList = new ArrayList<>();
+        for (int i = 0; i < digits.length(); i++) {
+            String phoneNumChar = arr[digits.charAt(i) - 50];
+            if (i == 0) {
+                for (int j = 0; j < phoneNumChar.length(); j++) {
+                    resultList.add(phoneNumChar.charAt(j) + "");
+                }
+                continue;
+            }
+
+            List<String> temp = new ArrayList<>();
+            for (String s : resultList) {
+                for (int j = 0; j < phoneNumChar.length(); j++) {
+                    temp.add(s + phoneNumChar.charAt(j));
+                }
+            }
+
+            resultList = temp;
+        }
+
+        return resultList;
+    }
+
     public List<String> generateParenthesis(int n) {
         List<String> resultList = new ArrayList<>();
 
@@ -1215,8 +1458,7 @@ class Solution {
         TreeNode root = buildTreeNode();
         Solution solution = new Solution();
 
-        int[] nums = {1, 2, 3, 4};
-        System.out.println(solution.l747dominantIndex(nums));
+        System.out.println(solution.l17letterCombinations("3"));
 
 
 //        int n = 4;
