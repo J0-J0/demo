@@ -1,66 +1,41 @@
 package com.jojo.leetcode;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
+    int val;
+    TreeNode left;
+    TreeNode right;
 
-	TreeNode(int x) {
-		val = x;
-	}
+    List<TreeNode> children;
 
-	public static final void widthFirst(TreeNode root) {
-		if (root == null) {
-			return;
-		}
-		List<TreeNode> list = new ArrayList<TreeNode>();
-		list.add(root);
-		for (int i = 0; i < list.size(); i++) {
-			TreeNode node = list.get(i);
-			System.out.println(node.val);
-			if (node.left != null) {
-				list.add(node.left);
-			}
-			if (node.right != null) {
-				list.add(node.right);
-			}
-		}
-	}
+    TreeNode(int x) {
+        val = x;
+    }
 
-	/**
-	 * 深度遍历优先，同时又分为前序、中序、后序
-	 * @param root
-	 */
-	public static final void depthFirst(TreeNode root) {
-		if (root == null) {
-			return;
-		}
-		System.out.println(root.val);
-		depthFirst(root.left);
-		depthFirst(root.right);
-	}
+    public static TreeNode breadthFill(Integer[] arr) {
+        TreeNode root = new TreeNode(arr[0]);
 
-	public static void main(String[] args) {
-		/*
-		 * 				0
-		 * 			/		\
-		 * 		1				2
-		 * 		/\					\
-		 *   3		2					4
-		 */
-		TreeNode root = new TreeNode(0);
+        LinkedList<TreeNode> readyToFillList = new LinkedList<>();
+        readyToFillList.add(root);
 
-		root.left = new TreeNode(1);
-		root.right = new TreeNode(2);
-		
-		root.left.left = new TreeNode(3);
-		root.left.right = new TreeNode(2);
-		
-		root.right.right = new TreeNode(4);
-		
-		widthFirst(root);
-	}
+        for (int i = 0, j = 1; i < readyToFillList.size(); i++) {
+            TreeNode node = readyToFillList.poll();
+            if (j >= arr.length) {
+                break;
+            }
+            node.left = new TreeNode(arr[j++]);
+            readyToFillList.offer(node.left);
+            if (j >= arr.length) {
+                break;
+            }
+            node.right = new TreeNode(arr[j++]);
+            readyToFillList.offer(node.right);
+        }
+        return root;
+    }
+
+    public static void main(String[] args) {
+    }
 }

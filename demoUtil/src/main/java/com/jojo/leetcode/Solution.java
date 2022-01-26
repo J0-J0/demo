@@ -1412,6 +1412,70 @@ class Solution {
         return resultList;
     }
 
+    public int l704search(int[] nums, int target) {
+        if (nums.length == 1) {
+            return nums[0] == target ? 0 : -1;
+        }
+
+        int left = 0, right = nums.length - 1, middle = 0;
+        while (left <= right) {
+            middle = (left + right) / 2;
+            if (nums[middle] == target) {
+                return middle;
+            }
+
+            if (nums[middle] < target) {
+                left = middle + 1;
+            } else {
+                right = middle - 1;
+            }
+        }
+
+        return -1;
+    }
+
+    public int l563findTilt(TreeNode root) {
+
+        l563dfs(root);
+
+        return l563tilt;
+    }
+
+    private int l563tilt = 0;
+
+    private int l563dfs(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftSum = l563dfs(root.left);
+        int rightSum = l563dfs(root.right);
+
+        l563tilt += Math.abs(leftSum - rightSum);
+
+        return leftSum + root.val + rightSum;
+    }
+
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        if (l572check(root, subRoot)) {
+            return true;
+        }
+
+        return (root != null && isSubtree(root.left, subRoot)) || (root != null && isSubtree(root.right, subRoot));
+    }
+
+    private boolean l572check(TreeNode root, TreeNode subRoot) {
+        if (root == null && subRoot == null) return true;
+
+        if ((root == null && subRoot != null) || (root != null && subRoot == null)) {
+            return false;
+        }
+
+        if (root.val != subRoot.val) return false;
+
+        return l572check(root.left, subRoot.left) && l572check(root.right, subRoot.right);
+    }
+
     public List<String> generateParenthesis(int n) {
         List<String> resultList = new ArrayList<>();
 
@@ -1458,8 +1522,9 @@ class Solution {
         TreeNode root = buildTreeNode();
         Solution solution = new Solution();
 
-        System.out.println(solution.l17letterCombinations("3"));
-
+        System.out.println(solution.isSubtree(
+                TreeNode.breadthFill(new Integer[]{3, 4, 5, 1, 2, null, null, null, null, 0}),
+                TreeNode.breadthFill(new Integer[]{4, 1, 2})));
 
 //        int n = 4;
 //        System.out.println(solution.generateParenthesis(n));
