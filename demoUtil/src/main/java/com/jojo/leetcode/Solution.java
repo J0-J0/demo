@@ -252,8 +252,56 @@ class Solution {
      * @return
      */
     public boolean l605CanPlaceFlowers(int[] flowerbed, int n) {
-        // TODO
-        return false;
+        int availableCount = 0, left = 0, right = 0, position = 0;
+
+        // 数组左
+        // 0 0 1 = 1; 0 0 0 0 1 = 2; 偶数情况下，available = count/2
+        // 0 1 = 0； 0 0 0 1 = 1; 0 0 0 0 0 1 = 2; 奇数情况下，available = (count - 1) / 2
+        for (; position < flowerbed.length; position++) {
+            if (flowerbed[position] == 0) {
+                left++;
+            } else {
+                break;
+            }
+        }
+        if (position == flowerbed.length) {
+            availableCount = (left % 2 == 0) ? (left / 2) : ((left + 1) / 2);
+            return availableCount >= n;
+        }
+
+        availableCount = (left % 2 == 0) ? (left / 2) : ((left - 1) / 2);
+
+        // 数组右, 和数组左一样
+        // 1 0 0 = 1; 1 0 0 0 0 = 2
+        // 1 0 = 0; 1 0 0 0 = 1; 1 0 0 0 0 0 = 2
+        int rightStart = flowerbed.length - 1;
+        for (; rightStart >= 0; rightStart--) {
+            if (flowerbed[rightStart] == 0) {
+                right++;
+            } else {
+                break;
+            }
+        }
+        availableCount += (right % 2 == 0) ? (right / 2) : ((right - 1) / 2);
+
+        // 1 0 0 1 = 0; 1 0 0 0 0 1 = 1; 1 0 0 0 0 0 0 1 = 2; 1 0 0 0 0 0 0 0 0 1 = 3;
+        // 1 0 1 = 0; 1 0 0 0 1 = 1; 1 0 0 0 0 0 1 = 2;
+        int middle = 0;
+        for (; position <= rightStart; position++) {
+            if (middle == 0 && flowerbed[position] == 1) continue;
+
+            if (flowerbed[position] == 0) {
+                middle++;
+                continue;
+            }
+
+            if (middle != 0 && flowerbed[position] == 1) {
+                availableCount += (middle % 2 == 0) ? ((middle - 2) / 2) : ((middle - 1) / 2);
+                middle = 0;
+            }
+        }
+
+        return availableCount >= n;
     }
 
     /**
@@ -1516,15 +1564,93 @@ class Solution {
         return parentheses;
     }
 
+    public int l2047countValidWords(String sentence) {
+        if (sentence == null || sentence.length() == 0) {
+            return 0;
+        }
+
+        int result = 0;
+        String regex1 = "[a-z]*[!,.]?", regex2 = "[a-z]+-[a-z]+[!,.]?";
+        String[] arr = sentence.split(" ");
+        for (String str : arr) {
+            str = str.trim();
+            if (str.length() == 0) {
+                continue;
+            }
+            if (str.matches(regex1) || str.matches(regex2)) {
+                result++;
+            }
+        }
+
+        return result;
+    }
+
+    public int l594findLHS(int[] nums) {
+        if (nums.length == 1) {
+            return 0;
+        }
+
+        Arrays.sort(nums);
+
+        int maxLength = 0;
+        for (int i = 0; i < nums.length; i++) {
+            while (i != 0 && i < nums.length && nums[i - 1] == nums[i]) {
+                i++;
+            }
+
+            int j = i + 1;
+            while (j + 1 < nums.length && (nums[j] == nums[i] || nums[j] == nums[j + 1])) {
+                j++;
+            }
+
+            if (j < nums.length && nums[j] - nums[i] == 1) {
+                maxLength = Math.max(j - i + 1, maxLength);
+            }
+        }
+        return maxLength;
+    }
+
+    public List<Integer> l589preorder(TreeNode root) {
+        if (root == null) {
+            return l589nodeValList;
+        }
+
+        l589nodeValList.add(root.val);
+
+        if (root.children != null && root.children.size() != 0) {
+            for (TreeNode child : root.children) {
+                l589preorder(child);
+            }
+        }
+        return l589nodeValList;
+    }
+
+    private List<Integer> l589nodeValList = new ArrayList<>();
+
+    public int l628maximumProduct(int[] nums) {
+        if (nums.length == 3) {
+            return nums[0] * nums[1] * nums[2];
+        }
+
+        Arrays.sort(nums);
+        int length = nums.length;
+
+        int x = nums[length - 1] * nums[length - 2] * nums[length - 3];
+        if (nums[0] > 0 || nums[length - 1] < 0) {
+            return x;
+        }
+
+        int y = nums[0] * nums[1] * nums[length - 1];
+
+        return Math.max(x, y);
+    }
 
     public static void main(String[] args) {
         ListNode head = buildListNode();
         TreeNode root = buildTreeNode();
         Solution solution = new Solution();
 
-        System.out.println(solution.isSubtree(
-                TreeNode.breadthFill(new Integer[]{3, 4, 5, 1, 2, null, null, null, null, 0}),
-                TreeNode.breadthFill(new Integer[]{4, 1, 2})));
+        System.out.println(solution.l605CanPlaceFlowers(new int[]{0}, 1));
 
 //        int n = 4;
 //        System.out.println(solution.generateParenthesis(n));
