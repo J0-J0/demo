@@ -528,7 +528,7 @@ class Solution {
         return -1;
     }
 
-    private List<Integer> treeNodeValList = new ArrayList<>();
+    private List<Integer> l94treeNodeValList = new ArrayList<>();
 
     /**
      * 中序遍历
@@ -538,14 +538,14 @@ class Solution {
      */
     public List<Integer> l94InorderTraversal(TreeNode root) {
         if (root == null) {
-            return treeNodeValList;
+            return l94treeNodeValList;
         }
 
         l94InorderTraversal(root.left);
-        treeNodeValList.add(root.val);
+        l94treeNodeValList.add(root.val);
         l94InorderTraversal(root.right);
 
-        return treeNodeValList;
+        return l94treeNodeValList;
     }
 
     /**
@@ -556,14 +556,14 @@ class Solution {
      */
     public List<Integer> l145PostorderTraversal(TreeNode root) {
         if (root == null) {
-            return treeNodeValList;
+            return l94treeNodeValList;
         }
 
         l145PostorderTraversal(root.left);
         l145PostorderTraversal(root.right);
-        treeNodeValList.add(root.val);
+        l94treeNodeValList.add(root.val);
 
-        return treeNodeValList;
+        return l94treeNodeValList;
     }
 
     /**
@@ -574,15 +574,15 @@ class Solution {
      */
     public List<Integer> l144PreorderTraversal(TreeNode root) {
         if (root == null) {
-            return treeNodeValList;
+            return l94treeNodeValList;
         }
 
-        treeNodeValList.add(root.val);
+        l94treeNodeValList.add(root.val);
 
         l144PreorderTraversal(root.left);
         l144PreorderTraversal(root.right);
 
-        return treeNodeValList;
+        return l94treeNodeValList;
     }
 
     public boolean l112HasPathSum(TreeNode root, int targetSum) {
@@ -601,7 +601,7 @@ class Solution {
         return result;
     }
 
-    private List<List<Integer>> pathListList = new ArrayList<>();
+    private List<List<Integer>> l113pathListList = new ArrayList<>();
 
     public List<List<Integer>> l113PathSum(TreeNode root, int targetSum) {
         List<Integer> onePathList = new ArrayList<>();
@@ -614,21 +614,21 @@ class Solution {
         resultList.addAll(treeNodeValList);
 
         if (root == null) {
-            return pathListList;
+            return l113pathListList;
         }
 
         resultList.add(root.val);
         if (root.left == null && root.right == null) {
             if (root.val == targetSum) {
-                pathListList.add(resultList);
-                return pathListList;
+                l113pathListList.add(resultList);
+                return l113pathListList;
             }
         }
 
         l113findAvailablePath(root.left, targetSum - root.val, resultList);
         l113findAvailablePath(root.right, targetSum - root.val, resultList);
 
-        return pathListList;
+        return l113pathListList;
     }
 
     public int l437PathSum(TreeNode root, int targetSum) {
@@ -676,18 +676,18 @@ class Solution {
         return root;
     }
 
-    List<TreeNode> nodeList = new ArrayList<>();
+    private List<TreeNode> l897nodeList = new ArrayList<>();
 
     private List<TreeNode> l897InorderTraversal(TreeNode root) {
         if (root == null) {
-            return nodeList;
+            return l897nodeList;
         }
 
         l897InorderTraversal(root.left);
-        nodeList.add(root);
+        l897nodeList.add(root);
         l897InorderTraversal(root.right);
 
-        return nodeList;
+        return l897nodeList;
     }
 
     public int l1302DeepestLeavesSum(TreeNode root) {
@@ -696,10 +696,10 @@ class Solution {
         }
 
         int height = l1302FindDeepestNode(root, 1);
-        return nodeValMap.get(height);
+        return l1302nodeValMap.get(height);
     }
 
-    private Map<Integer, Integer> nodeValMap = new HashMap<>();
+    private Map<Integer, Integer> l1302nodeValMap = new HashMap<>();
 
     private int l1302FindDeepestNode(TreeNode root, int height) {
         if (root == null) {
@@ -707,10 +707,10 @@ class Solution {
         }
 
         if (root.left == null && root.right == null) {
-            if (nodeValMap.get(height) == null) {
-                nodeValMap.put(height, root.val);
+            if (l1302nodeValMap.get(height) == null) {
+                l1302nodeValMap.put(height, root.val);
             } else {
-                nodeValMap.put(height, nodeValMap.get(height) + root.val);
+                l1302nodeValMap.put(height, l1302nodeValMap.get(height) + root.val);
             }
             return height;
         }
@@ -1172,10 +1172,10 @@ class Solution {
     public int l543diameterOfBinaryTree(TreeNode root) {
         l543dfs(root);
 
-        return maxDiameter;
+        return l543maxDiameter;
     }
 
-    private int maxDiameter = 0;
+    private int l543maxDiameter = 0;
 
     private int l543dfs(TreeNode root) {
         if (root == null) {
@@ -1186,8 +1186,8 @@ class Solution {
         int maxLength = left > right ? left + 1 : right + 1;
 
         int rootDiameter = left + right;
-        if (rootDiameter > maxDiameter) {
-            maxDiameter = rootDiameter;
+        if (rootDiameter > l543maxDiameter) {
+            l543maxDiameter = rootDiameter;
         }
         return maxLength;
     }
@@ -1524,46 +1524,6 @@ class Solution {
         return l572check(root.left, subRoot.left) && l572check(root.right, subRoot.right);
     }
 
-    public List<String> generateParenthesis(int n) {
-        List<String> resultList = new ArrayList<>();
-
-        if (n == 1) {
-            String curParentheses = getParentheses(n);
-            resultList.add(curParentheses);
-            return resultList;
-        }
-
-        Set<String> set = new HashSet<>();
-        for (int i = 1; i < n; i++) {
-            int j = n - i;
-            List<String> sonList = generateParenthesis(j);
-            String iNumParentheses = getParentheses(i);
-            for (String str : sonList) {
-                set.add(str + iNumParentheses);
-                String left = "", right = "";
-                for (int k = 0; k < i; k++) {
-                    left += "(";
-                    right += ")";
-                }
-                set.add(left + str + right);
-            }
-        }
-        resultList.addAll(set);
-        return resultList;
-    }
-
-    private static String getParentheses(int n) {
-        String parentheses = "";
-        for (int i = 0; i < n; i++) {
-            if (i == 0) {
-                parentheses = "()";
-            } else {
-                parentheses = "(" + parentheses + ")";
-            }
-        }
-        return parentheses;
-    }
-
     public int l2047countValidWords(String sentence) {
         if (sentence == null || sentence.length() == 0) {
             return 0;
@@ -1645,13 +1605,249 @@ class Solution {
         return Math.max(x, y);
     }
 
+    public int l2006countKDifference(int[] nums, int k) {
+        if (nums.length == 1) {
+            return 0;
+        }
+        int answer = 0;
+
+        // 暴力解法
+//        for (int i = 0; i < nums.length - 1; i++) {
+//            for (int j = i + 1; j < nums.length; j++) {
+//                if (k == Math.abs(nums[i] - nums[j])) {
+//                    answer++;
+//                }
+//            }
+//        }
+//
+
+        // 哈希表，来把这个简单题升华一下
+        Map<Integer, List<Integer>> valPosMap = new HashMap<>();
+        for (int pos = 0; pos < nums.length; pos++) {
+            List<Integer> posList = valPosMap.getOrDefault(nums[pos], new ArrayList<>());
+            posList.add(pos);
+            valPosMap.put(nums[pos], posList);
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            int availableJ = nums[i] - k;
+            List<Integer> posList = valPosMap.get(availableJ);
+            if (posList != null) {
+                for (Integer pos : posList) {
+                    answer = pos > i ? ++answer : answer;
+                }
+            }
+
+            availableJ = nums[i] + k;
+            posList = valPosMap.get(availableJ);
+            if (posList != null) {
+                for (Integer pos : posList) {
+                    answer = pos > i ? ++answer : answer;
+                }
+            }
+        }
+
+        return answer;
+    }
+
+    /**
+     * 不能浮躁
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public double l643findMaxAverage(int[] nums, int k) {
+        int sum = 0;
+        for (int i = 0; i < k; i++) {
+            sum += nums[i];
+        }
+
+        int maxSum = sum;
+        for (int i = 1; i <= nums.length - k; i++) {
+            sum = sum - nums[i - 1] + nums[i + k - 1];
+            maxSum = Math.max(maxSum, sum);
+        }
+
+        return (double) maxSum / k;
+    }
+
+    public int l1984minimumDifference(int[] nums, int k) {
+        if (k == 1) {
+            return 0;
+        }
+
+        Arrays.sort(nums);
+
+        int answer = nums[k - 1] - nums[0];
+        for (int i = 1; i <= nums.length - k; i++) {
+            answer = Math.min(answer, nums[i + k - 1] - nums[i]);
+        }
+
+        return answer;
+    }
+
+    public int[] l645findErrorNums(int[] nums) {
+        Arrays.sort(nums);
+
+        int temp = nums[0], duplicate = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (temp == nums[i]) {
+                duplicate = temp;
+                break;
+            }
+            temp = nums[i];
+        }
+
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += i + 1;
+        }
+
+        sum -= duplicate;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == duplicate) {
+                continue;
+            }
+            sum -= nums[i];
+        }
+
+        return new int[]{duplicate, sum};
+    }
+
+    public List<Integer> l1380luckyNumbers(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        if (matrix.length == 1 && matrix[0].length == 1) {
+            result.add(matrix[0][0]);
+            return result;
+        }
+
+        Map<Integer, Integer> columnPosMaxMap = new HashMap<>();
+        for (int i = 0; i < matrix[0].length; i++) {
+            int columnMax = matrix[0][i];
+            for (int j = 1; j < matrix.length; j++) {
+                columnMax = Math.max(columnMax, matrix[j][i]);
+            }
+            columnPosMaxMap.put(i, columnMax);
+        }
+
+        for (int i = 0; i < matrix.length; i++) {
+            int lineMin = matrix[i][0], lineMinColumn = 0;
+            for (int j = 1; j < matrix[i].length; j++) {
+                if (lineMin > matrix[i][j]) {
+                    lineMin = matrix[i][j];
+                    lineMinColumn = j;
+                }
+            }
+
+            if (columnPosMaxMap.get(lineMinColumn) == lineMin) {
+                result.add(lineMin);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * 所有非英文字母保留在原地，英文字母，反转
+     *
+     * @param s
+     * @return
+     */
+    public String l917reverseOnlyLetters(String s) {
+        // 是正确答案，但效率不算很高
+//        StringBuffer descEnglishChar = new StringBuffer();
+//        for (int i = s.length() - 1; i >= 0; i--) {
+//            if (this.l917isEnglishChar(s.charAt(i))) {
+//                descEnglishChar.append(s.charAt(i));
+//            }
+//        }
+//
+//        // 再正序
+//        StringBuffer result = new StringBuffer();
+//        for (int i = 0, j = 0; i < s.length(); i++) {
+//            if (!this.l917isEnglishChar(s.charAt(i))) {
+//                result.append(s.charAt(i));
+//            } else {
+//                result.append(descEnglishChar.charAt(j++));
+//            }
+//        }
+//
+//        return result.toString();
+
+        // 只可以循环1次，而且不能占用额外的内存
+        char[] answer = new char[s.length()];
+        for (int i = s.length() - 1, j = 0; i >= j; i--, j++) {
+            while (i >= 0 && !this.l917isEnglishChar(s.charAt(i))) {
+                answer[i] = s.charAt(i);
+                i--;
+            }
+            while (j <= s.length() - 1 && !this.l917isEnglishChar(s.charAt(j))) {
+                answer[j] = s.charAt(j);
+                j++;
+            }
+
+            if (i < 0 || j > s.length() - 1) {
+                break;
+            }
+
+            answer[i] = s.charAt(j);
+            answer[j] = s.charAt(i);
+        }
+        return new String(answer);
+    }
+
+    private boolean l917isEnglishChar(char c) {
+        return (c > 64 && c < 91) || (c > 96 && c < 123);
+    }
+
+    public List<String> generateParenthesis(int n) {
+        List<String> resultList = new ArrayList<>();
+
+        if (n == 1) {
+            String curParentheses = getParentheses(n);
+            resultList.add(curParentheses);
+            return resultList;
+        }
+
+        Set<String> set = new HashSet<>();
+        for (int i = 1; i < n; i++) {
+            int j = n - i;
+            List<String> sonList = generateParenthesis(j);
+            String iNumParentheses = getParentheses(i);
+            for (String str : sonList) {
+                set.add(str + iNumParentheses);
+                String left = "", right = "";
+                for (int k = 0; k < i; k++) {
+                    left += "(";
+                    right += ")";
+                }
+                set.add(left + str + right);
+            }
+        }
+        resultList.addAll(set);
+        return resultList;
+    }
+
+    private static String getParentheses(int n) {
+        String parentheses = "";
+        for (int i = 0; i < n; i++) {
+            if (i == 0) {
+                parentheses = "()";
+            } else {
+                parentheses = "(" + parentheses + ")";
+            }
+        }
+        return parentheses;
+    }
+
     public static void main(String[] args) {
         ListNode head = buildListNode();
         TreeNode root = buildTreeNode();
         Solution solution = new Solution();
 
-        System.out.println(solution.l605CanPlaceFlowers(new int[]{0}, 1));
-
+        String s = "-";
+        System.out.println(solution.l917reverseOnlyLetters(s));
 //        int n = 4;
 //        System.out.println(solution.generateParenthesis(n));
 //
@@ -1664,7 +1860,6 @@ class Solution {
 //            }
 //        }
     }
-
 
     private static ListNode buildListNode() {
         ListNode head = new ListNode(1);
