@@ -1,97 +1,56 @@
 
 package com.jojo.zzz;
 
-import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Work {
     private static final Logger logger = LoggerFactory.getLogger(Work.class);
 
-    static {
-        val = 2;
+    public int orchestraLayout(int n, int xPos, int yPos) {
+        //一共几圈
+        int quan = (n + 1) / 2;
+        long num = n;
+        //第几圈
+        int layer = Math.min(Math.min(yPos, xPos), Math.min(n - xPos - 1, n - yPos - 1)) + 1;
+        //总面积
+        long area = num * num;
+        //当前所在圈面积
+        long zhong = (num - 2 * (layer - 1));
+        zhong *= zhong;
+        //求差 +1 得到当前圈左上角编号
+        long index = (area - zhong) % 9 + 1;
+        //右边界
+        int right = n - layer;
+        //左边界
+        int left = layer - 1;
+        if (xPos == left) {
+            //在 --- 上
+            index += yPos - left;
+        } else if (yPos == right) {
+            //在   |上
+            index += right - left;
+            index += xPos - left;
+        } else if (xPos == right) {
+            //在 __ 上
+            index += 2 * (right - left);
+            index += right - yPos;
+        } else {
+            //在 |  上
+            index += 3 * (right - left);
+            index += right - xPos;
+        }
+        return (int) (index % 9 == 0 ? 9 : index % 9);
     }
-
-    private static int val = 1;
-
 
     public static void main(String[] args) throws Exception {
-        Map<String, Integer> map = Maps.newHashMap();
-        map.put("1", 2);
-        map.put("1", 2);
-        map.put("2", 2);
+        Work work = new Work();
+        System.out.println(work.orchestraLayout(971131546, 966980466, 531910024));
 
-        Map<String, Integer> newMap = new HashMap<>();
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            newMap.compute(entry.getKey(), (key, val) -> {
-                System.out.println(key + " " + val);
-                return val == null ? entry.getValue() : val + entry.getValue();
-            });
-        }
-
-        System.out.println(newMap);
-    }
-
-
-    public String longestWord(String[] words) {
-        Map<Integer, List<String>> map = new HashMap();
-        for (String s : words) {
-            List<String> list = map.get(s.length()) == null ? new ArrayList() : map.get(s.length());
-            list.add(s);
-            map.put(s.length(), list);
-        }
-        List<Integer> keyList = new ArrayList<>();
-        keyList.addAll(map.keySet());
-        if (keyList.size() == 1)
-            return null;
-        keyList.sort(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return 01 - o2;
-            }
-        });
-
-
-        List<String> lastVaildStringList;
-        List<String> currentVaildStringList = map.get(1);
-        if (currentVaildStringList == null)
-            return "";
-        List<String> nextVaildStringList = new ArrayList<>();
-
-        for (int i = 2; i <= keyList.size(); i++) {//长度为2 下标应该是1
-            List<String> paramList = map.get(i);
-            if (paramList == null)
-                break;
-            nextVaildStringList.clear();
-            lastVaildStringList = currentVaildStringList;
-            for (String s : paramList) {
-                String sub = s.substring(0, s.length() - 1);
-                if (lastVaildStringList.contains(sub)) {
-                    nextVaildStringList.add(s);
-                }
-            }
-            if (nextVaildStringList.size() == 0)
-                break;
-            currentVaildStringList = new ArrayList<>(nextVaildStringList);
-
-        }
-
-
-        String minValue = currentVaildStringList.get(0);
-        for (String s : currentVaildStringList) {
-            if (s.compareTo(minValue) < 0)
-                minValue = s;
-        }
-        return minValue;
 
 
     }
+
 
 }

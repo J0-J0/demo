@@ -1801,6 +1801,97 @@ class Solution {
         return (c > 64 && c < 91) || (c > 96 && c < 123);
     }
 
+    public int lcp29orchestraLayout(int num, int xPos, int yPos) {
+        long totalStep = 0l;
+        int outLayerCount = Math.min(Math.min(Math.abs(xPos - 0), Math.abs(xPos - (num - 1))),
+                Math.min(Math.abs(yPos - 0), Math.abs(yPos - (num - 1))));
+
+        long currLayerPointCount = 0l;
+        for (int i = 0; i < outLayerCount; i++) {
+            currLayerPointCount = num - (i * 2) - 1;
+            totalStep += (currLayerPointCount * 4);
+        }
+
+        currLayerPointCount -= 2;
+
+
+        long leftStep = 0l;
+        if (num - xPos == num - outLayerCount) {
+            // 内圈，上边界
+            leftStep = yPos - outLayerCount + 1;
+
+        } else if (num - yPos == outLayerCount + 1) {
+            // 内圈， 右边界
+            leftStep = currLayerPointCount + (xPos - outLayerCount) + 1;
+
+        } else if (num - xPos == outLayerCount + 1) {
+            // 内圈，下边界
+            leftStep = currLayerPointCount * 2 + (currLayerPointCount + outLayerCount - yPos) + 1;
+
+        } else if (num - yPos == num - outLayerCount) {
+            // 内圈，左边界
+            leftStep = currLayerPointCount * 3 + (currLayerPointCount + outLayerCount - xPos) + 1;
+        }
+
+        totalStep += leftStep;
+
+        int result = (int) (totalStep % 9);
+        return result == 0 ? 9 : result;
+    }
+
+    @Deprecated
+    private int[] lcp29instrument = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    @Deprecated
+    private int lcp29pos = 0;
+
+    @Deprecated
+    private int lcp29getInstrument() {
+        if (lcp29pos == 9) {
+            lcp29pos = 0;
+        }
+        return lcp29instrument[lcp29pos++];
+    }
+
+    /**
+     * 搞是搞出来了，但超出内存限制，删了怪可惜的，留着吧
+     *
+     * @param num
+     * @return
+     */
+    @Deprecated
+    private int[][] lcp29buildMatrix(int num) {
+        int[][] matrix = new int[num][num];
+        int start = 0, end = num;
+
+        while (end - start > 0) {
+            if (end - start == 1) {
+                matrix[start][start] = this.lcp29getInstrument();
+                break;
+            }
+            int i = start, j = start;
+            for (; j < end - 1; j++) {
+                matrix[i][j] = this.lcp29getInstrument();
+            }
+
+            for (; i < end - 1; i++) {
+                matrix[i][j] = this.lcp29getInstrument();
+            }
+
+            for (; j > start; j--) {
+                matrix[i][j] = this.lcp29getInstrument();
+            }
+
+            for (; i > start; i--) {
+                matrix[i][j] = this.lcp29getInstrument();
+            }
+
+            start++;
+            end--;
+        }
+
+        return matrix;
+    }
+
     public List<String> generateParenthesis(int n) {
         List<String> resultList = new ArrayList<>();
 
@@ -1846,8 +1937,9 @@ class Solution {
         TreeNode root = buildTreeNode();
         Solution solution = new Solution();
 
-        String s = "-";
-        System.out.println(solution.l917reverseOnlyLetters(s));
+        System.out.println(solution.lcp29orchestraLayout(971131546, 966980466, 531910024));
+
+
 //        int n = 4;
 //        System.out.println(solution.generateParenthesis(n));
 //
@@ -1909,6 +2001,15 @@ class Solution {
         head.left.right.right.right = new TreeNode(9);
 
         return head;
+    }
+
+    private static void printMatrix(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(" " + matrix[i][j]);
+            }
+            System.out.println();
+        }
     }
 
 }
