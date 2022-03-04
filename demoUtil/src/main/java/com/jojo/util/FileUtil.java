@@ -1,5 +1,17 @@
 package com.jojo.util;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.CharSink;
+import com.google.common.io.CharSource;
+import com.google.common.io.FileWriteMode;
+import com.google.common.io.Files;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -9,22 +21,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import com.google.common.io.CharSink;
-import com.google.common.io.CharSource;
-import com.google.common.io.FileWriteMode;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 
 public class FileUtil {
 
@@ -240,7 +238,7 @@ public class FileUtil {
      */
     public static String filterInvalidCharacter(String fileName) {
         if (StringUtils.contains(fileName, "\\")) {
-            fileName = fileName.replaceAll("\\", " ");
+            fileName = fileName.replaceAll("\\\\", " ");
         }
         if (StringUtils.contains(fileName, "/")) {
             fileName = fileName.replaceAll("/", " ");
@@ -249,10 +247,10 @@ public class FileUtil {
             fileName = fileName.replaceAll(":", " ");
         }
         if (StringUtils.contains(fileName, "*")) {
-            fileName = fileName.replaceAll("*", " ");
+            fileName = fileName.replaceAll("\\*", " ");
         }
         if (StringUtils.contains(fileName, "?")) {
-            fileName = fileName.replaceAll("?", " ");
+            fileName = fileName.replaceAll("\\?", " ");
         }
         if (StringUtils.contains(fileName, "\"")) {
             fileName = fileName.replaceAll("\"", " ");
@@ -329,15 +327,6 @@ public class FileUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String targetDir = "C:\\Users\\72669\\Downloads\\恶魔阿萨谢尔再召唤你\\1";
-        String srcDir = "C:\\Users\\72669\\Downloads\\恶魔阿萨谢尔再召唤你";
-        File srcFile = new File(srcDir);
-        File[] files = srcFile.listFiles();
-        for (File file : files) {
-            File[] imgFile = file.listFiles();
-            if (ArrayUtils.isNotEmpty(imgFile)) {
-                imgFile[0].renameTo(new File(targetDir + File.separator+imgFile[0].getName()));
-            }
-        }
+
     }
 }

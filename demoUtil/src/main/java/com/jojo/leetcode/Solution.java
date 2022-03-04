@@ -1892,115 +1892,193 @@ class Solution {
         return matrix;
     }
 
-    public List<String> generateParenthesis(int n) {
-        List<String> resultList = new ArrayList<>();
-
-        if (n == 1) {
-            String curParentheses = getParentheses(n);
-            resultList.add(curParentheses);
-            return resultList;
-        }
-
-        Set<String> set = new HashSet<>();
-        for (int i = 1; i < n; i++) {
-            int j = n - i;
-            List<String> sonList = generateParenthesis(j);
-            String iNumParentheses = getParentheses(i);
-            for (String str : sonList) {
-                set.add(str + iNumParentheses);
-                String left = "", right = "";
-                for (int k = 0; k < i; k++) {
-                    left += "(";
-                    right += ")";
-                }
-                set.add(left + str + right);
-            }
-        }
-        resultList.addAll(set);
-        return resultList;
-    }
-
-    private static String getParentheses(int n) {
-        String parentheses = "";
-        for (int i = 0; i < n; i++) {
-            if (i == 0) {
-                parentheses = "()";
-            } else {
-                parentheses = "(" + parentheses + ")";
-            }
-        }
-        return parentheses;
-    }
-
-    public static void main(String[] args) {
-        ListNode head = buildListNode();
-        TreeNode root = buildTreeNode();
-        Solution solution = new Solution();
-
-        System.out.println(solution.lcp29orchestraLayout(971131546, 966980466, 531910024));
-
-
-//        int n = 4;
-//        System.out.println(solution.generateParenthesis(n));
-//
-//        String[] arr = new String[]{"(((())))", "((()()))", "((())())", "((()))()", "(()(()))", "(()()())", "(()())()", "(())(())", "(())()()", "()((()))", "()(()())", "()(())()", "()()(())", "()()()()"};
-//        String[] myArr = new String[]{"()()()()", "(()())()", "(()(()))", "()()(())", "(())()()", "(((())))", "(())(())", "()((()))", "()(())()", "(()()())", "((()()))", "((()))()", "((())())"};
-//        Set<String> set = new HashSet<>(Arrays.asList(myArr));
-//        for (String s : arr) {
-//            if (!set.contains(s)) {
-//                System.out.println(s);
+    /**
+     * 前缀最小值
+     *
+     * @param nums
+     * @return
+     */
+    public int l2016maximumDifference(int[] nums) {
+//        int maxDiffer = -1;
+//        for (int i = 0; i < nums.length - 1; i++) {
+//            for (int j = i + 1; j < nums.length; j++) {
+//                if (nums[j] > nums[i]) {
+//                    maxDiffer = Math.max(maxDiffer, nums[j] - nums[i]);
+//                }
 //            }
 //        }
+//        return maxDiffer;
+
+        int maxDiffer = -1, prefix = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (prefix < nums[i]) {
+                maxDiffer = Math.max(maxDiffer, nums[i] - prefix);
+            } else {
+                prefix = nums[i];
+            }
+        }
+        return maxDiffer;
     }
 
-    private static ListNode buildListNode() {
-        ListNode head = new ListNode(1);
-        ListNode node2 = new ListNode(1);
-        ListNode node3 = new ListNode(1);
-        ListNode node4 = new ListNode(1);
-        ListNode node5 = new ListNode(1);
-        head.next = node2;
-        node2.next = node3;
-        node3.next = node4;
-        node4.next = node5;
+    public boolean l657judgeCircle(String moves) {
+        int x = 0, y = 0;
+        char up = 'U', down = 'D', left = 'L', right = 'R';
+        for (int i = 0; i < moves.length(); i++) {
+            char move = moves.charAt(i);
+            if (move == up) {
+                x += 1;
+            } else if (move == down) {
+                x -= 1;
+            } else if (move == left) {
+                y -= 1;
+            } else if (move == right) {
+                y += 1;
+            }
+        }
 
-        return head;
+        return x == 0 && y == 0;
     }
 
-    private static TreeNode buildTreeNode() {
-//        TreeNode head = new TreeNode(1);
-//        head.left = new TreeNode(2);
-//        head.right = new TreeNode(3);
-//        head.left.left = new TreeNode(4);
-//        head.left.right = new TreeNode(5);
-//        head.right.left = new TreeNode(6);
-//        head.right.right = new TreeNode(7);
+    public List<String> l22generateParenthesis(int n) {
+        if (n == 1) {
+            List<String> list = new ArrayList<>();
+            list.add("()");
+            return list;
+        }
 
-//        TreeNode head = new TreeNode(10);
-//
-//        head.left = new TreeNode(5);
-//        head.right = new TreeNode(-3);
-//
-//        head.left.left = new TreeNode(3);
-//        head.left.right = new TreeNode(2);
-//        head.right.right = new TreeNode(11);
-//
-//        head.left.left.left = new TreeNode(3);
-//        head.left.left.right = new TreeNode(-2);
-//        head.left.right.right = new TreeNode(1);
+        Set<String> resultSet = new HashSet<>();
+        List<String> sonParenthesisList = l22generateParenthesis(n - 1);
+        for (String parenthesis : sonParenthesisList) {
+            resultSet.add("()" + parenthesis);
+            resultSet.add(parenthesis + "()");
+            resultSet.add("(" + parenthesis + ")");
+        }
 
-        TreeNode head = new TreeNode(1);
-        head.right = new TreeNode(3);
-        head.left = new TreeNode(2);
+        for (int i = 1; i < n; i++) {
+            int j = n - i;
+            List<String> listI = l22generateParenthesis(j);
+            List<String> listJ = l22generateParenthesis(i);
+            for (String si : listI) {
+                for (String sj : listJ) {
+                    resultSet.add(si + sj);
+                    resultSet.add(sj + si);
+                }
+            }
+        }
 
-        head.left.left = new TreeNode(4);
-        head.left.left.left = new TreeNode(6);
-        head.left.left.left.left = new TreeNode(8);
-        head.left.right = new TreeNode(5);
-        head.left.right.right = new TreeNode(7);
-        head.left.right.right.right = new TreeNode(9);
+        return new ArrayList<>(resultSet);
+    }
 
-        return head;
+    public boolean l653findTarget(TreeNode root, int k) {
+        List<Integer> valList = new ArrayList<>();
+        this.l653dfs(root, valList);
+
+        if (valList.size() == 1) {
+            return false;
+        }
+
+        for (int i = 0, j = valList.size() - 1; i < j; ) {
+            int sum = valList.get(i) + valList.get(j);
+            if (sum == k) {
+                return true;
+            }
+
+            if (sum < k) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+
+        return false;
+    }
+
+    private void l653dfs(TreeNode root, List<Integer> valList) {
+        if (root == null) {
+            return;
+        }
+        l653dfs(root.left, valList);
+        valList.add(root.val);
+        l653dfs(root.right, valList);
+    }
+
+    public int l671findSecondMinimumValue(TreeNode root) {
+//        int secondMin = l671dfs(root, root.val);
+//        return secondMin == root.val ? -1 : secondMin;
+
+        Set<Integer> valSet = new HashSet<>();
+        l671dfs(root, valSet);
+
+        if (valSet.size() == 1) {
+            return -1;
+        }
+        int min = Integer.MAX_VALUE, secondMin = Integer.MAX_VALUE;
+        for (Integer val : valSet) {
+            if (val < min) {
+                secondMin = min;
+                min = val;
+            } else if (val < secondMin) {
+                secondMin = val;
+            }
+        }
+        return min == secondMin ? -1 : secondMin;
+    }
+
+    private void l671dfs(TreeNode root, Set<Integer> valList) {
+        if (root == null) {
+            return;
+        }
+
+        valList.add(root.val);
+        l671dfs(root.left, valList);
+        l671dfs(root.right, valList);
+    }
+
+    private int l671dfs(TreeNode root, int min) {
+        if (root == null) {
+            return -1;
+        }
+
+        int leftSecondMin = l671dfs(root.left, min);
+        int rightSecondMin = l671dfs(root.right, min);
+
+        if (leftSecondMin == -1 && rightSecondMin == -1) {
+            return root.val;
+        }
+
+        int small = 0, big = 0;
+        if (leftSecondMin > rightSecondMin) {
+            big = leftSecondMin;
+            small = rightSecondMin;
+        } else {
+            small = leftSecondMin;
+            big = rightSecondMin;
+        }
+
+        return small > min ? small : big;
+    }
+
+    public int l258addDigits(int num) {
+        while (num / 10 != 0) {
+            int temp = num;
+            num = 0;
+            while (temp != 0) {
+                num += temp % 10;
+                temp /= 10;
+            }
+        }
+
+        return num % 10;
+    }
+
+
+    public static void main(String[] args) {
+        ListNode head = ListNode.buildListNode();
+        TreeNode root = TreeNode.buildTreeNode();
+        int[] nums = {1, 5, 2, 10, 3, 4, 6, 7, 8};
+
+        Solution solution = new Solution();
+        System.out.println(solution.l258addDigits(38));
     }
 
     private static void printMatrix(int[][] matrix) {

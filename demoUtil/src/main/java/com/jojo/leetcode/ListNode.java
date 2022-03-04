@@ -47,6 +47,20 @@ public class ListNode {
         System.out.println(valList);
     }
 
+    public static ListNode buildListNode() {
+        ListNode head = new ListNode(1);
+        ListNode node2 = new ListNode(1);
+        ListNode node3 = new ListNode(1);
+        ListNode node4 = new ListNode(1);
+        ListNode node5 = new ListNode(1);
+        head.next = node2;
+        node2.next = node3;
+        node3.next = node4;
+        node4.next = node5;
+
+        return head;
+    }
+
 
     public static void main(String[] args) {
         ListNode node = new ListNode(1);
