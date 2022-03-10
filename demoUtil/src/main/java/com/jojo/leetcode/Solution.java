@@ -1,5 +1,7 @@
 package com.jojo.leetcode;
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -1940,33 +1942,68 @@ class Solution {
     }
 
     public List<String> l22generateParenthesis(int n) {
-        if (n == 1) {
-            List<String> list = new ArrayList<>();
-            list.add("()");
-            return list;
+        // 单纯自己想的，一个效率比较低的版本
+//        if (n == 1) {
+//            List<String> list = new ArrayList<>();
+//            list.add("()");
+//            return list;
+//        }
+//
+//        Set<String> resultSet = new HashSet<>();
+//        List<String> sonParenthesisList = l22generateParenthesis(n - 1);
+//        for (String parenthesis : sonParenthesisList) {
+//            resultSet.add("()" + parenthesis);
+//            resultSet.add(parenthesis + "()");
+//            resultSet.add("(" + parenthesis + ")");
+//        }
+//
+//        for (int i = 1; i < n; i++) {
+//            int j = n - i;
+//            List<String> listI = l22generateParenthesis(j);
+//            List<String> listJ = l22generateParenthesis(i);
+//            for (String si : listI) {
+//                for (String sj : listJ) {
+//                    resultSet.add(si + sj);
+//                    resultSet.add(sj + si);
+//                }
+//            }
+//        }
+//
+//        return new ArrayList<>(resultSet);
+
+        int length = n * 2;
+        List<String> resultList = new ArrayList<>();
+
+        String parenthesis = "";
+        l22helper(resultList, length, parenthesis + "(");
+        l22helper(resultList, length, parenthesis + ")");
+
+        return resultList;
+    }
+
+    private void l22helper(List<String> resultList, int length, String str) {
+        if (str.length() == length) {
+            if (l22checkClosed(str)) {
+                resultList.add(str);
+            }
+            return;
         }
 
-        Set<String> resultSet = new HashSet<>();
-        List<String> sonParenthesisList = l22generateParenthesis(n - 1);
-        for (String parenthesis : sonParenthesisList) {
-            resultSet.add("()" + parenthesis);
-            resultSet.add(parenthesis + "()");
-            resultSet.add("(" + parenthesis + ")");
-        }
+        l22helper(resultList, length, str + "(");
+        l22helper(resultList, length, str + ")");
+    }
 
-        for (int i = 1; i < n; i++) {
-            int j = n - i;
-            List<String> listI = l22generateParenthesis(j);
-            List<String> listJ = l22generateParenthesis(i);
-            for (String si : listI) {
-                for (String sj : listJ) {
-                    resultSet.add(si + sj);
-                    resultSet.add(sj + si);
-                }
+    private boolean l22checkClosed(String parenthesis) {
+        int closed = 0, count = 0;
+        for (int i = 0; i < parenthesis.length(); i++) {
+            if (parenthesis.charAt(i) == '(') {
+                closed++;
+            } else if (parenthesis.charAt(i) == ')' && closed > 0) {
+                closed--;
+                count++;
             }
         }
-
-        return new ArrayList<>(resultSet);
+        return closed == 0 && count == (parenthesis.length() / 2);
     }
 
     public boolean l653findTarget(TreeNode root, int k) {
@@ -2071,14 +2108,141 @@ class Solution {
         return num % 10;
     }
 
+    public int[][] l661imageSmoother(int[][] img) {
+        int m = img.length, n = img[0].length;
+        if (m == 1 && n == 1) {
+            return img;
+        }
+
+        int[][] result = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                result[i][j] = this.l661smooth(img, i, j);
+            }
+        }
+        return result;
+    }
+
+    private int l661smooth(int[][] img, int i, int j) {
+        int m = img.length, n = img[0].length;
+        int sum = 0, count = 0;
+
+        if (i - 1 >= 0) {
+            if (j - 1 >= 0) {
+                sum += img[i - 1][j - 1];
+                count++;
+            }
+            if (j >= 0 && j < n) {
+                sum += img[i - 1][j];
+                count++;
+            }
+            if (j + 1 < n) {
+                sum += img[i - 1][j + 1];
+                count++;
+            }
+        }
+
+        if (i >= 0 && i < m) {
+            if (j - 1 >= 0) {
+                sum += img[i][j - 1];
+                count++;
+            }
+            if (j >= 0 && j < n) {
+                sum += img[i][j];
+                count++;
+            }
+            if (j + 1 < n) {
+                sum += img[i][j + 1];
+                count++;
+            }
+        }
+
+        if (i + 1 < m) {
+            if (j - 1 >= 0) {
+                sum += img[i + 1][j - 1];
+                count++;
+            }
+            if (j >= 0 && j < n) {
+                sum += img[i + 1][j];
+                count++;
+            }
+            if (j + 1 < n) {
+                sum += img[i + 1][j + 1];
+                count++;
+            }
+        }
+
+        return sum / count;
+    }
+
+    public int l674findLengthOfLCIS(int[] nums) {
+        if (nums.length == 1) {
+            return 1;
+        }
+
+        int maxLength = 0;
+        for (int i = 1; i < nums.length; ) {
+            // 找起点
+            while (i < nums.length && nums[i - 1] >= nums[i]) i++;
+
+            int length = 1;
+            while (i < nums.length && nums[i - 1] < nums[i]) {
+                length++;
+                i++;
+            }
+
+            maxLength = Math.max(maxLength, length);
+        }
+
+        return maxLength;
+    }
+
+    public int[] l2055platesBetweenCandles(String s, int[][] queries) {
+        int[] preSumArr = new int[s.length()];
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '*') {
+                count++;
+            }
+            preSumArr[i] = count;
+        }
+
+        int[] lArr = new int[s.length()];
+        for (int i = 0, temp = -1; i < s.length(); i++) {
+            if (s.charAt(i) == '|') {
+                temp = i;
+            }
+            lArr[i] = temp;
+        }
+
+        int[] answer = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            int leftPos = queries[i][0], rightPos = queries[i][1];
+
+            if (lArr[rightPos] == -1) {
+                answer[i] = 0;
+            } else if (lArr[leftPos] > 0 && lArr[rightPos] > 0) {
+                answer[i] = preSumArr[lArr[rightPos]] - preSumArr[lArr[leftPos]];
+            } else if (lArr[leftPos] == -1 && lArr[rightPos] > 0) {
+                while (lArr[leftPos] == -1) leftPos++;
+                answer[i] = lArr[leftPos] < lArr[rightPos] ? preSumArr[lArr[rightPos]] - preSumArr[lArr[leftPos]] : 0;
+            }
+        }
+
+        return answer;
+    }
 
     public static void main(String[] args) {
+        Solution solution = new Solution();
         ListNode head = ListNode.buildListNode();
         TreeNode root = TreeNode.buildTreeNode();
-        int[] nums = {1, 5, 2, 10, 3, 4, 6, 7, 8};
+        int[] nums = {1, 3, 3, 5, 4, 7};
 
-        Solution solution = new Solution();
-        System.out.println(solution.l258addDigits(38));
+        int[][] queries = {{1, 17}, {4, 5}, {14, 17}, {5, 11}, {15, 16}};
+        String s = "***|**|*****|**||**|*|***|**|*****|**||**|*";
+
+        System.out.println(JSON.toJSONString(solution.l2055platesBetweenCandles(s, queries)));
+
     }
 
     private static void printMatrix(int[][] matrix) {
