@@ -1,4 +1,4 @@
-package com.jojo.leetcode.philosophers;
+package com.jojo.leetcode.multiThread.philosophers;
 
 public class Fork {
 

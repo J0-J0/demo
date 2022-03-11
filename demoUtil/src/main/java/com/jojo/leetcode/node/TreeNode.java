@@ -1,15 +1,15 @@
-package com.jojo.leetcode;
+package com.jojo.leetcode.node;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
 
-    List<TreeNode> children;
+    public List<TreeNode> children;
 
     TreeNode(int x) {
         val = x;

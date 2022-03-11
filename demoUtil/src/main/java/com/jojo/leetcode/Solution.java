@@ -1,6 +1,8 @@
 package com.jojo.leetcode;
 
 import com.alibaba.fastjson.JSON;
+import com.jojo.leetcode.node.ListNode;
+import com.jojo.leetcode.node.TreeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;

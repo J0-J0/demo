@@ -1,4 +1,4 @@
-package com.jojo.leetcode.philosophers;
+package com.jojo.leetcode.multiThread.philosophers;
 
 import java.util.ArrayList;
 import java.util.List;

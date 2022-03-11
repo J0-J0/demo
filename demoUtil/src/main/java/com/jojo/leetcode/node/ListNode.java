@@ -1,4 +1,4 @@
-package com.jojo.leetcode;
+package com.jojo.leetcode.node;
 
 import com.google.common.collect.Lists;
 
