@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 默认刷题的类
+ */
 class Solution {
 
     /**
