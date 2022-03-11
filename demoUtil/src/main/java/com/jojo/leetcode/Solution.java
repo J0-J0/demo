@@ -2232,16 +2232,43 @@ class Solution {
         return answer;
     }
 
+    public int l16threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+
+        int result = 0, minDiffer = Integer.MAX_VALUE;
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            for (int j = i + 1, k = nums.length - 1; j < k; ) {
+                int sum = nums[i] + nums[j] + nums[k];
+
+                if (sum == target) {
+                    return target;
+                }
+
+                int differ = Math.abs(target - sum);
+                if (differ < minDiffer) {
+                    minDiffer = differ;
+                    result = sum;
+                }
+
+                if (sum >= target) {
+                    k--;
+                } else {
+                    j++;
+                }
+            }
+        }
+
+        return result;
+    }
+
     public static void main(String[] args) {
         Solution solution = new Solution();
         ListNode head = ListNode.buildListNode();
         TreeNode root = TreeNode.buildTreeNode();
-        int[] nums = {1, 3, 3, 5, 4, 7};
+        int[] nums = {0, 0, 0};
 
-        int[][] queries = {{1, 17}, {4, 5}, {14, 17}, {5, 11}, {15, 16}};
-        String s = "***|**|*****|**||**|*|***|**|*****|**||**|*";
-
-        System.out.println(JSON.toJSONString(solution.l2055platesBetweenCandles(s, queries)));
+        System.out.println(JSON.toJSONString(solution.l16threeSumClosest(nums, 1)));
 
     }
 
