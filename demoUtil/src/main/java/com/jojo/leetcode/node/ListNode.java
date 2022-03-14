@@ -47,18 +47,44 @@ public class ListNode {
         System.out.println(valList);
     }
 
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer(val + "");
+        while (next != null) {
+            sb.append("->").append(next.val);
+            next = next.next;
+        }
+        return sb.toString();
+    }
+
     public static ListNode buildListNode() {
-        ListNode head = new ListNode(1);
-        ListNode node2 = new ListNode(1);
-        ListNode node3 = new ListNode(1);
+        ListNode head = new ListNode(2);
+        ListNode node2 = new ListNode(4);
+        ListNode node3 = new ListNode(3);
         ListNode node4 = new ListNode(1);
         ListNode node5 = new ListNode(1);
         head.next = node2;
         node2.next = node3;
-        node3.next = node4;
-        node4.next = node5;
+//        node3.next = node4;
+//        node4.next = node5;
 
         return head;
+    }
+
+    public static ListNode buildListNode(int[] nums) {
+        ListNode result = new ListNode();
+
+        ListNode temp = result;
+        for (int i = 0; i < nums.length; i++) {
+            temp.val = nums[i];
+
+            if (i != nums.length - 1) {
+                temp.next = new ListNode();
+                temp = temp.next;
+            }
+        }
+
+        return result;
     }
 
 
