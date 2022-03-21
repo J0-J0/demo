@@ -223,19 +223,21 @@
         <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itext</artifactId>
-            <version>2.1.7</version>
         </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itext-asian</artifactId>
-            <version>5.2.0</version>
         </dependency>
         <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itext-rtf</artifactId>
-            <version>2.1.7</version>
         </dependency>
         <!--输出word包end-->
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
 
     </dependencies>
 

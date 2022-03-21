@@ -1,6 +1,5 @@
 package com.jojo.leetcode;
 
-import com.alibaba.fastjson.JSON;
 import com.jojo.leetcode.node.ListNode;
 import com.jojo.leetcode.node.TreeNode;
 
@@ -2267,13 +2266,31 @@ class Solution {
         return result;
     }
 
+    public String l606tree2str(TreeNode root) {
+        if (root == null) {
+            return "";
+        }
+
+        String answer = root.val + "";
+
+        String left = l606tree2str(root.left);
+        String right = l606tree2str(root.right);
+
+        if ("".equals(left) && "".equals(right)) {
+            return answer;
+        } else if (!"".equals(left) && "".equals(right)) {
+            return answer + "(" + left + ")";
+        } else {
+            return answer + "(" + left + ")" + "(" + right + ")";
+        }
+    }
+
     public static void main(String[] args) {
         Solution solution = new Solution();
-        ListNode head = ListNode.buildListNode();
         TreeNode root = TreeNode.buildTreeNode();
         int[] nums = {0, 0, 0};
 
-        System.out.println(JSON.toJSONString(solution.l16threeSumClosest(nums, 1)));
+        System.out.println();
 
     }
 

@@ -1,61 +1,47 @@
-package com.jojo.util.db;
+package com.jojo.db2word;
 
+import cn.hutool.db.Db;
+import cn.hutool.db.Entity;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Table;
 import com.lowagie.text.rtf.RtfWriter2;
-import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
-import java.util.Map;
 
+public class Db2WordMysql {
 
-@Service
-public class DataSourceDetailService {
+    public static String tableSql = "select table_name, table_comment from information_schema.tables where table_schema = ?";
+    public static String tableDetailSql = "SHOW FULL FIELDS FROM ";
 
-    private final DataSourceMapper dataSourceMapper;
+    public static void toWord(String schema, String outDir) throws Exception {
 
-    public DataSourceDetailService(DataSourceMapper dataSourceMapper) {
-        this.dataSourceMapper = dataSourceMapper;
-    }
+        List<Entity> tableEntityList = Db.use().query(tableSql, schema);
 
-    
-    public List<Map<String, Object>> getAllTableNames() {
-        return dataSourceMapper.getAllTableNames();
-    }
-
-    
-    public List<Map<String, Object>> getTableColumnDetail(String tableName) {
-        return dataSourceMapper.getTableColumnDetail(tableName);
-    }
-
-    
-    public void toWord(List<Map<String, Object>> tables) throws FileNotFoundException, DocumentException {
         // 创建word文档,并设置纸张的大小
         Document document = new Document(PageSize.A4);
         // 创建word文档
-        RtfWriter2.getInstance(document, new FileOutputStream("C:\\Workspace\\test\\dbDetail.doc"));
+        RtfWriter2.getInstance(document, new FileOutputStream(outDir));
         document.open();// 设置文档标题
         Paragraph p = new Paragraph("数据库表设计文档", new Font(Font.NORMAL, 24, Font.BOLD, new Color(0, 0, 0)));
         p.setAlignment(1);
         document.add(p);
 
         /* * 创建表格 通过查询出来的表遍历 */
-        for (int i = 0; i < tables.size(); i++) {
+        for (int i = 0; i < tableEntityList.size(); i++) {
             // 表名
-            String table_name = (String) tables.get(i).get("table_name");
+            String table_name = tableEntityList.get(i).getStr("table_name");
             // 表说明
-            String table_comment = tables.get(i).get("table_comment") == null ? "" : (String) tables.get(i).get("table_comment");
+            String table_comment = StringUtils.isBlank(tableEntityList.get(i).getStr("table_comment")) ? "" : tableEntityList.get(i).getStr("table_comment");
 
             //获取某张表的所有字段说明
-            List<Map<String, Object>> columns = this.getTableColumnDetail(table_name);
+            List<Entity> columnEntityList = Db.use().query(tableDetailSql + table_name);
             //构建表说明
             String all = "" + (i + 1) + ". 表名：" + table_name + " " + table_comment + "";
             //创建有6列的表格
@@ -90,13 +76,13 @@ public class DataSourceDetailService {
             table.endHeaders();// 表头结束
 
             // 表格的主体
-            for (int k = 0; k < columns.size(); k++) {
+            for (int k = 0; k < columnEntityList.size(); k++) {
                 //获取某表每个字段的详细说明
-                String Field = (String) columns.get(k).get("field");
-                String Type = (String) columns.get(k).get("type");
-                String Null = (String) columns.get(k).get("null");
-                String Key = (String) columns.get(k).get("key");
-                String Comment = (String) columns.get(k).get("comment");
+                String Field = columnEntityList.get(k).getStr("Field");
+                String Type = columnEntityList.get(k).getStr("Type");
+                String Null = columnEntityList.get(k).getStr("Null");
+                String Key = columnEntityList.get(k).getStr("Key");
+                String Comment = columnEntityList.get(k).getStr("Comment");
                 table.addCell((k + 1) + "");
                 table.addCell(Field);
                 table.addCell(Type);
@@ -113,14 +99,8 @@ public class DataSourceDetailService {
         document.close();
     }
 
-    public static void main(String[] args) {
-        String str = "select " +
-                "relname as table_name," +
-                "(select description from pg_description where objoid=oid and objsubid=0) as table_comment " +
-                "from pg_class " +
-                "where relkind ='r' and relname NOT LIKE 'pg%' " +
-                "AND relname NOT LIKE 'sql_%' AND relname NOT LIKE 'database%' and relname not like 'pay4u%'" +
-                "order by table_name;";
-        System.out.println(str);
+    public static void main(String[] args) throws Exception {
+        String outDir = "C:\\Workspace\\test\\dbDetail.doc";
+        toWord("bookMessage_st", outDir);
     }
 }

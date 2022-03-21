@@ -1,4 +1,4 @@
-package com.jojo.util.db;
+package com.jojo.db2word;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

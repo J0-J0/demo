@@ -99,14 +99,147 @@ public class SolutionHot100 {
         return val;
     }
 
+    public int h3lengthOfLongestSubstring(String s) {
+        // 成功，就是某种角度，这也算是暴力法
+        int length = 0;
+        int start = 0;
+        for (int i = 1; i < s.length(); i++) {
+            for (int j = start; j < i; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    length = Math.max(length, i - start);
+                    start = j + 1;
+                    break;
+                }
+            }
+        }
+
+        return Math.max(length, s.length() - start);
+    }
+
+    public double h4findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int m = nums1.length, n = nums2.length;
+        int length = m + n;
+
+        // 归并，空间复杂度O(m+n)
+        int[] mergedArr = new int[length];
+        int count = 0, i = 0, j = 0;
+        while (i < m && j < n) {
+            if (nums1[i] <= nums2[j]) {
+                mergedArr[count++] = nums1[i++];
+            } else {
+                mergedArr[count++] = nums2[j++];
+            }
+        }
+        while (i < m) {
+            mergedArr[count++] = nums1[i++];
+        }
+        while (j < n) {
+            mergedArr[count++] = nums2[j++];
+        }
+        int middle = length / 2;
+        return length % 2 != 0 ? mergedArr[middle] : ((double) mergedArr[middle - 1] + (double) mergedArr[middle]) / 2d;
+    }
+
+    public String h5longestPalindrome(String s) {
+        int length = s.length();
+        if (length < 2) {
+            return s;
+        }
+
+        boolean[][] dp = new boolean[length][length];
+        // 长度为1的子字符串，全都是回文串
+        for (int i = 0; i < length; i++) {
+            dp[i][i] = true;
+        }
+        // 进入大的循环
+        int begin = 0, maxLength = 1;
+        for (int len = 2; len <= length; len++) {
+            for (int i = 0; i <= length - len; i++) {
+                int j = i + len - 1;
+                if (len == 2) {
+                    dp[i][j] = (s.charAt(i) == s.charAt(j));
+                } else {
+                    dp[i][j] = (s.charAt(i) == s.charAt(j)) && dp[i + 1][j - 1];
+                }
+
+                if (dp[i][j]) {
+                    if (len > maxLength) {
+                        maxLength = len;
+                        begin = i;
+                    }
+                }
+            }
+        }
+        return s.substring(begin, begin + maxLength);
+    }
+
+    public boolean h6isMatch(String s, String p) {
+        int i = 0, j = 0;
+        int sLen = s.length(), pLen = p.length();
+        for (; i < sLen; i++, j++) {
+            if (i == pLen) {
+                return false;
+            }
+
+            if (p.charAt(j) == '*') {
+                while (i < sLen && (p.charAt(j - 1) == '.' || s.charAt(i) == p.charAt(j - 1))) {
+                    i++;
+                }
+                continue;
+            }
+
+            if (p.charAt(j) == '.' || s.charAt(i) == p.charAt(j)) {
+                continue;
+            }
+        }
+
+        if (j < pLen) {
+            if (p.charAt(j - 1) != '*') {
+                if ((p.charAt(j) <= 'z' && p.charAt(j) >= 'a') || p.charAt(j) == '.') {
+                    return false;
+                }
+                // 执行到此处，Pi只可能是 *，但还要判断长度
+                if (p.length() - j == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            // 如果说，前一个字符是 *
+            if (p.charAt(j) != '.' || p.charAt(j) != s.charAt(i - 1)) {
+                return false;
+            }
+
+            if (s.length() - j + 1 <= p.length() - j) {
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+
     public static void main(String[] args) {
-        int[] nums = {3, 3};
-        ListNode listNode = ListNode.buildListNode(new int[]{2,4,3});
-        ListNode listNode2 = ListNode.buildListNode(new int[]{5,6,4});
+        int[] nums = {1, 3};
+        int[] nums2 = {2};
+        String str = "babad";
+        String str2 = "babad";
+        ListNode listNode = ListNode.buildListNode(new int[]{2, 4, 3});
+        ListNode listNode2 = ListNode.buildListNode(new int[]{5, 6, 4});
+
 
         SolutionHot100 solution = new SolutionHot100();
+        System.out.println(solution.h6isMatch("str", "str"));// true
+        System.out.println(solution.h6isMatch("str", "strwe"));// false
+        System.out.println(solution.h6isMatch("str", "str."));// false
 
-        System.out.println(solution.h2addTwoNumbers(listNode, listNode2));
+        // 前一个正则字符不为*
+        System.out.println(solution.h6isMatch("str", "str*"));// true
+
+        // 当前正则字符为*
+        System.out.println(solution.h6isMatch("strr", "str*."));// true
+        System.out.println(solution.h6isMatch("strrr", "str*rr"));// true
     }
 
 }
