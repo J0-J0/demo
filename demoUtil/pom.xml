@@ -68,6 +68,11 @@
         </dependency>
         <!-- *****************************mysql connector end************************ -->
 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
 
         <!-- *****************************mybatis start************************ -->
         <dependency>

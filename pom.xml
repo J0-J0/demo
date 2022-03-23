@@ -141,6 +141,12 @@
             </dependency>
             <!-- *****************************mysql connector end************************ -->
 
+            <!--postgresql-->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.2.2</version>
+            </dependency>
 
             <!-- *****************************mybatis start************************ -->
             <dependency>
@@ -561,6 +567,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.7.0</version>
                     <configuration>
+                        <encoding>UTF-8</encoding>
                         <source>${source.jdk.version}</source>
                         <target>${target.jdk.version}</target>
                     </configuration>

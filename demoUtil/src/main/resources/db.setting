@@ -1,8 +1,8 @@
 ## db.setting文件
 
-url=jdbc:mysql://112.80.18.150:13306/bookmessage_st?useUnicode=true&characterEncoding=utf-8&useSSL=false
-user=mmlib
-pass=Jiatu@2020
+url=jdbc:postgresql://172.18.1.105:5432/lms_jiatu
+user=admin_obs
+pass=pw_obs
 
 ## 可选配置
 # 是否在日志中显示执行的SQL

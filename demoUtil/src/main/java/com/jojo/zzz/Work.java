@@ -1,24 +1,52 @@
 
 package com.jojo.zzz;
 
-import cn.hutool.db.Db;
-import cn.hutool.db.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Work {
     private static final Logger logger = LoggerFactory.getLogger(Work.class);
 
-    public static void main(String[] args) throws Exception {
-        List<Entity> entityList = Db.use().query("select table_name AS table_name, table_comment AS table_comment from information_schema.tables where table_schema = ?",
-                "bookmessage_st");
+    HashMap<Integer, Integer> map = new HashMap<>();
 
-        for (Entity entity : entityList) {
-            System.out.println("table_name: " + entity.getStr("table_name"));
-            System.out.println("table_comment: " + entity.getStr("table_comment"));
+    public static void main(String[] args) throws Exception {
+        Random random = new Random();
+        Work work = new Work();
+        for (int i = 0; i < 250; i++) {
+            work.map.put(i, i);
+        }
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 250; i < 500; i++) {
+                    work.map.put(i, i);
+                }
+            }
+        });
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 250; i++) {
+                    work.map.put(i, i);
+                }
+            }
+        });
+
+        executorService.shutdown();
+
+        Thread.sleep(1000);
+
+        for (Map.Entry<Integer, Integer> entry : work.map.entrySet()) {
+            System.out.println(entry.getKey()+":"+entry.getValue());
         }
     }
 

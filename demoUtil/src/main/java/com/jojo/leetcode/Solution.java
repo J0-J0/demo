@@ -2285,12 +2285,36 @@ class Solution {
         }
     }
 
+    public int l682calPoints(String[] ops) {
+        int answer = 0;
+
+        int[] record = new int[ops.length];
+        for (int i = 0, j = 0; i < ops.length; i++) {
+            if (ops[i].equals("+")) {
+                record[j] = record[j - 1] + record[j - 2];
+                answer += record[j++];
+            } else if (ops[i].equals("D")) {
+                record[j] = record[j - 1] * 2;
+                answer += record[j++];
+            } else if (ops[i].equals("C")) {
+                answer -= record[j - 1];
+                j--;
+            } else {
+                record[j] = Integer.parseInt(ops[i]);
+                answer += record[j++];
+            }
+        }
+
+        return answer;
+    }
+
     public static void main(String[] args) {
         Solution solution = new Solution();
         TreeNode root = TreeNode.buildTreeNode();
         int[] nums = {0, 0, 0};
+        String[] ops = {"1"};
 
-        System.out.println();
+        System.out.println(solution.l682calPoints(ops));
 
     }
 
