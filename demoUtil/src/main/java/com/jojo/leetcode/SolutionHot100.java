@@ -174,50 +174,54 @@ public class SolutionHot100 {
     }
 
     public boolean h6isMatch(String s, String p) {
-        int i = 0, j = 0;
-        int sLen = s.length(), pLen = p.length();
-        for (; i < sLen; i++, j++) {
-            if (i == pLen) {
-                return false;
-            }
 
-            if (p.charAt(j) == '*') {
-                while (i < sLen && (p.charAt(j - 1) == '.' || s.charAt(i) == p.charAt(j - 1))) {
-                    i++;
-                }
-                continue;
-            }
+        // 枚举可能性，但代码已经越写越复杂了，写出来估计也是错的，放弃看题解
 
-            if (p.charAt(j) == '.' || s.charAt(i) == p.charAt(j)) {
-                continue;
-            }
-        }
+//        int i = 0, j = 0;
+//        int sLen = s.length(), pLen = p.length();
+//        for (; i < sLen; i++, j++) {
+//            if (i == pLen) {
+//                return false;
+//            }
+//
+//            if (p.charAt(j) == '*') {
+//                while (i < sLen && (p.charAt(j - 1) == '.' || s.charAt(i) == p.charAt(j - 1))) {
+//                    i++;
+//                }
+//                continue;
+//            }
+//
+//            if (p.charAt(j) == '.' || s.charAt(i) == p.charAt(j)) {
+//                continue;
+//            }
+//        }
+//
+//        if (j < pLen) {
+//            if (p.charAt(j - 1) != '*') {
+//                if ((p.charAt(j) <= 'z' && p.charAt(j) >= 'a') || p.charAt(j) == '.') {
+//                    return false;
+//                }
+//                // 执行到此处，Pi只可能是 *，但还要判断长度
+//                if (p.length() - j == 1) {
+//                    return true;
+//                } else {
+//                    return false;
+//                }
+//            }
+//
+//            // 如果说，前一个字符是 *
+//            if (p.charAt(j) != '.' || p.charAt(j) != s.charAt(i - 1)) {
+//                return false;
+//            }
+//
+//            if (s.length() - j + 1 <= p.length() - j) {
+//                return false;
+//            }
+//        }
+//
+//        return true;
 
-        if (j < pLen) {
-            if (p.charAt(j - 1) != '*') {
-                if ((p.charAt(j) <= 'z' && p.charAt(j) >= 'a') || p.charAt(j) == '.') {
-                    return false;
-                }
-                // 执行到此处，Pi只可能是 *，但还要判断长度
-                if (p.length() - j == 1) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            // 如果说，前一个字符是 *
-            if (p.charAt(j) != '.' || p.charAt(j) != s.charAt(i - 1)) {
-                return false;
-            }
-
-            if (s.length() - j + 1 <= p.length() - j) {
-                return false;
-            }
-        }
-
-
-        return true;
+        return false;
     }
 
     public static void main(String[] args) {

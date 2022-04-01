@@ -1,4 +1,4 @@
-package com.jojo.leetcode;
+package com.jojo.leetcode.other;
 
 public class L303NumArray {
 

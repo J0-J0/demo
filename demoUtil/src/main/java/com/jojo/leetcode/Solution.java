@@ -2308,13 +2308,101 @@ class Solution {
         return answer;
     }
 
+    public boolean l693hasAlternatingBits(int n) {
+        if (n == 1) {
+            return false;
+        }
+
+        int last = -1;
+        while (n != 0) {
+            int remainer = n % 2;
+            if (remainer != last) {
+                last = remainer;
+            } else if (remainer == last) {
+                return false;
+            }
+
+            n /= 2;
+        }
+        return true;
+    }
+
+    public int l696countBinarySubstrings(String s) {
+        char curChar = s.charAt(0);
+        int curCount = 0, lastCount = 0;
+        int answer = 0;
+
+        for (char c : s.toCharArray()) {
+            if (c == curChar) {
+                curCount++;
+            } else {
+                answer += Math.min(curCount, lastCount);
+                lastCount = curCount;
+                curCount = 1;
+                curChar = c;
+            }
+        }
+        answer += Math.min(curCount, lastCount);
+
+        return answer;
+    }
+
+    public List<Integer> l728selfDividingNumbers(int left, int right) {
+        List<Integer> answerList = new ArrayList<>();
+        A:
+        for (int i = left; i <= right; i++) {
+            int temp = i;
+            while (temp > 0) {
+                int remainer = temp % 10;
+                if (remainer == 0 || i % remainer != 0) {
+                    continue A;
+                }
+                temp /= 10;
+            }
+            answerList.add(i);
+        }
+        return answerList;
+    }
+
+    public boolean l367isPerfectSquare(int num) {
+        for (int left = 0, right = num; left <= right; ) {
+            int divider = (right + left) / 2;
+            long temp = (long) divider * divider;
+            if (num == temp) {
+                return true;
+            }
+
+            if (temp > num) {
+                right = divider - 1;
+            } else {
+                left = divider + 1;
+            }
+        }
+        return false;
+
+//        int left = 0, right = num;
+//        while (left <= right) {
+//            int mid = (right - left) / 2 + left;
+//            long square = (long) mid * mid;
+//            if (square < num) {
+//                left = mid + 1;
+//            } else if (square > num) {
+//                right = mid - 1;
+//            } else {
+//                return true;
+//            }
+//        }
+//        return false;
+    }
+
     public static void main(String[] args) {
         Solution solution = new Solution();
         TreeNode root = TreeNode.buildTreeNode();
         int[] nums = {0, 0, 0};
         String[] ops = {"1"};
 
-        System.out.println(solution.l682calPoints(ops));
+
+        System.out.println(solution.l367isPerfectSquare(2147483647));
 
     }
 
