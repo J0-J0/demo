@@ -2395,14 +2395,70 @@ class Solution {
 //        return false;
     }
 
+    public char l744nextGreatestLetter(char[] letters, char target) {
+        for (int i = 0; i < letters.length; i++) {
+            if (letters[i] > target) {
+                return letters[i];
+            }
+        }
+        return letters[0];
+    }
+
+    public int l697findShortestSubArray(int[] nums) {
+        // 寻找最大的度
+        int maxDu = 0;
+        Map<Integer, Integer> valCountMap = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            Integer du = valCountMap.getOrDefault(nums[i], 0);
+            du++;
+            valCountMap.put(nums[i], du);
+            maxDu = Math.max(du, maxDu);
+        }
+        // 特殊值直接返回
+        if (maxDu == 1) {
+            return 1;
+        } else if (maxDu == nums.length) {
+            return nums.length;
+        }
+
+        // 最大度有哪些值
+        List<Integer> numList = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : valCountMap.entrySet()) {
+            if (entry.getValue() == maxDu) {
+                numList.add(entry.getKey());
+            }
+        }
+
+        // 寻找最小值
+        int minLength = nums.length;
+        for (Integer num : numList) {
+            int maxDuCopy = maxDu, tempLength = 0;
+            for (int i = 0; maxDuCopy != 0; i++) {
+                if (tempLength == 0 && nums[i] == num) {
+                    tempLength++;
+                    maxDuCopy--;
+                    continue;
+                }
+                if (tempLength != 0) {
+                    tempLength++;
+                }
+                if (nums[i] == num) {
+                    maxDuCopy--;
+                }
+            }
+            minLength = Math.min(minLength, tempLength);
+        }
+
+        return minLength;
+    }
+
     public static void main(String[] args) {
         Solution solution = new Solution();
-        TreeNode root = TreeNode.buildTreeNode();
-        int[] nums = {0, 0, 0};
+        int[] nums = {1, 2, 2, 3, 1, 4, 2};
         String[] ops = {"1"};
 
 
-        System.out.println(solution.l367isPerfectSquare(2147483647));
+        System.out.println(solution.l697findShortestSubArray(nums));
 
     }
 

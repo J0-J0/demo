@@ -105,41 +105,7 @@ public class TreeNode {
         return Math.max(1 + findDepth(root.left), 1 + findDepth(root.right));
     }
 
-    public static TreeNode buildTreeNode() {
-        // [1, 1,3, 1,1,3,4, 3,1,1,1,3,8,4,8, 3,3,1,6,2,1]
-        TreeNode head = new TreeNode(1);
-        head.left = new TreeNode(1);
-        head.right = new TreeNode(3);
-
-        head.left.left = new TreeNode(1);
-        head.left.right = new TreeNode(1);
-        head.right.left = new TreeNode(3);
-        head.right.right = new TreeNode(4);
-
-        head.left.left.left = new TreeNode(3);
-        head.left.left.right = new TreeNode(1);
-        head.left.right.left = new TreeNode(1);
-        head.left.right.right = new TreeNode(1);
-        head.right.left.left = new TreeNode(3);
-        head.right.left.right = new TreeNode(8);
-        head.right.right.left = new TreeNode(4);
-        head.right.right.right = new TreeNode(8);
-
-        head.left.left.left.left = new TreeNode(3);
-        head.left.left.left.right = new TreeNode(3);
-        head.left.left.right.left = new TreeNode(1);
-        head.left.left.right.right = new TreeNode(6);
-        head.left.right.left.left = new TreeNode(2);
-        head.left.right.left.right = new TreeNode(1);
-
-        return head;
-    }
-
     public static void main(String[] args) {
-        TreeNode root = buildTreeNode();
-        System.out.println(findDepth(root));
-
-        printBinaryTree(root);
 
     }
 }
