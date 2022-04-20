@@ -1,5 +1,6 @@
 package com.jojo.util;
 
+import cn.hutool.http.HttpUtil;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharSink;
 import com.google.common.io.CharSource;
@@ -220,9 +221,11 @@ public class FileUtil {
             file.createNewFile();
             logger.error(fileName + "文件创建完毕");
 
-            // 保存数据
-            byte[] arr = IOUtils.toByteArray(new URL(url));
-            Files.write(arr, file);
+            // 这段代码没办法处理https
+//            byte[] arr = IOUtils.toByteArray(new URL(url));
+//            Files.write(arr, file);
+
+            HttpUtil.downloadFile(url, fileName);
             logger.error(fileName + "数据填充完毕");
         } catch (Exception e) {
             logger.error("创建文件失败, url：{}，filename：{}", url, fileName);

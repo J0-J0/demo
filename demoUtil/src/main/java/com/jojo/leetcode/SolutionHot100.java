@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SolutionHot100 {
 
-    public int[] h1twoSum(int[] nums, int target) {
+    public int[] h1L1twoSum(int[] nums, int target) {
         // 暴力做法，没什么意义
 //        for (int i = 0; i < nums.length - 1; i++) {
 //            for (int j = i + 1; j < nums.length; j++) {
@@ -32,7 +32,7 @@ public class SolutionHot100 {
         return new int[2];
     }
 
-    public ListNode h2addTwoNumbers(ListNode l1, ListNode l2) {
+    public ListNode h2L2addTwoNumbers(ListNode l1, ListNode l2) {
         // 倒序，意味着，第一位是个位，第二位是十位，第三位是百位
         // while循环遍历链表，生成数字
         // while循环遍历sum，获得结果链表
@@ -99,7 +99,7 @@ public class SolutionHot100 {
         return val;
     }
 
-    public int h3lengthOfLongestSubstring(String s) {
+    public int h3L3lengthOfLongestSubstring(String s) {
         // 成功，就是某种角度，这也算是暴力法
         int length = 0;
         int start = 0;
@@ -116,7 +116,7 @@ public class SolutionHot100 {
         return Math.max(length, s.length() - start);
     }
 
-    public double h4findMedianSortedArrays(int[] nums1, int[] nums2) {
+    public double h4L4findMedianSortedArrays(int[] nums1, int[] nums2) {
         int m = nums1.length, n = nums2.length;
         int length = m + n;
 
@@ -140,7 +140,7 @@ public class SolutionHot100 {
         return length % 2 != 0 ? mergedArr[middle] : ((double) mergedArr[middle - 1] + (double) mergedArr[middle]) / 2d;
     }
 
-    public String h5longestPalindrome(String s) {
+    public String h5L5longestPalindrome(String s) {
         int length = s.length();
         if (length < 2) {
             return s;
@@ -173,7 +173,7 @@ public class SolutionHot100 {
         return s.substring(begin, begin + maxLength);
     }
 
-    public boolean h6isMatch(String s, String p) {
+    public boolean h6L10isMatch(String s, String p) {
 
         // 枚举可能性，但代码已经越写越复杂了，写出来估计也是错的，放弃看题解
 
@@ -224,26 +224,116 @@ public class SolutionHot100 {
         return false;
     }
 
-    public static void main(String[] args) {
-        int[] nums = {1, 3};
-        int[] nums2 = {2};
-        String str = "babad";
-        String str2 = "babad";
-        ListNode listNode = ListNode.buildListNode(new int[]{2, 4, 3});
-        ListNode listNode2 = ListNode.buildListNode(new int[]{5, 6, 4});
+    public int h7L11maxArea(int[] height) {
+        int maxArea = 0;
+        for (int i = 0, j = height.length - 1; i < j; ) {
+            int area = (j - i) * Math.min(height[i], height[j]);
+            maxArea = Math.max(area, maxArea);
 
+            if (height[i] <= height[j]) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+        return maxArea;
+    }
+
+    /**
+     * 这个不是说代码有多难写，就是个思路问题，所以说，人和人的脑子，真的不一样
+     *
+     * @param nums
+     */
+    public void h31nextPermutation(int[] nums) {
+        if (nums.length == 1) {
+            return;
+        }
+
+        int i = nums.length - 2;
+        for (; i >= 0; i--) {
+            if (nums[i + 1] > nums[i]) {
+                break;
+            }
+        }
+
+        if (i < 0) {
+            h31reverse(nums, 0);
+            return;
+        }
+
+        int j = nums.length - 1;
+        for (; j > i; j--) {
+            if (nums[j] > nums[i]) {
+                break;
+            }
+        }
+
+        int temp = nums[j];
+        nums[j] = nums[i];
+        nums[i] = temp;
+
+        h31reverse(nums, i + 1);
+    }
+
+    private void h31reverse(int[] nums, int start) {
+        for (int end = nums.length - 1; start <= end; start++, end--) {
+            int temp = nums[end];
+            nums[end] = nums[start];
+            nums[start] = temp;
+        }
+    }
+
+    /**
+     * 实在是理解不了题意
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int h33search(int[] nums, int target) {
+//        for (int i = 0; i < nums.length; i++) {
+//            if (nums[i] == target) {
+//                return i;
+//            }
+//        }
+//        return -1;
+
+        if (nums.length == 1) {
+            return target == nums[0] ? 0 : -1;
+        }
+
+        if (target < nums[0]) {
+            // 从尾往头遍历
+            for (int i = nums.length - 1; i >= 0; i--) {
+                if (nums[i] == target) {
+                    return i;
+                }
+                if (nums[i - 1] > nums[i]) {
+                    break;
+                }
+            }
+        } else if (target > nums[0]) {
+            for (int i = 0; i < nums.length; i++) {
+                if (nums[i] == target) {
+                    return i;
+                }
+                if (nums[i] > nums[i + 1]) {
+                    break;
+                }
+            }
+        } else {
+            return 0;
+        }
+
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {4, 5, 6, 7, 0, 1, 2};
 
         SolutionHot100 solution = new SolutionHot100();
-        System.out.println(solution.h6isMatch("str", "str"));// true
-        System.out.println(solution.h6isMatch("str", "strwe"));// false
-        System.out.println(solution.h6isMatch("str", "str."));// false
 
-        // 前一个正则字符不为*
-        System.out.println(solution.h6isMatch("str", "str*"));// true
-
-        // 当前正则字符为*
-        System.out.println(solution.h6isMatch("strr", "str*."));// true
-        System.out.println(solution.h6isMatch("strrr", "str*rr"));// true
+        System.out.println(solution.h33search(nums, 7));
     }
 
 }

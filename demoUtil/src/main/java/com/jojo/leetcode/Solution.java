@@ -2452,23 +2452,39 @@ class Solution {
         return minLength;
     }
 
+    public TreeNode l700searchBST(TreeNode root, int val) {
+        if (root == null || root.val == val) {
+            return root;
+        }
+
+        TreeNode left = l700searchBST(root.left, val);
+        TreeNode right = l700searchBST(root.right, val);
+
+        return left != null ? left : right;
+    }
+
+    public int l804uniqueMorseRepresentations(String[] words) {
+        Set<String> answerSet = new HashSet<>();
+        for (String word : words) {
+            String morse = "";
+            for (char c : word.toCharArray()) {
+                morse += l804MorseCode[c - 'a'];
+            }
+            answerSet.add(morse);
+        }
+        return answerSet.size();
+    }
+
+    private String[] l804MorseCode = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..",
+            ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-",
+            ".--", "-..-", "-.--", "--.."};
+
     public static void main(String[] args) {
         Solution solution = new Solution();
         int[] nums = {1, 2, 2, 3, 1, 4, 2};
         String[] ops = {"1"};
 
-
         System.out.println(solution.l697findShortestSubArray(nums));
 
     }
-
-    private static void printMatrix(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(" " + matrix[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
 }

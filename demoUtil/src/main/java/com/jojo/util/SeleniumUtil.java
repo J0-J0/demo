@@ -51,7 +51,7 @@ public class SeleniumUtil {
 
     public static void main(String[] args) {
         WebDriver webDriver = getWebDriver();
-        webDriver.get("https://www.ishuhui.com/comics/anime/53");
+        webDriver.get("https://www.webmota.com/comic/chapter/zhabixiaoxin-jiujingyiren/0_0.html");
         System.out.println(webDriver.getPageSource());
     }
 }

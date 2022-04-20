@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +41,8 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.jojo.util.http.HttpConstant.*;
+import static com.jojo.util.http.HttpConstant.ATTR_href;
+import static com.jojo.util.http.HttpConstant.TAG_a;
 
 /**
  * 开心就好
@@ -70,9 +73,7 @@ public class MangaCrawler {
      */
     public static final String PATH_OF_TITLE_AND_URL = "D:\\Workspace\\test\\manga\\titleAndUrl.txt";
 
-    public static final File FILE_OF_TITLE_AND_URL = new File(PATH_OF_TITLE_AND_URL);
-
-    public static final String BASE_SAVE_DIRECTORY = "D:\\Workspace\\test\\manga\\";
+    public static String BASE_SAVE_DIRECTORY = "D:\\Workspace\\test\\manga\\";
 
     private static Logger logger = LoggerFactory.getLogger(MangaCrawler.class);
 
@@ -230,6 +231,7 @@ public class MangaCrawler {
      * @param domainName
      * @throws Exception
      */
+    @Deprecated
     public static void downMangaFromFeiWan(String domainName) throws Exception {
         List<String> mangaUrlList = getMangaUrlFromFeiWan(domainName);
         Map<String, List<String>> allPicUrlMap = getAllPicUrlFromFeiWan(mangaUrlList);
@@ -242,6 +244,7 @@ public class MangaCrawler {
      * @throws Exception
      * @throws FileNotFoundException
      */
+    @Deprecated
     public static void downMangaFromDMZJ() throws Exception {
         String filepath = "C:\\Users\\Administrator\\Desktop\\新建文本文档.txt";
         Map<String, String> titleAndUrl = getTitleAndUrlFromFile(filepath);
@@ -274,6 +277,7 @@ public class MangaCrawler {
      * @param pageFlag 是否遍历分页
      * @throws Exception
      */
+    @Deprecated
     public static void downMangaFromTieBa(boolean pageFlag) throws Exception {
         Map<String, String> titleAndUrl = getTitleAndUrlFromFile(PATH_OF_TITLE_AND_URL);
 
@@ -299,7 +303,8 @@ public class MangaCrawler {
      * @return
      * @throws IOException
      */
-    public static List<String> getPicUrlFromTieBa(String url, boolean pageFlag) throws IOException {
+    @Deprecated
+    private static List<String> getPicUrlFromTieBa(String url, boolean pageFlag) throws IOException {
         List<Element> elementList = Lists.newArrayList();
         int page = 1;// 起始页
         int shutdownCount = 0;// 终结次数
@@ -362,6 +367,7 @@ public class MangaCrawler {
      * @param regex
      * @throws Exception
      */
+    @Deprecated
     public static void sis01(String regex) throws Exception {
         String content = FileUtil.getContentFromFile(PATH_OF_TITLE_AND_URL);
         List<String> urlList = RegexUtil.getMatchedString(content, regex);
@@ -377,57 +383,7 @@ public class MangaCrawler {
         saveToLocal(allPicUrlMap);
     }
 
-    /**
-     * 爬《我的英雄学院》，没有重用性，所以是private
-     *
-     * @param url 万物起源，思路是这样的，尝试找“下一页”的a标签，没有就找“下一篇”<br>
-     *            下一页与无下一页
-     * @throws Exception
-     */
-    private static void getMyHero(String url) throws Exception {
-        WebDriver webDriver = SeleniumUtil.getWebDriver();
-        webDriver.get(url);
-
-    }
-
-    private static void getMyHero(int i) throws Exception {
-        String hua = i + "";
-        if (i < 10) {
-            hua = "0" + i;
-        }
-
-        String url = "https://www.myherocn.com/manhua/" + hua + ".shtml";
-        WebDriver driver = SeleniumUtil.getWebDriver();
-        driver.get(url);
-
-        List<WebElement> elementList = driver.findElements(By.tagName(TAG_img));
-        if (CollectionUtils.isEmpty(elementList)) {
-            logger.error("没有获取到图片标签");
-            return;
-        }
-
-        // 某一话的map
-        Map<String, List<String>> huaMap = Maps.newHashMap();
-        List<String> list = Lists.newArrayList();
-
-        for (WebElement webElement : elementList) {
-            String src = webElement.getAttribute(ATTR_src);
-            logger.error("图片来源为：{}", src);
-            if (StringUtils.startsWith(src, "http://www.myherocn.com/uploads/allimg")) {
-                logger.error("加入");
-                list.add(src);
-            } else {
-                logger.error("不加入");
-            }
-        }
-
-        Document document = Jsoup.parse(driver.getPageSource());
-        huaMap.put(document.title(), list);
-
-        driver.close();
-        saveToLocal(huaMap);
-    }
-
+    @Deprecated
     public static void manhuadbDownSingleChapter(String baseUrl, String baseDir, int pages) {
         ExecutorService executorService = Executors.newFixedThreadPool(20);
         for (int i = 1; i < pages; i++) {
@@ -450,6 +406,7 @@ public class MangaCrawler {
         executorService.shutdown();
     }
 
+    @Deprecated
     private static void manhuadbDownSingleImg(String url, int seq, String baseDir) throws IOException {
         logger.error("开始处理{}", url);
         Document document = Jsoup.parse(new URL(url), 60 * 1000);
@@ -472,15 +429,13 @@ public class MangaCrawler {
     }
 
     /**
-     *
      * @param baseDirectory
      * @param url
      * @throws IOException
      */
+    @Deprecated
     public static void downMangaFromOnePiece(String baseDirectory, String url) throws IOException {
         Document document = Jsoup.connect(url).execute().parse();
-
-        String mangaTitle = document.title().replaceFirst("海贼", "海賊");
 
         Elements imgElementList = document.getElementsByTag("img");
         if (CollectionUtils.isEmpty(imgElementList)) {
@@ -497,7 +452,7 @@ public class MangaCrawler {
         }
 
         // 创建文件夹下载图片
-        String chapterDir = baseDirectory + File.separator + mangaTitle;
+        String chapterDir = baseDirectory + File.separator + "海贼";
         Set<Entry<String, String>> imgUrlEntrySet = imgUrlMap.entrySet();
         for (Entry<String, String> imgUrlEntry : imgUrlEntrySet) {
             String imgUrl = imgUrlEntry.getValue();
@@ -509,10 +464,28 @@ public class MangaCrawler {
     }
 
     public static void main(String[] args) throws Exception {
-        String baseDirectory = "C:\\迅雷下载";
-        String url = "https://one-piece.cn/post/10976/";
-        downMangaFromOnePiece(baseDirectory, url);
+        BASE_SAVE_DIRECTORY = "D:\\看的\\漫画\\蜡笔小新\\";
+        WebDriver webDriver = SeleniumUtil.getWebDriver();
 
+        for (int i = 45; i < 51; i++) {
+            String url = "https://www.webmota.com/comic/chapter/zhabixiaoxin-jiujingyiren/0_" + i + ".html";
+            webDriver.get(url);
+
+            Document document = Jsoup.parse(webDriver.getPageSource());
+            String title = webDriver.getTitle();
+
+            Map<String, List<String>> volumnPicUrlListMap = new HashMap<>();
+            List<String> picUrlList = new ArrayList<>();
+            Elements imgList = document.getElementsByTag("img");
+            for (Element img : imgList) {
+                picUrlList.add(img.attr("src"));
+            }
+            volumnPicUrlListMap.put(title, picUrlList);
+
+            saveToLocalWithOriginName(volumnPicUrlListMap);
+        }
+
+        webDriver.close();
     }
 
 }
