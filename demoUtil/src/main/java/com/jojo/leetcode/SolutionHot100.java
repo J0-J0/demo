@@ -1,8 +1,11 @@
 package com.jojo.leetcode;
 
 import com.jojo.leetcode.node.ListNode;
+import com.jojo.leetcode.other.Nums;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SolutionHot100 {
@@ -328,12 +331,114 @@ public class SolutionHot100 {
         return -1;
     }
 
-    public static void main(String[] args) {
-        int[] nums = {4, 5, 6, 7, 0, 1, 2};
 
+    public int[] h34searchRange(int[] nums, int target) {
+        int start = -1, end = -1;
+        if (nums.length == 0) {
+            return new int[]{start, end};
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == target) {
+                start = i;
+                i++;
+                while (i < nums.length && nums[i] == target) {
+                    i++;
+                }
+                end = i - 1;
+                break;
+            }
+        }
+
+        return new int[]{start, end};
+    }
+
+
+    public List<List<Integer>> h39combinationSum(int[] candidates, int target) {
+        h39dfs(candidates, 0, target, new ArrayList<>());
+        return h39answer;
+    }
+
+    private List<List<Integer>> h39answer = new ArrayList<>();
+
+    private void h39dfs(int[] candidates, int i, int target, List<Integer> combine) {
+        if (i == candidates.length) {
+            return;
+        }
+        if (target == 0) {
+            h39answer.add(combine);
+            return;
+        }
+
+        h39dfs(candidates, i + 1, target, new ArrayList<>(combine));
+
+        if (target - candidates[i] >= 0) {
+            combine.add(candidates[i]);
+            h39dfs(candidates, i, target - candidates[i], new ArrayList<>(combine));
+        }
+    }
+
+
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> answer = new ArrayList<>();
+        ArrayList<Integer> numList = new ArrayList<>();
+        for (int num : nums) {
+            numList.add(num);
+        }
+        List<Integer> combine = new ArrayList<>();
+
+        h46dfs(numList, combine, answer);
+        return answer;
+    }
+
+    private void h46dfs(ArrayList<Integer> numList, List<Integer> combine, List<List<Integer>> answer) {
+        if (numList.size() == 0) {
+            answer.add(combine);
+            return;
+        }
+
+        for (int i = 0; i < numList.size(); i++) {
+            Integer temp = numList.get(i);
+            combine.add(temp);
+            numList.remove(temp);
+
+            h46dfs(numList, new ArrayList<>(combine), answer);
+
+            numList.add(i, temp);
+            combine.remove(temp);
+        }
+    }
+
+    /**
+     * 不准新建再复制，新建一个再复制，会简单吗？
+     *
+     * @param matrix
+     */
+    public void h48rotate(int[][] matrix) {
+        int n = matrix.length;
+        int layers = (n + 1) / 2;
+
+        int[][] matrixCopy = new int[n][n];
+        for (int i = 0; i < 1; i++) {// 决定层数
+            for (int j = i; j < n - i; j++) {
+                matrixCopy[j][n - i - 1] = matrix[i][j];// 上
+                matrixCopy[n - i - 1][n - i - j] = matrix[j][n - i - 1];// 右
+            }
+        }
+
+        Nums.printMatrix(matrixCopy);
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {2};
+        int[][] matrix = {
+                {1, 2},
+                {3, 4},
+        };
         SolutionHot100 solution = new SolutionHot100();
 
-        System.out.println(solution.h33search(nums, 7));
+        solution.h48rotate(matrix);
+        System.out.println();
     }
 
 }

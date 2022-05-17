@@ -26,6 +26,7 @@ import static com.jojo.util.http.HttpConstant.*;
 /**
  * 鼠绘的模块比较多，可以单拎出来了
  */
+@Deprecated
 public class ShuHuiMangaCrawler extends MangaCrawler {
 
     private static final Logger logger = LoggerFactory.getLogger(ShuHuiMangaCrawler.class);

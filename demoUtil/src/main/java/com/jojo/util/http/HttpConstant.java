@@ -31,27 +31,12 @@ public class HttpConstant {
 
 	public static final int TIME_OUT = 60000;
 
-	@SuppressWarnings("unused")
-	private static final String ssssssssssssssssssssssssssssssssssssssssssssss = null;
-
-	/**
-	 * a标签
-	 */
 	public static final String TAG_a = "a";
-
-	/**
-	 * 图片标签
-	 */
 	public static final String TAG_img = "img";
-	
 	public static final String TAG_title = "title";
-	
-	public static final String ATTR_href = "href";
-	
-	public static final String ATTR_src = "src";
 
-	@SuppressWarnings("unused")
-	private static final String ssssssssssssssssssssssssssssssssssssssssssss = null;
+	public static final String ATTR_href = "href";
+	public static final String ATTR_src = "src";
 
 	/**
 	 * 图片文件
@@ -74,7 +59,5 @@ public class HttpConstant {
 	 */
 	public static final String FILE_TYPE_COMPRESS = "5";
 
-	@SuppressWarnings("unused")
-	private static final String sssssssssssssssssssssssssssssssssssssssssssss = null;
 
 }

@@ -19,7 +19,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -110,7 +109,7 @@ public class FileUtil {
                 ZipEntry zipEntry = enumeration.nextElement();
 
                 // 生成特定文件名
-                String fileName = createFileName(destinationPath, zipFile, zipEntry);
+                String fileName = generateFileName(destinationPath, zipFile, zipEntry);
 
                 // 根据生成的文件名，创建文件或目录
                 File targetFile = createNewFile(fileName);
@@ -142,7 +141,7 @@ public class FileUtil {
      * @param zipEntry
      * @return
      */
-    private static String createFileName(String destinationPath, ZipFile zipFile, ZipEntry zipEntry) {
+    private static String generateFileName(String destinationPath, ZipFile zipFile, ZipEntry zipEntry) {
         StringBuffer result = new StringBuffer();
         result.append(destinationPath + File.separator);
         // 提取压缩文件名，并作为文件夹
@@ -214,12 +213,16 @@ public class FileUtil {
      * @throws IOException
      */
     public static void createNewFileFromInternet(String url, String fileName) throws IOException {
+        if (StringUtils.startsWith(url, "//")) {
+            url = "http:" + url;
+        }
+
         try {
             // 创建文件
             File file = new File(fileName);
             Files.createParentDirs(file);
             file.createNewFile();
-            logger.error(fileName + "文件创建完毕");
+            logger.error("创建文件 url：{}，filename：{}", url, fileName);
 
             // 这段代码没办法处理https
 //            byte[] arr = IOUtils.toByteArray(new URL(url));
@@ -228,8 +231,7 @@ public class FileUtil {
             HttpUtil.downloadFile(url, fileName);
             logger.error(fileName + "数据填充完毕");
         } catch (Exception e) {
-            logger.error("创建文件失败, url：{}，filename：{}", url, fileName);
-            e.printStackTrace();
+            logger.error("创建文件失败", e);
         }
     }
 
@@ -265,12 +267,13 @@ public class FileUtil {
             fileName = fileName.replaceAll(">", " ");
         }
         if (StringUtils.contains(fileName, "|")) {
-            fileName = fileName.replaceAll("|", " ");
+            fileName = fileName.replaceAll("\\|", " ");
         }
-        return fileName;
+
+        return StringUtils.trim(fileName);
     }
 
-    public static String filterInvalidCharacter2(String fileName) {
+    public static String filterInvalidCharacterRefactor(String fileName) {
         String[] invalidCharacterArr = {};
         for (int i = 0; i < invalidCharacterArr.length; i++) {
             fileName = fileName.replaceAll(invalidCharacterArr[i], " ");
@@ -329,7 +332,14 @@ public class FileUtil {
 
     }
 
-    public static void main(String[] args) throws Exception {
+    public static File[] listFiles(String path) {
+        File file = new File(path);
+        return file.listFiles();
+    }
 
+    public static void main(String[] args) throws Exception {
+        String url = "https://d7.wzip.ru/down/1504/7766924e242546d266f9c2e751d112d1.zip?n=%E7%BE%8E%E9%BA%97%E6%96%B0%E4%B8%96%E7%95%8C%20137-138%E8%A9%B1";
+        String saveFilePath = "C:\\Workspace\\test\\1.zip";
+        HttpUtil.downloadFile(url, saveFilePath);
     }
 }
