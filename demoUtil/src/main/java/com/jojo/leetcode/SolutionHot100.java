@@ -1,9 +1,11 @@
 package com.jojo.leetcode;
 
+import com.alibaba.fastjson.JSON;
 import com.jojo.leetcode.node.ListNode;
-import com.jojo.leetcode.other.Nums;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -416,29 +418,154 @@ public class SolutionHot100 {
      */
     public void h48rotate(int[][] matrix) {
         int n = matrix.length;
-        int layers = (n + 1) / 2;
+        int layerCount = (n + 1) / 2;
 
         int[][] matrixCopy = new int[n][n];
-        for (int i = 0; i < 1; i++) {// 决定层数
-            for (int j = i; j < n - i; j++) {
-                matrixCopy[j][n - i - 1] = matrix[i][j];// 上
-                matrixCopy[n - i - 1][n - i - j] = matrix[j][n - i - 1];// 右
+        for (int layer = 0; layer < layerCount; layer++) {// 决定层数，从最外层往里遍历
+            int start = layer, end = n - layer - 1;
+            for (; start < end; start++) {// 每一层的旋转
+                // matrixCopy 右，matrix 上
+                matrixCopy[start][end] = matrix[layer][start];
+
+                // martrixCopy 下，matrix 右
+                matrixCopy[end][n - start - 1] = matrix[start][end];
+
+                // martrixCopy 左，matrix 下
+                matrixCopy[n - start - 1][layer] = matrix[end][n - start - 1];
+
+                // martrixCopy 上，matrix 左
+                matrixCopy[layer][start] = matrix[n - start - 1][layer];
+            }
+            if ((layer + 1 == layerCount) && (n % 2 != 0)) {
+                matrixCopy[start][start] = matrix[start][start];
             }
         }
 
-        Nums.printMatrix(matrixCopy);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = matrixCopy[i][j];
+            }
+        }
+    }
+
+    public List<List<String>> h49groupAnagrams(String[] strs) {
+        List<List<String>> answer = new ArrayList<>();
+
+        Map<String, List<String>> strListMap = new HashMap<>();
+        for (String str : strs) {
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            String key = new String(chars);
+
+            List<String> list = strListMap.getOrDefault(key, new ArrayList<>());
+            list.add(str);
+            strListMap.put(key, list);
+        }
+
+        answer.addAll(strListMap.values());
+        return answer;
+    }
+
+    public boolean h55canJump(int[] nums) {
+        if (nums == null || nums.length == 0 || nums.length == 1) {
+            return true;
+        }
+
+        int distance = 0;
+        for (int i = nums.length - 1; i > -1; i--) {
+            if (i - 1 > -1) {
+                distance++;
+                if (nums[i - 1] >= distance) {
+                    distance = 0;
+                    continue;
+                }
+            }
+        }
+        return distance == 0;
+    }
+
+    /**
+     * 好是好，超时了
+     *
+     * @param nums
+     * @param curPos
+     * @return
+     */
+    @Deprecated
+    private boolean h55dfs(int[] nums, int curPos) {
+        if (curPos == nums.length - 1) {
+            return true;
+        } else if (curPos > nums.length - 1) {
+            return false;
+        }
+
+        int moveCount = nums[curPos];
+        if (moveCount == 0) {
+            return false;
+        }
+
+        boolean answer = false;
+        for (int i = 1; i <= moveCount; i++) {
+            answer |= h55dfs(nums, curPos + i);
+        }
+
+        return answer;
+    }
+
+    public int[][] h56merge(int[][] intervals) {
+        if (intervals.length == 1) {
+            return intervals;
+        }
+        // 给区间排序
+        Arrays.sort(intervals, Comparator.comparingInt(interval -> interval[0]));
+
+        // 排序后的区间，合并
+        List<int[]> list = new ArrayList<>();
+        int[] curInterval = intervals[0];
+        for (int i = 1; i < intervals.length; i++) {
+            // 判断是否有交集
+            if (curInterval[1] >= intervals[i][0]) {
+                curInterval[1] = Math.max(curInterval[1], intervals[i][1]);
+            } else {
+                list.add(curInterval);
+                curInterval = intervals[i];
+            }
+        }
+        list.add(curInterval);
+
+        int[][] answer = new int[list.size()][];
+        for (int i = 0; i < list.size(); i++) {
+            answer[i] = list.get(i);
+        }
+
+        return answer;
+    }
+
+    public int h62uniquePaths(int m, int n) {
+        return h62dfs(0, 0, m - 1, n - 1);
+    }
+
+    private int h62dfs(int x, int y, int m, int n) {
+        if (x == m && y == n) {
+            return 1;
+        }
+
+        if (x > m || y > n) {
+            return 0;
+        }
+
+        int count = h62dfs(x + 1, y, m, n);
+        count += h62dfs(x, y + 1, m, n);
+
+        return count;
     }
 
     public static void main(String[] args) {
-        int[] nums = {2};
-        int[][] matrix = {
-                {1, 2},
-                {3, 4},
-        };
-        SolutionHot100 solution = new SolutionHot100();
+        int[] nums = {8, 2, 4, 4, 4, 9,};
+        int[][] matrix = new int[][]{{1, 3}, {8, 10}, {15, 18}, {2, 6},};
 
-        solution.h48rotate(matrix);
-        System.out.println();
+        SolutionHot100 solution = new SolutionHot100();
+        System.out.println(JSON.toJSONString(solution.h62uniquePaths(19, 13)));
     }
 
 }
