@@ -2479,12 +2479,95 @@ class Solution {
             ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-",
             ".--", "-..-", "-.--", "--.."};
 
+    public String l709toLowerCase(String s) {
+        StringBuilder answer = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c >= 65 && c <= 90) {
+                answer.append((char) (c + 32));
+            } else {
+                answer.append(c);
+            }
+        }
+        return answer.toString();
+    }
+
+    public boolean l717isOneBitCharacter(int[] bits) {
+//        int length = bits.length;
+//        if (bits[length - 1] == 1) {
+//            return false;
+//        }
+//
+//        if (length == 1) {
+//            return true;
+//        }
+//
+//        if (length == 2) {
+//            if (bits[0] == 1) {
+//                return false;
+//            } else {
+//                return true;
+//            }
+//        }
+//
+//        if (bits[length - 1] == 0 && bits[length - 2] == 0) {
+//            return true;
+//        }
+//
+//        return false;
+
+        int length = bits.length;
+        if (bits[length - 1] == 1) {
+            return false;
+        }
+
+        for (int i = 0; i < length - 1; ) {
+            if (bits[i] == 1) {
+                i += 2;
+            } else {
+                i++;
+            }
+
+            if (i > length - 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int l724pivotIndex(int[] nums) {
+        if (nums.length == 1) {
+            return 0;
+        }
+
+        int rightSum = 0, leftSum = 0;
+        for (int i = 1; i < nums.length; i++) {
+            rightSum += nums[i];
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (leftSum == rightSum) {
+                return i;
+            }
+            leftSum += nums[i];
+            if (i + 1 < nums.length) {
+                rightSum -= nums[i + 1];
+            }
+        }
+        return -1;
+    }
+
+    public int[][] l733floodFill(int[][] image, int sr, int sc, int color) {
+        return null;
+    }
+
+
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] nums = {1, 2, 2, 3, 1, 4, 2};
+        int[] nums = {1, 2, 3};
         String[] ops = {"1"};
 
-        System.out.println(solution.l697findShortestSubArray(nums));
+        System.out.println();
 
     }
 }
