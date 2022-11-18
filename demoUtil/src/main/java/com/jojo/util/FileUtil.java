@@ -6,6 +6,7 @@ import com.google.common.io.CharSink;
 import com.google.common.io.CharSource;
 import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,12 +20,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class FileUtil {
+
+    public static final String lineSeparator = System.getProperties().getProperty("line.separator");
 
     private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
@@ -59,8 +65,6 @@ public class FileUtil {
     /**
      * 根据正则表达式，递归删除符合条件的文件
      *
-     * @param filePath
-     * @param regexArr
      */
     public static void fileDelete(String filePath, String[] regexArr) {
         if (StringUtils.isBlank(filePath) || StringUtils.isAnyBlank(regexArr)) {
@@ -321,15 +325,71 @@ public class FileUtil {
             return;
         }
 
-        File[] sourceFileArr = baseDirFile.listFiles();
         File targetFile = createNewFile(targetFilePath);
 
+        List<File> fileList = Arrays.asList(baseDirFile.listFiles());
+        Collections.sort(fileList, (o1, o2) -> {
+            char[] o1Name = o1.getName().toCharArray();
+            char[] o2Name = o2.getName().toCharArray();
+            int i = 0, j = 0;
+            while (i < o1Name.length && j < o2Name.length) {
+                if (Character.isDigit(o1Name[i]) && Character.isDigit(o2Name[j])) {
+                    String s1 = "", s2 = "";
+                    while (i < o1Name.length && Character.isDigit(o1Name[i])) {
+                        s1 += o1Name[i];
+                        i++;
+                    }
+                    while (j < o2Name.length && Character.isDigit(o2Name[j])) {
+                        s2 += o2Name[j];
+                        j++;
+                    }
+                    if (Integer.parseInt(s1) > Integer.parseInt(s2)) {
+                        return 1;
+                    } else if (Integer.parseInt(s1) < Integer.parseInt(s2)) {
+                        return -1;
+                    }
+
+                } else {
+                    if (o1Name[i] > o2Name[j]) {
+                        return 1;
+                    } else if (o1Name[i] < o2Name[j]) {
+                        return -1;
+                    } else {
+                        i++;
+                        j++;
+                    }
+                }
+            }
+            if (o1Name.length == o2Name.length) {
+                return 0;
+            } else {
+                return o1Name.length > o2Name.length ? 1 : -1;
+            }
+        });
+
         CharSink charSink = Files.asCharSink(targetFile, Charsets.UTF_8, FileWriteMode.APPEND);
-        for (File sourceFile : sourceFileArr) {
+        for (File sourceFile : fileList) {
             CharSource charSource = Files.asCharSource(sourceFile, Charsets.UTF_8);
             charSource.copyTo(charSink);
         }
 
+    }
+
+    public static final void appendContent(File targetFile, String content) throws IOException {
+        if (StringUtils.isBlank(content)) {
+            return;
+        }
+
+        CharSink charSink = Files.asCharSink(targetFile, Charsets.UTF_8, FileWriteMode.APPEND);
+        charSink.write(content + lineSeparator);
+    }
+
+    public static final void appendContent(File targetFile, List<String> contentList) throws IOException {
+        if (CollectionUtils.isEmpty(contentList)) {
+            return;
+        }
+        CharSink charSink = Files.asCharSink(targetFile, Charsets.UTF_8, FileWriteMode.APPEND);
+        charSink.writeLines(contentList);
     }
 
     public static File[] listFiles(String path) {
@@ -338,8 +398,6 @@ public class FileUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String url = "https://d7.wzip.ru/down/1504/7766924e242546d266f9c2e751d112d1.zip?n=%E7%BE%8E%E9%BA%97%E6%96%B0%E4%B8%96%E7%95%8C%20137-138%E8%A9%B1";
-        String saveFilePath = "C:\\Workspace\\test\\1.zip";
-        HttpUtil.downloadFile(url, saveFilePath);
+        assembleAllTextToOneFile("C:\\Workspace\\test\\新建文件夹", "C:\\Workspace\\test\\生死丹尊.txt");
     }
 }
