@@ -5,6 +5,7 @@ import com.google.common.io.Files;
 import com.jojo.util.FileUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -255,13 +256,13 @@ public class Case {
             sb.append(className).append(".set");
             sb.append(camelFiledName);
             sb.append("(");
-//			sb.append(sourceClassName).append(".get").append(camelFiledName).append("()");
+			sb.append(sourceClassName).append(".get").append(camelFiledName).append("()");
             sb.append(");");
             System.out.println(sb.toString());
         }
     }
 
     public static void main(String[] args) throws Exception {
-
+        System.out.println(DateUtils.parseDate("2022/12/06 10:15:08", "yyyy/MM/dd HH:mm:ss"));
     }
 }

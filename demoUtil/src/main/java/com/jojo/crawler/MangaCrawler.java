@@ -1,20 +1,22 @@
 package com.jojo.crawler;
 
-import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.jojo.util.FileUtil;
+import com.jojo.util.JsoupUtil;
 import com.jojo.util.RegexUtil;
 import com.jojo.util.SeleniumUtil;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -23,9 +25,11 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +44,7 @@ import static com.jojo.util.http.HttpConstant.TAG_a;
  */
 public class MangaCrawler {
 
-    public static final Function<Element, String> ELEMENT_TO_URL_FUNCTION = new Function<Element, String>() {
-        @Override
-        public String apply(Element input) {
-            return input.attr("src");
-        }
-    };
+    public static final Function<Element, String> ELEMENT_TO_URL_FUNCTION = input -> input.attr("src");
 
     /**
      * 某一话及该话的URL存放地
@@ -168,56 +167,30 @@ public class MangaCrawler {
     }
 
     public static void main(String[] args) throws Exception {
-        BASE_SAVE_DIRECTORY = "C:\\Workspace\\test\\";
-        String htmlPath = "https://www.wnacg.org/search/?q=%E6%92%BF%E5%80%8B%E5%A5%B3%E5%B8%9D%E7%95%B6%E6%80%A7%E5%A5%B4&f=_all&s=create_time_DESC&syn=yes";
-        String wnacgPrefix = "https://www.wnacg.org";
-        Document document = getJsoupDocumentByWebDriver(htmlPath);
+        BASE_SAVE_DIRECTORY = "C:\\Workspace\\test\\hunter\\";
 
-        WebDriver webDriver = SeleniumUtil.getWebDriver();
-        // 抽取需要下载的url
-        List<String> containsDownloadUrlList = Lists.newArrayList();
-        Elements elementAList = document.getElementsByTag("a");
-        for (Element elementA : elementAList) {
-            if (!StringUtils.contains(elementA.text(), "撿個")) {
-                continue;
-            }
-            String url = wnacgPrefix + elementA.attr("href");
-            logger.info(elementA.text() + "====" + url);
-            containsDownloadUrlList.add(url);
-        }
+        String fileName = "C:\\Users\\flash.wg\\Desktop\\新文件 1.txt";
+        List<String> list = IOUtils.readLines(new BufferedReader(new FileReader(fileName)));
 
-        // 挨个处理，获取下载地址的页面
-        List<String> downloadUrlList = Lists.newArrayList();
-        downloadUrlList.clear();
-        for (String url : containsDownloadUrlList) {
-            webDriver.get(url);
-            logger.info("driver访问网页，获取title===" + webDriver.getTitle());
-            List<WebElement> aTagList = webDriver.findElements(By.tagName("a"));
-            for (WebElement aTag : aTagList) {
-                if (StringUtils.equals(aTag.getText(), "下載漫畫")) {
-                    String href = aTag.getAttribute("href");
-                    logger.info("下载的页面地址===" + href);
-                    downloadUrlList.add(href);
+        for (int i = 0; i < list.size(); i += 2) {
+            String title = list.get(i);
+            String baseUrl = list.get(i + 1);
+            List<String> picImgUrlList = new ArrayList<>();
+            for (int j = 1; j <= 2; j++) {
+                String url = baseUrl + "?pn=" + j;
+                Document document = Jsoup.connect(url).execute().parse();
+                Elements imgTagList = document.getElementsByClass("BDE_Image");
+                for (Element imgTag : imgTagList) {
+                    if (!imgTag.tagName().equals("img")) {
+                        continue;
+                    }
+                    picImgUrlList.add(imgTag.attr("src"));
                 }
             }
-        }
 
-        Map<String, String> filenameAndDownUrlMap = new HashMap<>();
-        for (String url : downloadUrlList) {
-            webDriver.get(url);
-            String downloadFilename = webDriver.findElement(By.className("download_filename")).getText();
-            String href = webDriver.findElement(By.className("down_btn")).getAttribute("href");
-            logger.info("drvier访问最终的下载地址==={} ：{}", downloadFilename, href);
-            filenameAndDownUrlMap.put(downloadFilename, href);
-        }
-
-        webDriver.close();
-
-        for (Map.Entry<String, String> entry : filenameAndDownUrlMap.entrySet()) {
-            String filePath = BASE_SAVE_DIRECTORY + entry.getKey();
-            logger.info("开始下载==={} : {}", entry.getKey(), filePath);
-            HttpUtil.downloadFile(entry.getValue(), filePath);
-            logger.info("下载完毕");
+            Map<String, List<String>> titlePicUrlMap = new HashMap<>();
+            titlePicUrlMap.put(title, picImgUrlList);
+            saveToLocal(titlePicUrlMap);
         }
 
     }

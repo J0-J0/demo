@@ -1,5 +1,6 @@
 package com.jojo.crawler;
 
+import cn.hutool.http.HttpUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -12,7 +13,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.jojo.util.http.HttpConstant.ATTR_href;
 import static com.jojo.util.http.HttpConstant.TAG_a;
@@ -230,7 +235,7 @@ public class MangaCrawlerCase extends MangaCrawler {
         }
 
         // 结果转换，搞不好会报空指针，不想管了
-        List<String> urlList = Lists.transform(elementList, ELEMENT_TO_URL_FUNCTION);
+        List<String> urlList = elementList.stream().map(ELEMENT_TO_URL_FUNCTION).collect(Collectors.toList());
 
         // 去重
         logger.error("此时list长度为{}", urlList.size());
@@ -341,6 +346,60 @@ public class MangaCrawlerCase extends MangaCrawler {
             String fileSuffix = RegexUtil.getSuffixFromUrl(imgUrl);
             String fileAbsoluteName = chapterDir + File.separator + fileCanonicalName + "." + fileSuffix;
             FileUtil.createNewFileFromInternet(imgUrl, fileAbsoluteName);
+        }
+    }
+
+
+    public static void wnacg() {
+        String htmlPath = "https://www.wnacg.org/search/?q=%E6%92%BF%E5%80%8B%E5%A5%B3%E5%B8%9D%E7%95%B6%E6%80%A7%E5%A5%B4&f=_all&s=create_time_DESC&syn=yes";
+        String wnacgPrefix = "https://www.wnacg.org";
+        Document document = getJsoupDocumentByWebDriver(htmlPath);
+
+        WebDriver webDriver = SeleniumUtil.getWebDriver();
+        // 抽取需要下载的url
+        List<String> containsDownloadUrlList = Lists.newArrayList();
+        Elements elementAList = document.getElementsByTag("a");
+        for (Element elementA : elementAList) {
+            if (!StringUtils.contains(elementA.text(), "撿個")) {
+                continue;
+            }
+            String url = wnacgPrefix + elementA.attr("href");
+            logger.info(elementA.text() + "====" + url);
+            containsDownloadUrlList.add(url);
+        }
+
+        // 挨个处理，获取下载地址的页面
+        List<String> downloadUrlList = Lists.newArrayList();
+        downloadUrlList.clear();
+        for (String url : containsDownloadUrlList) {
+            webDriver.get(url);
+            logger.info("driver访问网页，获取title===" + webDriver.getTitle());
+            List<WebElement> aTagList = webDriver.findElements(By.tagName("a"));
+            for (WebElement aTag : aTagList) {
+                if (StringUtils.equals(aTag.getText(), "下載漫畫")) {
+                    String href = aTag.getAttribute("href");
+                    logger.info("下载的页面地址===" + href);
+                    downloadUrlList.add(href);
+                }
+            }
+        }
+
+        Map<String, String> filenameAndDownUrlMap = new HashMap<>();
+        for (String url : downloadUrlList) {
+            webDriver.get(url);
+            String downloadFilename = webDriver.findElement(By.className("download_filename")).getText();
+            String href = webDriver.findElement(By.className("down_btn")).getAttribute("href");
+            logger.info("drvier访问最终的下载地址==={} ：{}", downloadFilename, href);
+            filenameAndDownUrlMap.put(downloadFilename, href);
+        }
+
+        webDriver.close();
+
+        for (Map.Entry<String, String> entry : filenameAndDownUrlMap.entrySet()) {
+            String filePath = BASE_SAVE_DIRECTORY + entry.getKey();
+            logger.info("开始下载==={} : {}", entry.getKey(), filePath);
+            HttpUtil.downloadFile(entry.getValue(), filePath);
+            logger.info("下载完毕");
         }
     }
 
