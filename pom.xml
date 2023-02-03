@@ -79,7 +79,7 @@
         <selenium.version>3.13.0</selenium.version>
         <itext.version>5.5.13.2</itext.version>
 
-        <jsoup.version>1.12.1</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
 
         <javaparser.symbol.solver.version>3.14.3</javaparser.symbol.solver.version>
 
