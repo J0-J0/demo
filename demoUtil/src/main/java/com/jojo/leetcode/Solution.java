@@ -1420,7 +1420,9 @@ class Solution {
                     continue;
                 }
                 // 到处都是细节，唉
-                while (second < third && nums[third] + nums[second] + nums[first] > 0) third--;
+                while (second < third && nums[third] + nums[second] + nums[first] > 0) {
+                    third--;
+                }
 
                 if (second == third) {
                     break;
@@ -2190,7 +2192,9 @@ class Solution {
         int maxLength = 0;
         for (int i = 1; i < nums.length; ) {
             // 找起点
-            while (i < nums.length && nums[i - 1] >= nums[i]) i++;
+            while (i < nums.length && nums[i - 1] >= nums[i]) {
+                i++;
+            }
 
             int length = 1;
             while (i < nums.length && nums[i - 1] < nums[i]) {
@@ -2231,7 +2235,9 @@ class Solution {
             } else if (lArr[leftPos] > 0 && lArr[rightPos] > 0) {
                 answer[i] = preSumArr[lArr[rightPos]] - preSumArr[lArr[leftPos]];
             } else if (lArr[leftPos] == -1 && lArr[rightPos] > 0) {
-                while (lArr[leftPos] == -1) leftPos++;
+                while (lArr[leftPos] == -1) {
+                    leftPos++;
+                }
                 answer[i] = lArr[leftPos] < lArr[rightPos] ? preSumArr[lArr[rightPos]] - preSumArr[lArr[leftPos]] : 0;
             }
         }
