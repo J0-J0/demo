@@ -1,71 +1,56 @@
 package com.jojo.zzz;
 
+import com.alibaba.fastjson.JSON;
+import com.beust.jcommander.internal.Lists;
 import com.jojo.util.FileUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StopWatch;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Work {
     private static final Logger logger = LoggerFactory.getLogger(Work.class);
 
-    public static void main(String[] args) {
-        int a = 1;
-        try {
-            if (a == 1) {
-                return;
-            }
-        } finally {
-            System.out.println("awesfg");
+
+    static class Person {
+        String name;
+        String age;
+        public Person(String name, String age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getAge() {
+            return age;
+        }
+
+        public void setAge(String age) {
+            this.age = age;
         }
     }
 
-    static void funcA(List<Integer> list) {
-        list.add(1);
+    public static void main(String[] args) throws Exception {
+        List<Person> list = Lists.newArrayList(new Person("JO", "1"), new Person("JO", "2"),
+                 new Person("JO", "2"),new Person("JJ", "2"));
+        Map<String, List<Person>> collect = list.stream().collect(Collectors.groupingBy(Person::getName));
+        System.out.println(JSON.toJSONString(collect));
     }
 
-    private static void move(File file, String newPath, Map<String, Integer> filenameCountMap) {
-        if (!file.isDirectory()) {
-            String filename = file.getName();
-            String suffixName = FileUtil.getSuffixName(filename);
-            if (StringUtils.equals(suffixName, "TXT")) {
-                Integer nameCount = filenameCountMap.getOrDefault(filename, 0);
-                if (nameCount == 0) {// 为1，直接move
-                    String pathname = newPath + File.separator + filename;
-                    System.out.println(file.getAbsolutePath() + "===迁移===" + pathname);
-                    file.renameTo(new File(pathname));
-                } else {// 已存在，修改filename再move
-                    String pathname = newPath + File.separator + filename.split("\\.")[0] + "-" + (nameCount + 1) + "." + suffixName;
-                    System.out.println(file.getAbsolutePath() + "===迁移===" + pathname);
-                    file.renameTo(new File(pathname));
-                }
-                filenameCountMap.put(filename, ++nameCount);
-            }
-            return;
-        }
 
-        for (File listFile : file.listFiles()) {
-            move(listFile, newPath, filenameCountMap);
-        }
-    }
-
-    static void delete(File file) {
-        if (!file.isDirectory()) {
-            return;
-        }
-
-        File[] files = file.listFiles();
-        if (files.length == 0) {
-            file.delete();
-            return;
-        }
-
-        for (File listFile : files) {
-            delete(listFile);
-        }
-    }
 }

@@ -98,7 +98,7 @@ public class ImageUtil {
     }
 
     public static void main(String[] args) throws IOException {
-        String mangaPath = "C:\\Workspace\\test\\5_日文";
+        String mangaPath = "D:\\workspace\\test\\7";
         mergeManga(mangaPath, 0);
     }
 }

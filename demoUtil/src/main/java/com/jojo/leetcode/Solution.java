@@ -2,14 +2,17 @@ package com.jojo.leetcode;
 
 import com.jojo.leetcode.node.ListNode;
 import com.jojo.leetcode.node.TreeNode;
+import org.apache.sis.internal.jaxb.metadata.CI_Address;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 /**
  * 默认刷题的类
@@ -2557,17 +2560,101 @@ class Solution {
         return -1;
     }
 
-    public int[][] l733floodFill(int[][] image, int sr, int sc, int color) {
-        return null;
+    public int l746minCostClimbingStairs(int[] cost) {
+        int[] dp = new int[cost.length + 1];
+
+        for (int i = 2; i <= cost.length; i++) {
+            dp[i] = Math.min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
+        }
+
+        return dp[cost.length];
     }
 
+    private int l746doClimb(int pos, int step, int alreadyCost, int[] cost) {
+        if (pos + step >= cost.length) {
+            return alreadyCost;
+        }
+
+        alreadyCost += cost[pos + step];
+
+        return Math.min(l746doClimb(pos + step, 1, alreadyCost, cost),
+                l746doClimb(pos + step, 2, alreadyCost, cost));
+    }
+
+    public String l748shortestCompletingWord(String licensePlate, String[] words) {
+        if (words.length == 1) {
+            return words[0];
+        }
+
+        Arrays.sort(words, Comparator.comparingInt(String::length));
+        Map<Character, Integer> charCountMap = new HashMap<>();
+        for (char c : licensePlate.toCharArray()) {
+            if (c == 32 || (c >= 48 && c <= 57)) {
+                continue;
+            }
+            charCountMap.compute(Character.toLowerCase(c), (k, v) -> v == null ? 1 : v + 1);
+        }
+
+        for (String word : words) {
+            Map<Character, Integer> tempMap = new HashMap<>(charCountMap);
+            for (char c : word.toCharArray()) {
+                c = Character.toLowerCase(c);
+                if (tempMap.get(c) != null) {
+                    if (tempMap.get(c) == 1) {
+                        tempMap.remove(c);
+                    } else {
+                        tempMap.put(c, tempMap.get(c) - 1);
+                    }
+                }
+            }
+
+            if (tempMap.size() == 0) {
+                return word;
+            }
+        }
+
+        return "";
+    }
+
+    public int l783minDiffInBST(TreeNode root) {
+        List<Integer> nodeValList = new ArrayList<>();
+        this.l783dfs(root, nodeValList);
+        nodeValList.sort(Integer::compare);
+
+        int min = nodeValList.get(1) - nodeValList.get(0);
+        for (int i = 1; i < nodeValList.size() - 1; i++) {
+            min = Math.min(min, nodeValList.get(i + 1) - nodeValList.get(i));
+        }
+        return min;
+    }
+
+    private void l783dfs(TreeNode root, List<Integer> diffList) {
+        if (root == null) {
+            return;
+        }
+        l783dfs(root.left, diffList);
+        diffList.add(root.val);
+        l783dfs(root.right, diffList);
+    }
+
+    public boolean l796rotateString(String s, String goal) {
+        if (s.length() != goal.length()) {
+            return false;
+        }
+        if (goal.equals(s)) {
+            return true;
+        }
+
+        String ss = s+s;
+
+        return ss.contains(goal);
+    }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] nums = {1, 2, 3};
-        String[] ops = {"1"};
+        int[] nums = {10, 15, 20};
 
-        System.out.println();
+        System.out.println(solution.l796rotateString("abcde", "cdeab"));
 
     }
 }
