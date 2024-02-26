@@ -2,7 +2,6 @@ package com.jojo.leetcode;
 
 import com.jojo.leetcode.node.ListNode;
 import com.jojo.leetcode.node.TreeNode;
-import org.apache.sis.internal.jaxb.metadata.CI_Address;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,12 +11,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 /**
  * 默认刷题的类
  */
-class Solution {
+class SolutionFirstRound {
 
     /**
      * 168
@@ -2657,7 +2655,7 @@ class Solution {
     }
 
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        SolutionFirstRound solution = new SolutionFirstRound();
         int[] nums = {10, 15, 20};
 
         System.out.println(solution.l796rotateString("abcde", "cdeab"));
