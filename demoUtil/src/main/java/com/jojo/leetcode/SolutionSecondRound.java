@@ -1,11 +1,14 @@
 package com.jojo.leetcode;
 
-import com.alibaba.fastjson.JSON;
+import com.jojo.leetcode.node.ListNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class SolutionSecondRound {
 
@@ -89,10 +92,9 @@ public class SolutionSecondRound {
     }
 
 
-
     public boolean l9isPalindrome(int x) {
         String xStr = x + "";
-        for (int i = 0, j = xStr.length() - 1; i < xStr.length() && j > i; i++,j--) {
+        for (int i = 0, j = xStr.length() - 1; i < xStr.length() && j > i; i++, j--) {
             char ci = xStr.charAt(i);
             char cj = xStr.charAt(j);
             if (ci != cj) {
@@ -103,10 +105,202 @@ public class SolutionSecondRound {
     }
 
 
+    public int l13romanToInt(String s) {
+        Map<Character, Integer> charValMap = new HashMap<>();
+        charValMap.put('I', 1);
+        charValMap.put('V', 5);
+        charValMap.put('X', 10);
+        charValMap.put('L', 50);
+        charValMap.put('C', 100);
+        charValMap.put('D', 500);
+        charValMap.put('M', 1000);
+
+        int answer = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'I') {
+                if (i + 1 < s.length() && s.charAt(i + 1) == 'V') {
+                    answer += 4;
+                    i++;
+                } else if (i + 1 < s.length() && s.charAt(i + 1) == 'X') {
+                    answer += 9;
+                    i++;
+                } else {
+                    answer += charValMap.get(s.charAt(i));
+                }
+                continue;
+            }
+            if (s.charAt(i) == 'X') {
+                if (i + 1 < s.length() && s.charAt(i + 1) == 'L') {
+                    answer += 40;
+                    i++;
+                } else if (i + 1 < s.length() && s.charAt(i + 1) == 'C') {
+                    answer += 90;
+                    i++;
+                } else {
+                    answer += charValMap.get(s.charAt(i));
+                }
+                continue;
+            }
+            if (s.charAt(i) == 'C') {
+                if (i + 1 < s.length() && s.charAt(i + 1) == 'D') {
+                    answer += 400;
+                    i++;
+                } else if (i + 1 < s.length() && s.charAt(i + 1) == 'M') {
+                    answer += 900;
+                    i++;
+                } else {
+                    answer += charValMap.get(s.charAt(i));
+                }
+                continue;
+            }
+            answer += charValMap.get(s.charAt(i));
+        }
+        return answer;
+    }
 
 
+    public String l14longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+        if (strs.length == 1) {
+            return strs[0];
+        }
+
+        StringBuilder answer = new StringBuilder();
+
+        // 第二层循环
+        int i = 0;
+        A:
+        while (true) {
+            Character temp = null;
+            for (int j = 0; j < strs.length; j++) {
+                if (i >= strs[j].length()) {
+                    break A;
+                }
+                if (j == 0) {
+                    temp = strs[j].charAt(i);
+                    continue;
+                }
+                if (temp != strs[j].charAt(i)) {
+                    break A;
+                }
+            }
+            answer.append(temp);
+            i++;
+        }
+
+        return answer.toString();
+    }
 
 
+    /**
+     * 构建一个堆栈，字符串从左往右，左括号入栈，有括号出栈。出栈时，必须是对应的左括号，才允许出，不然就return false。
+     */
+    public boolean l20isValid(String s) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+
+        LinkedList<Character> stack = new LinkedList<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(' || c == '[' || c == '{') {
+                stack.push(c);
+            } else if (c == ')') {
+                if (stack.size() == 0) {
+                    return false;
+                }
+                Character pop = stack.pop();
+                if (pop != '(') {
+                    return false;
+                }
+            } else if (c == ']') {
+                if (stack.size() == 0) {
+                    return false;
+                }
+                Character pop = stack.pop();
+                if (pop != '[') {
+                    return false;
+                }
+            } else if (c == '}') {
+                if (stack.size() == 0) {
+                    return false;
+                }
+                Character pop = stack.pop();
+                if (pop != '{') {
+                    return false;
+                }
+            }
+        }
+
+        return stack.size() == 0;
+    }
+
+    /**
+     * new一个ListNode返回。
+     * while循环，list1与list2只要没遍历到底，就持续复制。
+     */
+    public ListNode l21mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) {
+            return list2;
+        }
+        if (list2 == null) {
+            return list1;
+        }
+        ListNode temp = new ListNode();
+        if (list1.val < list2.val) {
+            temp.val = list1.val;
+            list1 = list1.next;
+        } else {
+            temp.val = list2.val;
+            list2 = list2.next;
+        }
+        ListNode result = temp;
+
+        while (list1 != null || list2 != null) {
+            ListNode answer = new ListNode();
+            if (list1 == null) {
+                answer.val = list2.val;
+                list2 = list2.next;
+            } else if (list2 == null) {
+                answer.val = list1.val;
+                list1 = list1.next;
+            } else if (list1.val < list2.val) {
+                answer.val = list1.val;
+                list1 = list1.next;
+            } else {
+                answer.val = list2.val;
+                list2 = list2.next;
+            }
+            temp.next = answer;
+            temp = temp.next;
+        }
+
+        return result;
+    }
+
+
+    public int l26removeDuplicates(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        // sortedSet，得到绝对递增数组，然后system.arrayCopy
+        Map<Integer, Integer> sortedMap = new TreeMap<>();
+        for (int num : nums) {
+            sortedMap.put(num, 0);
+        }
+
+        int answer = sortedMap.size();
+        Set<Integer> keySet = sortedMap.keySet();
+        int i = 0;
+        for (Integer key : keySet) {
+            nums[i++] = key;
+        }
+
+        return answer;
+    }
 
 
     public static void main(String[] args) {
@@ -115,8 +309,32 @@ public class SolutionSecondRound {
         int[] nums = {2, 5, 5, 11};
         int target = 10;
 
+        String[] strs = new String[]{"cir", "car"};
 
-        System.out.println(JSON.toJSONString(solution.l9isPalindrome(10)));
+        ListNode list1 = solution.buildListNode1();
+        ListNode list2 = solution.buildListNode2();
+
+        System.out.println(solution.l26removeDuplicates(nums));
+    }
+
+    private ListNode buildListNode1() {
+        ListNode node = new ListNode();
+        node.val = 1;
+        node.next = new ListNode();
+        node.next.val = 2;
+        node.next.next = new ListNode();
+        node.next.next.val = 4;
+        return node;
+    }
+
+    private ListNode buildListNode2() {
+        ListNode node = new ListNode();
+        node.val = 1;
+        node.next = new ListNode();
+        node.next.val = 3;
+        node.next.next = new ListNode();
+        node.next.next.val = 4;
+        return node;
     }
 
 }
