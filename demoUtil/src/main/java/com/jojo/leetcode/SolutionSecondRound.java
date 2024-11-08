@@ -1,5 +1,6 @@
 package com.jojo.leetcode;
 
+import com.alibaba.fastjson.JSON;
 import com.jojo.leetcode.node.ListNode;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+@SuppressWarnings("unused")
 public class SolutionSecondRound {
 
     /**
@@ -302,11 +304,74 @@ public class SolutionSecondRound {
         return answer;
     }
 
+    public int l27removeElement(int[] nums, int val) {
+        int equalCount = 0;
+        for (int num : nums) {
+            if (num == val) {
+                equalCount++;
+            }
+        }
+        int k = nums.length - equalCount;
+
+        for (int i = 0; i < nums.length; ) {
+            if (nums[i] == val && i < k) {
+                System.arraycopy(nums, i + 1, nums, i, nums.length - (i + 1));
+            } else {
+                i++;
+            }
+        }
+        return k;
+    }
+
+
+    public int l28strStr(String haystack, String needle) {
+        if (haystack.equals(needle)) {
+            return 0;
+        }
+
+        return haystack.indexOf(needle);
+    }
+
+
+    public int l35searchInsert(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        if (target <= nums[left]) {
+            return left;
+        }
+        if (nums[right] == target) {
+            return right;
+        }
+        if (nums[right] < target) {
+            return nums.length;
+        }
+        if (right - left == 1) {
+            return right;
+        }
+
+        int middle = (left + right) / 2;
+        while (middle > left && middle < right) {
+            if (nums[middle] == target) {
+                return middle;
+            }
+            if (nums[middle] < target) {
+                left = middle;
+            }
+            if (nums[middle] > target) {
+                right = middle;
+            }
+            if (right - left == 1) {
+                return right;
+            }
+            middle = (left + right) / 2;
+        }
+        return middle;
+    }
+
 
     public static void main(String[] args) {
         SolutionSecondRound solution = new SolutionSecondRound();
 
-        int[] nums = {2, 5, 5, 11};
+        int[] nums = {1,3};
         int target = 10;
 
         String[] strs = new String[]{"cir", "car"};
@@ -314,7 +379,7 @@ public class SolutionSecondRound {
         ListNode list1 = solution.buildListNode1();
         ListNode list2 = solution.buildListNode2();
 
-        System.out.println(solution.l26removeDuplicates(nums));
+        System.out.println(solution.l35searchInsert(nums, 2));
     }
 
     private ListNode buildListNode1() {
