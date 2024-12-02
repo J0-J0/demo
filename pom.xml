@@ -46,7 +46,7 @@
 
         <spark.version>2.9.0</spark.version>
         <dubbo.version>2.7.1</dubbo.version>
-        <shiro.version>1.4.1</shiro.version>
+        <shiro.version>1.7.1</shiro.version>
         <lucene.version>7.4.0</lucene.version>
         <mina.version>2.1.4</mina.version>
         <httpclient.version>4.5.3</httpclient.version>
