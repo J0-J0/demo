@@ -1,9 +1,9 @@
 package com.jojo.leetcode;
 
-import com.alibaba.fastjson.JSON;
 import com.jojo.leetcode.node.ListNode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -368,19 +368,72 @@ public class SolutionSecondRound {
     }
 
 
+    public List<List<String>> l49groupAnagrams(String[] strs) {
+        List<List<String>> answer = new ArrayList<>();
+        if (strs.length == 1) {
+            answer.add(Arrays.asList(strs));
+            return answer;
+        }
+
+        List<String> firstList = new ArrayList<>();
+        firstList.add(strs[0]);
+        Map<Character, Integer> firstCharCountMap = this.l49strToCharCountMap(strs[0]);
+
+        Map<Integer, List<String>> noListMap = new HashMap<>();
+        noListMap.put(1, firstList);
+        Map<Integer, Map<Character, Integer>> noSetMap = new HashMap<>();
+        noSetMap.put(1, firstCharCountMap);
+
+        for (int i = 1; i < strs.length; i++) {
+            String str = strs[i];
+            Map<Character, Integer> strCharCountMap = this.l49strToCharCountMap(str);
+            boolean putNoSetMapFlag = true;
+            for (Map.Entry<Integer, Map<Character, Integer>> entry : noSetMap.entrySet()) {
+                Map<Character, Integer> entryValue = entry.getValue();
+                Integer no = entry.getKey();
+                if (entryValue.equals(strCharCountMap)) {
+                    noListMap.get(no).add(str);
+                    putNoSetMapFlag = false;
+                    break;
+                }
+            }
+            if (putNoSetMapFlag) {
+                int size = noSetMap.size();
+                noSetMap.put(size + 1, strCharCountMap);
+                List<String> strList = new ArrayList<>();
+                strList.add(str);
+                noListMap.put(size + 1, strList);
+            }
+        }
+        return new ArrayList<>(noListMap.values());
+    }
+
+    private Map<Character, Integer> l49strToCharCountMap(String str) {
+        Map<Character, Integer> map = new HashMap<>();
+        for (char c : str.toCharArray()) {
+            map.merge(c, 1, Integer::sum);
+        }
+        return map;
+    }
+
+
     public static void main(String[] args) {
         SolutionSecondRound solution = new SolutionSecondRound();
 
-        int[] nums = {1,3};
+        int[] nums = {1, 3};
         int target = 10;
 
-        String[] strs = new String[]{"cir", "car"};
+        String[] strs = new String[]{"hhhhu","tttti","tttit","hhhuh","hhuhh","tittt"};
 
         ListNode list1 = solution.buildListNode1();
         ListNode list2 = solution.buildListNode2();
 
-        System.out.println(solution.l35searchInsert(nums, 2));
+        System.out.println(solution.l49groupAnagrams(strs));
+
+
     }
+
+
 
     private ListNode buildListNode1() {
         ListNode node = new ListNode();
