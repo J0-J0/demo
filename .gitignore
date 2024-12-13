@@ -30,7 +30,7 @@ target/
 /catalina.base_IS_UNDEFINED/
 
 # idea project files  
-.idea
+.idea/
 *.iml
-/.vscode/launch.json
-/.vscode/settings.json
+
+.vscode/
