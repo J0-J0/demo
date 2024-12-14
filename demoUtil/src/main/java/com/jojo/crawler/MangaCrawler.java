@@ -1,26 +1,7 @@
 package com.jojo.crawler;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.base.Charsets;
-import com.google.common.base.Function;
-import com.google.common.collect.Maps;
-import com.google.common.io.Files;
-import com.jojo.util.FileUtil;
-import com.jojo.util.JsoupUtil;
-import com.jojo.util.RegexUtil;
-import com.jojo.util.SeleniumUtil;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.jojo.util.http.HttpConstant.ATTR_href;
+import static com.jojo.util.http.HttpConstant.TAG_a;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,8 +15,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.jojo.util.http.HttpConstant.ATTR_href;
-import static com.jojo.util.http.HttpConstant.TAG_a;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Charsets;
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
+import com.google.common.io.Files;
+import com.jojo.util.FileUtil;
+import com.jojo.util.RegexUtil;
+import com.jojo.util.SeleniumUtil;
 
 /**
  * 开心就好

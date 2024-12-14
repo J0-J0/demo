@@ -1,19 +1,9 @@
 package com.jojo.db2word;
 
+import java.util.List;
+
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
-import com.lowagie.text.Cell;
-import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Table;
-import com.lowagie.text.rtf.RtfWriter2;
-import org.apache.commons.lang3.StringUtils;
-
-import java.awt.*;
-import java.io.FileOutputStream;
-import java.util.List;
 
 public class Db2WordMysql extends AbstractDb2Word {
 

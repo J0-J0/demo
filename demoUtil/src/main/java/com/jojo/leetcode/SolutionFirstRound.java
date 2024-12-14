@@ -1,8 +1,5 @@
 package com.jojo.leetcode;
 
-import com.jojo.leetcode.node.ListNode;
-import com.jojo.leetcode.node.TreeNode;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -12,9 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.jojo.leetcode.node.ListNode;
+import com.jojo.leetcode.node.TreeNode;
+
 /**
  * 默认刷题的类
  */
+@SuppressWarnings("unused")
 class SolutionFirstRound {
 
     /**
@@ -334,10 +335,10 @@ class SolutionFirstRound {
 
     public List<String> l228SummaryRanges(int[] nums) {
         if (nums == null || nums.length == 0) {
-            return new ArrayList();
+            return new ArrayList<>();
         }
 
-        List<String> resultList = new ArrayList();
+        List<String> resultList = new ArrayList<>();
 
         if (nums.length == 1) {
             resultList.add(nums[0] + "");

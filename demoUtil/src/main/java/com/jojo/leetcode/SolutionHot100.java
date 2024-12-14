@@ -1,8 +1,5 @@
 package com.jojo.leetcode;
 
-import com.alibaba.fastjson.JSON;
-import com.jojo.leetcode.node.ListNode;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -10,6 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+import com.jojo.leetcode.node.ListNode;
+
+
+@SuppressWarnings("unused")
 public class SolutionHot100 {
 
     public int[] h1L1twoSum(int[] nums, int target) {

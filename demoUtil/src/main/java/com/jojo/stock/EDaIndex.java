@@ -1,19 +1,16 @@
 package com.jojo.stock;
 
-import cn.hutool.http.HttpResponse;
-import cn.hutool.http.HttpUtil;
-import com.google.common.collect.Lists;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.google.common.collect.Lists;
+
+import cn.hutool.http.HttpResponse;
+import cn.hutool.http.HttpUtil;
 
 public class EDaIndex {
 
