@@ -4,12 +4,16 @@ import com.jojo.leetcode.node.ListNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class SolutionSecondRound {
@@ -25,7 +29,6 @@ public class SolutionSecondRound {
         if (nums.length == 2 && nums[0] + nums[1] == target) {
             return new int[]{0, 1};
         }
-
 
         for (int i = 0; i < nums.length - 1; i++) {
             for (int j = i + 1; j < nums.length; j++) {
@@ -93,7 +96,6 @@ public class SolutionSecondRound {
         return new int[]{-1, -1};
     }
 
-
     public boolean l9isPalindrome(int x) {
         String xStr = x + "";
         for (int i = 0, j = xStr.length() - 1; i < xStr.length() && j > i; i++, j--) {
@@ -105,7 +107,6 @@ public class SolutionSecondRound {
         }
         return true;
     }
-
 
     public int l13romanToInt(String s) {
         Map<Character, Integer> charValMap = new HashMap<>();
@@ -160,7 +161,6 @@ public class SolutionSecondRound {
         return answer;
     }
 
-
     public String l14longestCommonPrefix(String[] strs) {
         if (strs == null || strs.length == 0) {
             return "";
@@ -194,7 +194,6 @@ public class SolutionSecondRound {
 
         return answer.toString();
     }
-
 
     /**
      * 构建一个堆栈，字符串从左往右，左括号入栈，有括号出栈。出栈时，必须是对应的左括号，才允许出，不然就return false。
@@ -282,7 +281,6 @@ public class SolutionSecondRound {
         return result;
     }
 
-
     public int l26removeDuplicates(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -323,7 +321,6 @@ public class SolutionSecondRound {
         return k;
     }
 
-
     public int l28strStr(String haystack, String needle) {
         if (haystack.equals(needle)) {
             return 0;
@@ -331,7 +328,6 @@ public class SolutionSecondRound {
 
         return haystack.indexOf(needle);
     }
-
 
     public int l35searchInsert(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
@@ -366,7 +362,6 @@ public class SolutionSecondRound {
         }
         return middle;
     }
-
 
     public List<List<String>> l49groupAnagrams(String[] strs) {
         List<List<String>> answer = new ArrayList<>();
@@ -416,24 +411,47 @@ public class SolutionSecondRound {
         return map;
     }
 
+    public int l128longestConsecutive(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+        List<Integer> list = set.stream().sorted(Integer::compareTo).collect(Collectors.toList());
+        if (list.size() == 1) {
+            return 1;
+        }
+
+        int answer = 1, tempCount = 1;
+        for (int i = 0, j = i + 1; j < list.size(); i++, j++) {
+            if (list.get(j) - list.get(i) == 1) {
+                ++tempCount;
+                answer = Math.max(answer, tempCount);
+                continue;
+            }
+            tempCount = 1;
+        }
+
+        return answer;
+    }
 
     public static void main(String[] args) {
         SolutionSecondRound solution = new SolutionSecondRound();
 
-        int[] nums = {1, 3};
+        int[] nums = {};
         int target = 10;
 
-        String[] strs = new String[]{"hhhhu","tttti","tttit","hhhuh","hhuhh","tittt"};
+        String[] strs = new String[]{"hhhhu", "tttti", "tttit", "hhhuh", "hhuhh", "tittt"};
 
         ListNode list1 = solution.buildListNode1();
         ListNode list2 = solution.buildListNode2();
 
-        System.out.println(solution.l49groupAnagrams(strs));
-
+        System.out.println(solution.l128longestConsecutive(nums));
 
     }
-
-
 
     private ListNode buildListNode1() {
         ListNode node = new ListNode();

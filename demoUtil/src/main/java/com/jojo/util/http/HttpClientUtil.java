@@ -1,7 +1,7 @@
 package com.jojo.util.http;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -170,7 +170,6 @@ public class HttpClientUtil {
 	/**
 	 * 设置请求header
 	 * @param headerMap
-	 * @param httpGet
 	 * @return
 	 */
 	private static void setRequestHeader(Map<String, String> headerMap, HttpMessage httpMessage) {
