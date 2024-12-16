@@ -2,7 +2,6 @@ package com.jojo.leetcode.multiThread;
 
 public class L1114Foo {
 
-    private volatile boolean first = true;
     private volatile boolean second = false;
     private volatile boolean third = false;
 

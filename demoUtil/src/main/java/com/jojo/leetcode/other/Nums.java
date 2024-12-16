@@ -1,7 +1,5 @@
 package com.jojo.leetcode.other;
 
-import org.apache.poi.hssf.record.chart.FontIndexRecord;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

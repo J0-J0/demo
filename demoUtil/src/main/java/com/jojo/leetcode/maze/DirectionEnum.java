@@ -19,4 +19,9 @@ public enum DirectionEnum {
     public int getDirection() {
         return direction;
     }
+
+    public String getDirectionDesc() {
+        return directionDesc;
+    }
+
 }
