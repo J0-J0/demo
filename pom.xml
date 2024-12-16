@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jojo</groupId>
@@ -100,17 +99,17 @@
 
 
             <!-- ************************spring  start******************** -->
-            <dependency><!-- mvc框架依赖 spring-context，也依赖spring-web，所以不写了，我是能省就省 -->
+            <dependency>                <!-- mvc框架依赖 spring-context，也依赖spring-web，所以不写了，我是能省就省 -->
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-            <dependency><!-- 事务相关 -->
+            <dependency>                <!-- 事务相关 -->
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-            <dependency><!-- 少了会报java.lang.NoClassDefFoundError -->
+            <dependency>                <!-- 少了会报java.lang.NoClassDefFoundError -->
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
                 <version>${spring.version}</version>
@@ -120,12 +119,12 @@
                 <artifactId>spring-context-support</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-            <dependency><!-- aop标准协议 -->
+            <dependency>                <!-- aop标准协议 -->
                 <groupId>aopalliance</groupId>
                 <artifactId>aopalliance</artifactId>
                 <version>1.0</version>
             </dependency>
-            <dependency><!-- aop框架 -->
+            <dependency>                <!-- aop框架 -->
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspectj.version}</version>
@@ -154,22 +153,22 @@
                 <artifactId>mybatis</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
-            <dependency><!-- 与spring的中间件 -->
+            <dependency>                <!-- 与spring的中间件 -->
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis-spring</artifactId>
                 <version>${mybatis.spring.version}</version>
             </dependency>
-            <dependency><!-- 代码生成器 -->
+            <dependency>                <!-- 代码生成器 -->
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-core</artifactId>
                 <version>${mybatis.generator.version}</version>
             </dependency>
-            <dependency><!-- 通用mapper -->
+            <dependency>                <!-- 通用mapper -->
                 <groupId>tk.mybatis</groupId>
                 <artifactId>mapper</artifactId>
                 <version>${mybatis.tk.version}</version>
             </dependency>
-            <dependency><!-- 分页插件 -->
+            <dependency>                <!-- 分页插件 -->
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper</artifactId>
                 <version>${mybatis.pagehelper.version}</version>
@@ -203,7 +202,7 @@
                 <version>${alibaba.fastjson.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.alibaba</groupId><!-- 操作Excel，其实是封装了POI -->
+                <groupId>com.alibaba</groupId>                <!-- 操作Excel，其实是封装了POI -->
                 <artifactId>easyexcel</artifactId>
                 <version>${alibaba.easyExcel.version}</version>
             </dependency>
@@ -219,25 +218,25 @@
 
 
             <!-- *****************************apache end************************ -->
-            <dependency><!-- 大数据 -->
+            <dependency>                <!-- 大数据 -->
                 <groupId>com.sparkjava</groupId>
                 <artifactId>spark-core</artifactId>
                 <version>${spark.version}</version>
             </dependency>
 
-            <dependency><!-- dubbo -->
+            <dependency>                <!-- dubbo -->
                 <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo</artifactId>
                 <version>${dubbo.version}</version>
             </dependency>
 
-            <dependency><!-- 权限控制 -->
+            <dependency>                <!-- 权限控制 -->
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-web</artifactId>
                 <version>${shiro.version}</version>
             </dependency>
 
-            <dependency><!-- 全文检索 -->
+            <dependency>                <!-- 全文检索 -->
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-core</artifactId>
                 <version>${lucene.version}</version>
@@ -253,13 +252,13 @@
                 <version>${lucene.version}</version>
             </dependency>
 
-            <dependency><!-- socket传输 -->
+            <dependency>                <!-- socket传输 -->
                 <groupId>org.apache.mina</groupId>
                 <artifactId>mina-core</artifactId>
                 <version>${mina.version}</version>
             </dependency>
 
-            <dependency><!-- Apache Commons -->
+            <dependency>                <!-- Apache Commons -->
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
@@ -294,12 +293,12 @@
                 <artifactId>fluent-hc</artifactId>
                 <version>${httpclient.version}</version>
             </dependency>
-            <dependency><!-- base64 -->
+            <dependency>                <!-- base64 -->
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${commons.codec.version}</version>
             </dependency>
-            <dependency><!-- 对象池 -->
+            <dependency>                <!-- 对象池 -->
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-pool2</artifactId>
                 <version>${commons.pool2.version}</version>
@@ -527,17 +526,17 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <dependency><!--commons-logging替换成slf4j-->
+        <dependency>            <!--commons-logging替换成slf4j-->
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <dependency><!--log4j替换成slf4j-->
+        <dependency>            <!--log4j替换成slf4j-->
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <dependency><!-- java.util.logging替换成slf4j -->
+        <dependency>            <!-- java.util.logging替换成slf4j -->
             <groupId>org.slf4j</groupId>
             <artifactId>jul-to-slf4j</artifactId>
             <version>${slf4j.version}</version>
@@ -547,17 +546,22 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
-        <dependency><!--logback spring扩展-->
+        <dependency>            <!--logback spring扩展-->
             <groupId>org.logback-extensions</groupId>
             <artifactId>logback-ext-spring</artifactId>
             <version>${logback.spring.version}</version>
         </dependency>
-        <dependency><!-- 监控SQL -->
+        <dependency>            <!-- 监控SQL -->
             <groupId>org.bgee.log4jdbc-log4j2</groupId>
             <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
             <version>${log4jdbc.version}</version>
         </dependency>
         <!-- ***********************************打日志***************************************** -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+        </dependency>
     </dependencies>
 
 

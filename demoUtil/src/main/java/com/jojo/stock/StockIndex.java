@@ -1,6 +1,8 @@
 package com.jojo.stock;
 
+import lombok.Data;
 
+@Data
 public class StockIndex {
 
     private String name;
@@ -19,27 +21,4 @@ public class StockIndex {
         this.supportPoint = supportPoint;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getSupportPoint() {
-        return supportPoint;
-    }
-
-    public void setSupportPoint(String supportPoint) {
-        this.supportPoint = supportPoint;
-    }
 }
