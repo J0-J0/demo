@@ -21,87 +21,47 @@
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.2.1-b03</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
 
-        <!-- ************************spring  start******************** -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+            <version>5.2.5.RELEASE</version>
         </dependency>
         <dependency><!-- 事务相关 -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
+            <version>5.2.5.RELEASE</version>
         </dependency>
         <dependency><!-- 少了会报java.lang.NoClassDefFoundError -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
+            <version>5.2.5.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
+            <version>5.2.5.RELEASE</version>
         </dependency>
-        <dependency><!-- aop标准协议 -->
-            <groupId>aopalliance</groupId>
-            <artifactId>aopalliance</artifactId>
-        </dependency>
-        <dependency><!-- aop框架 -->
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-        </dependency>
-        <!-- *****************************spring end************************ -->
 
-
-        <!-- *****************************mysql connector start************************ -->
+        <!--mysql-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.44</version>
         </dependency>
-        <!-- *****************************mysql connector end************************ -->
 
+        <!--postgresql-->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>42.2.2</version>
         </dependency>
 
 
-        <!-- *****************************mybatis start************************ -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-        </dependency>
-        <dependency><!-- 与spring的中间件 -->
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-        </dependency>
-        <dependency><!-- 代码生成器 -->
-            <groupId>org.mybatis.generator</groupId>
-            <artifactId>mybatis-generator-core</artifactId>
-        </dependency>
-        <dependency><!-- 通用mapper -->
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper</artifactId>
-        </dependency>
-        <dependency><!-- 分页插件 -->
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-        </dependency>
-        <!-- *****************************mybatis end************************ -->
+
 
         <!-- *****************************alibaba start************************ -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>

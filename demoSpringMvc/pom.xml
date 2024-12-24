@@ -20,12 +20,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.jojo</groupId>
-            <artifactId>demoService</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
@@ -49,36 +43,51 @@
         <dependency><!-- mvc框架依赖 spring-context，也依赖spring-web，所以不写了，我是能省就省 -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
+            <version>5.2.5.RELEASE</version>
         </dependency>
         <dependency><!-- 事务相关 -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
+            <version>5.2.5.RELEASE</version>
         </dependency>
         <dependency><!-- 少了会报java.lang.NoClassDefFoundError -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
+            <version>5.2.5.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
+            <version>5.2.5.RELEASE</version>
         </dependency>
-        <dependency><!-- aop标准协议 -->
+        <!-- aop标准协议 -->
+        <dependency>
             <groupId>aopalliance</groupId>
             <artifactId>aopalliance</artifactId>
+            <version>1.0</version>
         </dependency>
-        <dependency><!-- aop框架 -->
+        <!-- aop框架 -->
+        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
+            <version>1.9.4</version>
         </dependency>
         <!-- *****************************spring end************************ -->
 
 
-        <!-- *****************************mysql connector start************************ -->
+        <!--mysql-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.44</version>
         </dependency>
-        <!-- *****************************mysql connector end************************ -->
+
+        <!--postgresql-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.2</version>
+        </dependency>
 
 
         <!-- *****************************mybatis start************************ -->
@@ -112,10 +121,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId><!-- 操作Excel，其实是封装了POI -->
-            <artifactId>easyexcel</artifactId>
         </dependency>
 
 
