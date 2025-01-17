@@ -1,20 +1,11 @@
 package com.jojo.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
+import cn.hutool.http.HttpUtil;
+import com.google.common.base.Charsets;
+import com.google.common.io.CharSink;
+import com.google.common.io.CharSource;
+import com.google.common.io.FileWriteMode;
+import com.google.common.io.Files;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -23,14 +14,19 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Lists;
-import com.google.common.io.CharSink;
-import com.google.common.io.CharSource;
-import com.google.common.io.FileWriteMode;
-import com.google.common.io.Files;
-
-import cn.hutool.http.HttpUtil;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class FileUtil {
 
@@ -402,20 +398,8 @@ public class FileUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        List<String> strList = IOUtils.readLines(new BufferedReader(new FileReader("C:\\Users\\72669\\Desktop\\没有同步读者类型的卡号.txt")));
-        List<List<String>> listList = Lists.partition(strList, 1000);
-        for (List<String> list : listList) {
-            String join = StringUtils.join(list, ",");
-            System.out.println("select rd.rdid 读者证号, rd.rdlib 读者所属馆, rd.rdtype 读者类型, rdt.libcode 读者类型所属馆\n" +
-                    "from (select rdid, rdlib, rdtype from reader where rdid in (\n" +
-                    join+"\n" +
-                    "))rd\n" +
-                    "INNER JOIN \n" +
-                    "P_RCTYPE rdt\n" +
-                    "on rd.rdtype = rdt.readertype;");
-            System.out.println();
-            System.out.println();
-        }
+        File fileDirectory = new File("E:\\看的\\漫画\\猎人");
+        fileRename(fileDirectory, "猎人", "猎人 第 ");
 
 
     }

@@ -1,10 +1,10 @@
 package com.jojo.leetcode;
 
+import com.alibaba.fastjson.JSON;
 import com.jojo.leetcode.node.ListNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
@@ -403,6 +402,7 @@ public class SolutionSecondRound {
         return new ArrayList<>(noListMap.values());
     }
 
+
     private Map<Character, Integer> l49strToCharCountMap(String str) {
         Map<Character, Integer> map = new HashMap<>();
         for (char c : str.toCharArray()) {
@@ -410,6 +410,7 @@ public class SolutionSecondRound {
         }
         return map;
     }
+
 
     public int l128longestConsecutive(int[] nums) {
         if (nums == null || nums.length == 0) {
@@ -438,10 +439,44 @@ public class SolutionSecondRound {
         return answer;
     }
 
+
+    public void l283moveZeroes(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return;
+        }
+        if (nums.length == 1) {
+            return;
+        }
+
+        for (int i = 0, j = 0; i < nums.length && j < nums.length; ) {
+            if (nums[i] != 0) {
+                i++;
+                continue;
+            }
+            // j的首次赋值
+            if (j < i) {
+                j = i + 1;
+                continue;
+            }
+
+            if (nums[j] == 0) {
+                j++;
+                continue;
+            }
+
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+            i++;
+            j++;
+        }
+    }
+
+
     public static void main(String[] args) {
         SolutionSecondRound solution = new SolutionSecondRound();
 
-        int[] nums = {};
+        int[] nums = {0,0,0};
         int target = 10;
 
         String[] strs = new String[]{"hhhhu", "tttti", "tttit", "hhhuh", "hhuhh", "tittt"};
@@ -449,7 +484,8 @@ public class SolutionSecondRound {
         ListNode list1 = solution.buildListNode1();
         ListNode list2 = solution.buildListNode2();
 
-        System.out.println(solution.l128longestConsecutive(nums));
+        solution.l283moveZeroes(nums);
+        System.out.println(JSON.toJSONString(nums));
 
     }
 

@@ -1,13 +1,7 @@
 package com.jojo.demoMain;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class Work {
@@ -40,10 +34,9 @@ public class Work {
     }
 
     public static void main(String[] args) throws Exception {
-        List<Person> list = Lists.newArrayList(new Person("JO", "1"), new Person("JO", "2"),
-                 new Person("JO", "2"),new Person("JJ", "2"));
-        Map<String, List<Person>> collect = list.stream().collect(Collectors.groupingBy(Person::getName));
-        System.out.println(JSON.toJSONString(collect));
+
+
+
     }
 
 
