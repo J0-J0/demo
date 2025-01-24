@@ -1,4 +1,4 @@
-package com.jojo.leetcode.multiThread;
+package com.jojo.leetcode.multiThread.philosophers;
 
 public class L1226DiningPhilosophers {
 

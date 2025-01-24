@@ -1,6 +1,5 @@
 package com.jojo.leetcode;
 
-import com.alibaba.fastjson.JSON;
 import com.jojo.leetcode.node.ListNode;
 
 import java.util.ArrayList;
@@ -95,6 +94,7 @@ public class SolutionSecondRound {
         return new int[]{-1, -1};
     }
 
+
     public boolean l9isPalindrome(int x) {
         String xStr = x + "";
         for (int i = 0, j = xStr.length() - 1; i < xStr.length() && j > i; i++, j--) {
@@ -106,6 +106,7 @@ public class SolutionSecondRound {
         }
         return true;
     }
+
 
     public int l13romanToInt(String s) {
         Map<Character, Integer> charValMap = new HashMap<>();
@@ -160,6 +161,7 @@ public class SolutionSecondRound {
         return answer;
     }
 
+
     public String l14longestCommonPrefix(String[] strs) {
         if (strs == null || strs.length == 0) {
             return "";
@@ -193,6 +195,7 @@ public class SolutionSecondRound {
 
         return answer.toString();
     }
+
 
     /**
      * 构建一个堆栈，字符串从左往右，左括号入栈，有括号出栈。出栈时，必须是对应的左括号，才允许出，不然就return false。
@@ -237,6 +240,7 @@ public class SolutionSecondRound {
         return stack.size() == 0;
     }
 
+
     /**
      * new一个ListNode返回。
      * while循环，list1与list2只要没遍历到底，就持续复制。
@@ -280,6 +284,7 @@ public class SolutionSecondRound {
         return result;
     }
 
+
     public int l26removeDuplicates(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -301,6 +306,7 @@ public class SolutionSecondRound {
         return answer;
     }
 
+
     public int l27removeElement(int[] nums, int val) {
         int equalCount = 0;
         for (int num : nums) {
@@ -320,6 +326,7 @@ public class SolutionSecondRound {
         return k;
     }
 
+
     public int l28strStr(String haystack, String needle) {
         if (haystack.equals(needle)) {
             return 0;
@@ -327,6 +334,7 @@ public class SolutionSecondRound {
 
         return haystack.indexOf(needle);
     }
+
 
     public int l35searchInsert(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
@@ -361,6 +369,7 @@ public class SolutionSecondRound {
         }
         return middle;
     }
+
 
     public List<List<String>> l49groupAnagrams(String[] strs) {
         List<List<String>> answer = new ArrayList<>();
@@ -402,7 +411,6 @@ public class SolutionSecondRound {
         return new ArrayList<>(noListMap.values());
     }
 
-
     private Map<Character, Integer> l49strToCharCountMap(String str) {
         Map<Character, Integer> map = new HashMap<>();
         for (char c : str.toCharArray()) {
@@ -440,6 +448,39 @@ public class SolutionSecondRound {
     }
 
 
+    public ListNode l160getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+
+        List<ListNode> headAList = l160BuildList(headA);
+        List<ListNode> headBList = l160BuildList(headB);
+
+        int i = headAList.size() - 1, j = headBList.size() - 1;
+        for (; i >= 0 && j >= 0; i--, j--) {
+            if (headAList.get(i) == headBList.get(j)) {
+                continue;
+            }
+            if (i == headAList.size() - 1) {
+                return null;
+            } else {
+                return headAList.get(i + 1);
+            }
+        }
+
+        return headAList.get(i + 1);
+    }
+
+    private List<ListNode> l160BuildList(ListNode head) {
+        List<ListNode> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head);
+            head = head.next;
+        }
+        return list;
+    }
+
+
     public void l283moveZeroes(int[] nums) {
         if (nums == null || nums.length == 0) {
             return;
@@ -473,10 +514,36 @@ public class SolutionSecondRound {
     }
 
 
+    public ListNode l206reverseList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode reverseHead = head;
+        while (reverseHead.next != null) {
+            reverseHead = reverseHead.next;
+        }
+
+        l206doReverse(head, head.next);
+        head.next = null;
+
+        return reverseHead;
+    }
+
+    private void l206doReverse(ListNode curNode, ListNode nextNode) {
+        if (nextNode == null) {
+            return;
+        }
+
+        l206doReverse(nextNode, nextNode.next);
+        nextNode.next = curNode;
+    }
+
+
     public static void main(String[] args) {
         SolutionSecondRound solution = new SolutionSecondRound();
 
-        int[] nums = {0,0,0};
+        int[] nums = {0, 0, 0};
         int target = 10;
 
         String[] strs = new String[]{"hhhhu", "tttti", "tttit", "hhhuh", "hhuhh", "tittt"};
@@ -484,9 +551,15 @@ public class SolutionSecondRound {
         ListNode list1 = solution.buildListNode1();
         ListNode list2 = solution.buildListNode2();
 
-        solution.l283moveZeroes(nums);
-        System.out.println(JSON.toJSONString(nums));
+        ListNode a1 = new ListNode(1);
+        ListNode b1 = new ListNode(1);
+        ListNode c1 = new ListNode(2);
 
+        a1.next = c1;
+        b1.next = c1;
+
+        System.out.println(a1 == b1);
+        System.out.println(a1.next == b1.next);
     }
 
     private ListNode buildListNode1() {

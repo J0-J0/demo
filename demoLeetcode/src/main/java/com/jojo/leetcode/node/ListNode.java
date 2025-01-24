@@ -15,6 +15,7 @@ public class ListNode {
 
     public ListNode(int val) {
         this.val = val;
+        this.next = null;
     }
 
     public void print() {
@@ -33,7 +34,7 @@ public class ListNode {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer(val + "");
+        StringBuilder sb = new StringBuilder(val + "");
         while (next != null) {
             sb.append("->").append(next.val);
             next = next.next;

@@ -59,8 +59,7 @@ public class TreeNode {
 
             List<TreeNode> tempList = new ArrayList<>();
 
-            for (int i = 0; i < printNodeValList.size(); i++) {
-                TreeNode node = printNodeValList.get(i);
+            for (TreeNode node : printNodeValList) {
                 if (node == null) {
                     sb.append(" ");
                     tempList.add(null);
@@ -90,7 +89,7 @@ public class TreeNode {
     private static String getBlankSpace(int count) {
         String standBlankSpace = " ";
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
             sb.append(standBlankSpace);
         }

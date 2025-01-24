@@ -1,5 +1,8 @@
 package com.jojo.leetcode;
 
+import com.jojo.leetcode.node.ListNode;
+import com.jojo.leetcode.node.TreeNode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -9,12 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.jojo.leetcode.node.ListNode;
-import com.jojo.leetcode.node.TreeNode;
-
 /**
  * 默认刷题的类
  */
+@Deprecated
 @SuppressWarnings("unused")
 class SolutionFirstRound {
 
