@@ -1,6 +1,7 @@
 package com.jojo.leetcode;
 
 import com.jojo.leetcode.node.ListNode;
+import com.jojo.leetcode.node.TreeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -420,6 +421,60 @@ public class SolutionSecondRound {
     }
 
 
+    public List<Integer> l94inorderTraversal(TreeNode root) {
+        List<Integer> valList = new ArrayList<>();
+        if (root == null) {
+            return valList;
+        }
+
+        this.l94doInorderTraversal(root, valList);
+
+        return valList;
+    }
+
+    private void l94doInorderTraversal(TreeNode root, List<Integer> list) {
+        if (root == null) {
+            return;
+        }
+
+        l94doInorderTraversal(root.left, list);
+
+        list.add(root.val);
+
+        l94doInorderTraversal(root.right, list);
+    }
+
+
+    public boolean l101isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        if (root.left == null && root.right == null) {
+            return true;
+        }
+
+        if (root.left == null || root.right == null) {
+            return false;
+        }
+
+        return root.left.val == root.right.val && this.l101isSymmetric(root.left) && this.l101isSymmetric(root.right);
+    }
+
+
+    public int l104maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+
+        return Math.max(this.l104maxDepth(root.left), this.l104maxDepth(root.right)) + 1;
+    }
+
+
     public int l128longestConsecutive(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -445,6 +500,24 @@ public class SolutionSecondRound {
         }
 
         return answer;
+    }
+
+
+    public boolean l141hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false;
+        }
+
+        int count = 0;
+        while (head != null) {
+            ++count;
+            head = head.next;
+            if (count > 10000) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -481,6 +554,68 @@ public class SolutionSecondRound {
     }
 
 
+    public ListNode l206reverseList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode reverseHead = head;
+        while (reverseHead.next != null) {
+            reverseHead = reverseHead.next;
+        }
+
+        l206doReverse(head, head.next);
+        head.next = null;
+
+        return reverseHead;
+    }
+
+    private void l206doReverse(ListNode curNode, ListNode nextNode) {
+        if (nextNode == null) {
+            return;
+        }
+
+        l206doReverse(nextNode, nextNode.next);
+        nextNode.next = curNode;
+    }
+
+
+    public TreeNode l226invertTree(TreeNode root) {
+        if (root == null) {
+            return root;
+        }
+
+        if (root.left == null && root.right == null) {
+            return root;
+        }
+
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+
+        this.l226invertTree(root.left);
+        this.l226invertTree(root.right);
+
+        return root;
+    }
+
+
+    public boolean l234isPalindrome(ListNode head) {
+        if (head.next == null) {
+            return true;
+        }
+
+        String str = "";
+        ListNode curNode = head;
+        while (curNode != null) {
+            str += curNode.val;
+            curNode = curNode.next;
+        }
+
+        return str.equals(new StringBuilder(str).reverse().toString());
+    }
+
+
     public void l283moveZeroes(int[] nums) {
         if (nums == null || nums.length == 0) {
             return;
@@ -514,32 +649,6 @@ public class SolutionSecondRound {
     }
 
 
-    public ListNode l206reverseList(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-
-        ListNode reverseHead = head;
-        while (reverseHead.next != null) {
-            reverseHead = reverseHead.next;
-        }
-
-        l206doReverse(head, head.next);
-        head.next = null;
-
-        return reverseHead;
-    }
-
-    private void l206doReverse(ListNode curNode, ListNode nextNode) {
-        if (nextNode == null) {
-            return;
-        }
-
-        l206doReverse(nextNode, nextNode.next);
-        nextNode.next = curNode;
-    }
-
-
     public static void main(String[] args) {
         SolutionSecondRound solution = new SolutionSecondRound();
 
@@ -548,38 +657,11 @@ public class SolutionSecondRound {
 
         String[] strs = new String[]{"hhhhu", "tttti", "tttit", "hhhuh", "hhuhh", "tittt"};
 
-        ListNode list1 = solution.buildListNode1();
-        ListNode list2 = solution.buildListNode2();
+        ListNode head = ListNode.buildListNode(new int[]{1, 2, 2, 1});
+        System.out.println(head.next.val);
 
-        ListNode a1 = new ListNode(1);
-        ListNode b1 = new ListNode(1);
-        ListNode c1 = new ListNode(2);
-
-        a1.next = c1;
-        b1.next = c1;
-
-        System.out.println(a1 == b1);
-        System.out.println(a1.next == b1.next);
+        System.out.println(solution.l234isPalindrome(head));
     }
 
-    private ListNode buildListNode1() {
-        ListNode node = new ListNode();
-        node.val = 1;
-        node.next = new ListNode();
-        node.next.val = 2;
-        node.next.next = new ListNode();
-        node.next.next.val = 4;
-        return node;
-    }
-
-    private ListNode buildListNode2() {
-        ListNode node = new ListNode();
-        node.val = 1;
-        node.next = new ListNode();
-        node.next.val = 3;
-        node.next.next = new ListNode();
-        node.next.next.val = 4;
-        return node;
-    }
 
 }

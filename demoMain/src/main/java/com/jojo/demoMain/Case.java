@@ -89,45 +89,42 @@ public class Case {
      * @return
      */
     private static Comparator<ZipEntry> getZipEntryComparator() {
-        return new Comparator<ZipEntry>() {
-            @Override
-            public int compare(ZipEntry o1, ZipEntry o2) {
-                char[] o1Name = o1.getName().toCharArray();
-                char[] o2Name = o2.getName().toCharArray();
-                int i = 0, j = 0;
-                while (i < o1Name.length && j < o2Name.length) {
-                    if (Character.isDigit(o1Name[i]) && Character.isDigit(o2Name[j])) {
-                        String s1 = "", s2 = "";
-                        while (i < o1Name.length && Character.isDigit(o1Name[i])) {
-                            s1 += o1Name[i];
-                            i++;
-                        }
-                        while (j < o2Name.length && Character.isDigit(o2Name[j])) {
-                            s2 += o2Name[j];
-                            j++;
-                        }
-                        if (Integer.parseInt(s1) > Integer.parseInt(s2)) {
-                            return 1;
-                        } else if (Integer.parseInt(s1) < Integer.parseInt(s2)) {
-                            return -1;
-                        }
+        return (o1, o2) -> {
+            char[] o1Name = o1.getName().toCharArray();
+            char[] o2Name = o2.getName().toCharArray();
+            int i = 0, j = 0;
+            while (i < o1Name.length && j < o2Name.length) {
+                if (Character.isDigit(o1Name[i]) && Character.isDigit(o2Name[j])) {
+                    String s1 = "", s2 = "";
+                    while (i < o1Name.length && Character.isDigit(o1Name[i])) {
+                        s1 += o1Name[i];
+                        i++;
+                    }
+                    while (j < o2Name.length && Character.isDigit(o2Name[j])) {
+                        s2 += o2Name[j];
+                        j++;
+                    }
+                    if (Integer.parseInt(s1) > Integer.parseInt(s2)) {
+                        return 1;
+                    } else if (Integer.parseInt(s1) < Integer.parseInt(s2)) {
+                        return -1;
+                    }
 
+                } else {
+                    if (o1Name[i] > o2Name[j]) {
+                        return 1;
+                    } else if (o1Name[i] < o2Name[j]) {
+                        return -1;
                     } else {
-                        if (o1Name[i] > o2Name[j]) {
-                            return 1;
-                        } else if (o1Name[i] < o2Name[j]) {
-                            return -1;
-                        } else {
-                            i++;
-                            j++;
-                        }
+                        i++;
+                        j++;
                     }
                 }
-                if (o1Name.length == o2Name.length) {
-                    return 0;
-                } else {
-                    return o1Name.length > o2Name.length ? 1 : -1;
-                }
+            }
+            if (o1Name.length == o2Name.length) {
+                return 0;
+            } else {
+                return o1Name.length > o2Name.length ? 1 : -1;
             }
         };
     }
