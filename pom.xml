@@ -47,7 +47,7 @@
         <shiro.version>1.4.1</shiro.version>
         <lucene.version>7.4.0</lucene.version>
         <mina.version>2.1.4</mina.version>
-        <httpclient.version>4.5.3</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <commons.io.version>2.5</commons.io.version>
         <commons.lang3.version>3.6</commons.lang3.version>
         <commons.collection4.version>4.1</commons.collection4.version>
