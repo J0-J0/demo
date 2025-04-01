@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
@@ -80,7 +81,7 @@ public class SolutionSecondRound {
     }
 
     /**
-     * 没有方法三，全部答案我都想到了，就是我写的代码，不够简洁，考虑补够全面，导致性能上稍差
+     * 没有方法三，全部答案我都想到了，就是我写的代码，不够简洁，考虑不够全面，导致性能上稍差
      */
     public int[] l1twoSum3(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
@@ -106,6 +107,37 @@ public class SolutionSecondRound {
             }
         }
         return true;
+    }
+
+
+    public int l11maxArea(int[] height) {
+        // 暴力法，时间估计不够
+//        if (height == null || height.length <= 1) {
+//            return 0;
+//        }
+//        int maxArea = 0;
+//        for (int i = 0; i < height.length - 1; i++) {
+//            for (int j = 1; j < height.length; j++) {
+//                int tempArea = (j - i) * Math.min(height[i], height[j]);
+//                maxArea = Math.max(maxArea, tempArea);
+//            }
+//        }
+//        return maxArea;
+
+        if (height == null || height.length <= 1) {
+            return 0;
+        }
+        int maxArea = 0;
+        for (int i = 0, j = height.length - 1; i < j; ) {
+            int tempArea = (j - i) * Math.min(height[i], height[j]);
+            maxArea = Math.max(maxArea, tempArea);
+            if (height[i] < height[j]) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+        return maxArea;
     }
 
 
@@ -195,6 +227,63 @@ public class SolutionSecondRound {
         }
 
         return answer.toString();
+    }
+
+
+    public List<List<Integer>> l15threeSum(int[] nums) {
+        // 方法一，暴力枚举
+//        for (int i = 0; i < nums.length - 3; i++) {
+//            for (int j = 1; j < nums.length - 2; j++) {
+//                for (int k = 2; k < nums.length - 1; k++) {
+//                    if (nums[i] + nums[j] + nums[k] == 0) {
+//                        List<Integer> list = new ArrayList<>();
+//                        list.add(nums[i]);
+//                        list.add(nums[j]);
+//                        list.add(nums[k]);
+//                        answerList.add(list);
+//                    }
+//                }
+//            }
+//        }
+//        return answerList;
+
+        // 方法二，哈希
+        if (nums.length < 3) {
+            return new ArrayList<>();
+        }
+        Map<Integer, Integer> valCountMap = new HashMap<>();
+        for (int num : nums) {
+            valCountMap.merge(num, 1, Integer::sum);
+        }
+
+        if (valCountMap.size() == 1 && valCountMap.containsKey(0)) {
+            List<List<Integer>> list = new ArrayList<>();
+            list.add(Arrays.asList(0, 0, 0));
+            return list;
+        }
+
+        Map<String, List<Integer>> symbolListMap = new HashMap<>();
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            valCountMap.put(nums[i], valCountMap.get(nums[i]) - 1);
+            for (int j = i + 1; j < nums.length - 1; j++) {
+                valCountMap.put(nums[j], valCountMap.get(nums[j]) - 1);
+
+                int target = -(nums[i] + nums[j]);
+                if (valCountMap.get(target) != null && valCountMap.get(target) != 0) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[i]);
+                    list.add(nums[j]);
+                    list.add(target);
+                    list.sort(Integer::compareTo);
+                    symbolListMap.put(list.toString(), list);
+                }
+            }
+            for (int j = i + 1; j < nums.length - 1; j++) {
+                valCountMap.put(nums[j], valCountMap.get(nums[j]) + 1);
+            }
+        }
+        return new ArrayList<>(symbolListMap.values());
     }
 
 
@@ -458,7 +547,38 @@ public class SolutionSecondRound {
             return false;
         }
 
-        return root.left.val == root.right.val && this.l101isSymmetric(root.left) && this.l101isSymmetric(root.right);
+        // 这里开始取出每一层的节点，并判断这一层是否轴对称
+        LinkedList<TreeNode> layerQueue = new LinkedList<>();
+        layerQueue.add(root);
+        while (!layerQueue.isEmpty()) {
+            // 取出下一层的节点
+            List<TreeNode> nextLayerList = new ArrayList<>();
+            int queueSize = layerQueue.size();
+            for (int i = 0; i < queueSize; i++) {
+                TreeNode node = layerQueue.poll();
+                if (node != null) {
+                    nextLayerList.add(node.left);
+                    nextLayerList.add(node.right);
+                }
+            }
+
+            // 这里开始判断下一层是否轴对称
+            if (nextLayerList.isEmpty()) {
+                return true;
+            }
+            for (int i = 0, j = nextLayerList.size() - 1; i < j; i++, j--) {
+                if (nextLayerList.get(i) == null && nextLayerList.get(j) == null) {
+                    continue;
+                } else if (nextLayerList.get(i) == null || nextLayerList.get(j) == null) {
+                    return false;
+                } else if (nextLayerList.get(i).val != nextLayerList.get(j).val) {
+                    return false;
+                }
+            }
+            layerQueue.addAll(nextLayerList);
+        }
+
+        return true;
     }
 
 
@@ -580,13 +700,13 @@ public class SolutionSecondRound {
     }
 
 
-    public TreeNode l226invertTree(TreeNode root) {
+    public void l226invertTree(TreeNode root) {
         if (root == null) {
-            return root;
+            return;
         }
 
         if (root.left == null && root.right == null) {
-            return root;
+            return;
         }
 
         TreeNode temp = root.left;
@@ -596,7 +716,6 @@ public class SolutionSecondRound {
         this.l226invertTree(root.left);
         this.l226invertTree(root.right);
 
-        return root;
     }
 
 
@@ -605,14 +724,14 @@ public class SolutionSecondRound {
             return true;
         }
 
-        String str = "";
+        StringBuilder str = new StringBuilder();
         ListNode curNode = head;
         while (curNode != null) {
-            str += curNode.val;
+            str.append(curNode.val);
             curNode = curNode.next;
         }
 
-        return str.equals(new StringBuilder(str).reverse().toString());
+        return str.toString().equals(new StringBuilder(str.toString()).reverse().toString());
     }
 
 
@@ -646,6 +765,42 @@ public class SolutionSecondRound {
             i++;
             j++;
         }
+    }
+
+
+    public int l543diameterOfBinaryTree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        if (root.left == null && root.right == null) {
+            return 0;
+        }
+
+        int curDiameter = l543depth(root.left) + l543depth(root.right);
+
+        return Math.max(l543maxDiameter(root.left, curDiameter), l543maxDiameter(root.right, curDiameter));
+    }
+
+    private int l543depth(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        if (node.left == null && node.right == null) {
+            return 1;
+        }
+        return Math.max(1 + l543depth(node.left), 1 + l543depth(node.right));
+    }
+
+    private int l543maxDiameter(TreeNode node, int diameter) {
+        if (node == null) {
+            return diameter;
+        }
+        if (node.left == null && node.right == null) {
+            return diameter;
+        }
+        int curDiameter = Math.max(l543depth(node.left) + l543depth(node.right), diameter);
+        return Math.max(l543maxDiameter(node.left, curDiameter), l543maxDiameter(node.right, curDiameter));
     }
 
 
