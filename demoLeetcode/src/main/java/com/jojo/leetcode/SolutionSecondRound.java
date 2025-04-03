@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
@@ -247,43 +246,83 @@ public class SolutionSecondRound {
 //        }
 //        return answerList;
 
-        // 方法二，哈希
+        // 方法二，哈希，效率逊毙了
+//        if (nums.length < 3) {
+//            return new ArrayList<>();
+//        }
+//        Map<Integer, Integer> valCountMap = new HashMap<>();
+//        for (int num : nums) {
+//            valCountMap.merge(num, 1, Integer::sum);
+//        }
+//
+//        if (valCountMap.size() == 1 && valCountMap.containsKey(0)) {
+//            List<List<Integer>> list = new ArrayList<>();
+//            list.add(Arrays.asList(0, 0, 0));
+//            return list;
+//        }
+//
+//        Map<String, List<Integer>> symbolListMap = new HashMap<>();
+//
+//        for (int i = 0; i < nums.length - 2; i++) {
+//            valCountMap.put(nums[i], valCountMap.get(nums[i]) - 1);
+//            for (int j = i + 1; j < nums.length - 1; j++) {
+//                valCountMap.put(nums[j], valCountMap.get(nums[j]) - 1);
+//
+//                int target = -(nums[i] + nums[j]);
+//                if (valCountMap.get(target) != null && valCountMap.get(target) != 0) {
+//                    List<Integer> list = new ArrayList<>();
+//                    list.add(nums[i]);
+//                    list.add(nums[j]);
+//                    list.add(target);
+//                    list.sort(Integer::compareTo);
+//                    symbolListMap.put(list.toString(), list);
+//                }
+//            }
+//            for (int j = i + 1; j < nums.length - 1; j++) {
+//                valCountMap.put(nums[j], valCountMap.get(nums[j]) + 1);
+//            }
+//        }
+//        return new ArrayList<>(symbolListMap.values());
+
+
+        // 方案3，双指针
         if (nums.length < 3) {
             return new ArrayList<>();
         }
-        Map<Integer, Integer> valCountMap = new HashMap<>();
-        for (int num : nums) {
-            valCountMap.merge(num, 1, Integer::sum);
-        }
 
-        if (valCountMap.size() == 1 && valCountMap.containsKey(0)) {
-            List<List<Integer>> list = new ArrayList<>();
-            list.add(Arrays.asList(0, 0, 0));
-            return list;
-        }
+        Arrays.sort(nums);
 
-        Map<String, List<Integer>> symbolListMap = new HashMap<>();
-
+        List<List<Integer>> answerList = new ArrayList<>();
         for (int i = 0; i < nums.length - 2; i++) {
-            valCountMap.put(nums[i], valCountMap.get(nums[i]) - 1);
-            for (int j = i + 1; j < nums.length - 1; j++) {
-                valCountMap.put(nums[j], valCountMap.get(nums[j]) - 1);
-
-                int target = -(nums[i] + nums[j]);
-                if (valCountMap.get(target) != null && valCountMap.get(target) != 0) {
+            if (i != 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            for (int j = i + 1, k = nums.length - 1; j < k; ) {
+                while (j != i + 1 && nums[j] == nums[j - 1] && j < k) {
+                    j++;
+                }
+                while (k != nums.length - 1 && nums[k] == nums[k + 1] && j < k) {
+                    k--;
+                }
+                if (j >= k) {
+                    break;
+                }
+                if (nums[i] + nums[j] + nums[k] == 0) {
                     List<Integer> list = new ArrayList<>();
                     list.add(nums[i]);
                     list.add(nums[j]);
-                    list.add(target);
-                    list.sort(Integer::compareTo);
-                    symbolListMap.put(list.toString(), list);
+                    list.add(nums[k]);
+                    answerList.add(list);
+                    j++;
+                    k--;
+                } else if (nums[i] + nums[j] + nums[k] > 0) {
+                    k--;
+                } else {
+                    j++;
                 }
             }
-            for (int j = i + 1; j < nums.length - 1; j++) {
-                valCountMap.put(nums[j], valCountMap.get(nums[j]) + 1);
-            }
         }
-        return new ArrayList<>(symbolListMap.values());
+        return answerList;
     }
 
 
